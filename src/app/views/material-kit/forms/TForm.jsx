@@ -1,6 +1,5 @@
 import { DatePicker } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import {
   Button,
   Checkbox,
@@ -91,21 +90,6 @@ const SimpleForm = () => {
               validators={['required', 'isEmail']}
               errorMessages={['this field is required', 'email is not valid']}
             />
-
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DatePicker
-                value={date}
-                onChange={handleDateChange}
-                renderInput={(props) => (
-                  <TextField
-                    {...props}
-                    label="Date picker"
-                    id="mui-pickers-date"
-                    sx={{ mb: 2, width: '100%' }}
-                  />
-                )}
-              />
-            </LocalizationProvider>
 
             <TextField
               sx={{ mb: 4 }}
