@@ -1,6 +1,5 @@
 import { DatePicker } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -28,17 +27,14 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { Span } from 'app/components/Typography';
 import { useEffect, useState } from 'react';
-import {
-  Autocomplete,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions
-} from '@mui/material';
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
 import React from 'react';
-import { createFilterOptions } from '@mui/material/Autocomplete';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogActions from '@mui/material/DialogActions';
+import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 
 const filter = createFilterOptions();
 // const mock = new MockAdapter(axios);
@@ -86,7 +82,6 @@ const SimpleForm = () => {
   const [div, setDiv] = useState('');
   const [semester, setSemester] = useState('');
   const [intern, setIntern] = useState('');
-  const [disc, setDisc] = useState('');
   const [divsn, setDivsn] = useState([]);
   const [selectedDivision, setSelectedDivision] = useState('');
   const [courses, setCourses] = useState([]);
@@ -108,7 +103,9 @@ const SimpleForm = () => {
   const handleSelectChange = (event) => {
     setSelectedCourse(event.target.value);
   };
-
+  const handleSelectChangeofDivision = (event) => {
+    setSelectedDivision(event.target.value);
+  };
   useEffect(() => {
     // Make the API request
     axios
@@ -120,29 +117,15 @@ const SimpleForm = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
-  const handleSelectChangeofDivision = (event) => {
-    setSelectedDivision(event.target.value);
-  };
-  useEffect(() => {
-    // Make the API request
-    axios
-      .get('http://localhost:4000/api/college/view')
-      .then((res) => {
-        console.log(res.data);
-        setDisc(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+    // alert(selectedDivision);
+  }, [selectedDivision]);
 
   useEffect(() => {
     // Make the API request
     axios
       .get('http://localhost:4000/api/division/view_division')
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         setDivsn(res.data);
       })
       .catch((err) => {
@@ -157,6 +140,7 @@ const SimpleForm = () => {
     if (semester !== '') {
     }
   }, [semester]);
+
   const handleSelectChange4 = (event) => {
     setIntern(event.target.value);
   };
@@ -164,15 +148,10 @@ const SimpleForm = () => {
     if (intern !== '') {
     }
   }, [intern]);
+
+  const [disc, setDisc] = useState([]);
   const [value, setValue] = useState(null);
   const [open, toggleOpen] = useState(false);
-  const [dialogValue, setDialogValue] = useState({
-    college: '',
-    address: ''
-  });
-  // const filter = createFilterOptions();
-
-  // const [user, setUser] = useState({ name: '', phone: '', email: '', address: '' });
 
   const handleClose = () => {
     setDialogValue({
@@ -182,34 +161,42 @@ const SimpleForm = () => {
     toggleOpen(false);
   };
 
-  const handleSubmit2 = (event) => {
-    event.preventDefault();
-    // setValue({
-    //   college: dialogValue.college,
-    //   address: dialogValue.address
-    // });
-    const college = dialogValue.college;
-    const address = dialogValue.address;
-    console.log('Name :' + college);
-    console.log('Address :' + address);
+  const [dialogValue, setDialogValue] = useState({
+    college: '',
+    address: ''
+  });
 
+  useEffect(() => {
     axios
-      .post('http://localhost:4000/api/college/insert', dialogValue)
+      .get('http://localhost:4000/api/college/view')
       .then((res) => {
-        console.log(res);
-        {
-          res.data.success == true
-            ? alert(' College inserted successfully....')
-            : alert(' Error in inserting college');
-        }
+        setDisc(res.data);
       })
       .catch((err) => {
         console.log(err);
       });
+  }, []);
+  const [college, setCollege] = useState('');
+  const [address, setAddress] = useState('');
+  const handleSubmitDialog = (event) => {
+    event.preventDefault();
+    alert('a');
+    axios
+      .post('http://localhost:4000/api/college/insert', { c_name: college, c_address: address })
+      .then((res) => {
+        console.log('Inserted:', res);
+        if (res.data.success) {
+          alert('Insertion Successful');
+          console.log('Insertion Successful');
+        }
+      })
+      .catch((err) => {
+        alert(err);
+        console.log('Error frontend:', err);
+      });
 
     handleClose();
   };
-
   return (
     <div>
       <ValidatorForm onSubmit={handleSubmit} onError={() => null}>
@@ -258,19 +245,6 @@ const SimpleForm = () => {
               label="Username (Min length 4, Max length 9)"
               validators={['required', 'minStringLength: 4', 'maxStringLength: 9']}
             /> */}
-            {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DatePicker
-                onChange={handleDateChange}
-                renderInput={(props) => (
-                  <TextField
-                    {...props}
-                    label="Date picker"
-                    id="mui-pickers-date"
-                    sx={{ mb: 2, width: '100%' }}
-                  />
-                )}
-              />
-            </LocalizationProvider> */}
             {/* <TextField
               sx={{ marginTop: '10px' }}
               type="email"
@@ -470,13 +444,12 @@ const SimpleForm = () => {
               <h4 sx={{ fontWeight: 'bolder' }} className="text-center">
                 <b>Academic Details</b>
               </h4>
-
               <Autocomplete
                 fullWidth
                 value={value}
                 onChange={(event, newValue) => {
                   if (typeof newValue === 'string') {
-                    // timeout to avoid instant validation of the dialog's form.
+                    // Timeout to avoid instant validation of the dialog's form.
                     setTimeout(() => {
                       toggleOpen(true);
                       setDialogValue({
@@ -508,69 +481,71 @@ const SimpleForm = () => {
                   return filtered;
                 }}
                 id="free-solo-dialog-demo"
-                options={disc?.c_name}
+                options={disc}
                 getOptionLabel={(option) => {
+                  // e.g., value selected with enter, right from the input
                   if (typeof option === 'string') {
                     return option;
                   }
                   if (option.inputValue) {
                     return option.inputValue;
                   }
-                  return option.college;
+                  return option.c_name;
                 }}
                 selectOnFocus
                 clearOnBlur
                 handleHomeEndKeys
-                renderOption={(props, option) => <li {...props}>{option.name}</li>}
+                renderOption={(props, option) => (
+                  <li {...props}>
+                    {option.c_name} {option.c_address}
+                  </li>
+                )}
                 freeSolo
-                renderInput={(params) => <TextField {...params} label="Choose college" />}
+                renderInput={(params) => <TextField {...params} label="Choose College" />}
               />
-              <Dialog open={open} onClose={handleClose}>
-                {/* <form onSubmit={handleSubmit2}> */}
-                <DialogTitle>Add a new College</DialogTitle>
-                <DialogContent>
-                  <DialogContentText>
-                    Did you miss any college in our list? Please, add it!
-                  </DialogContentText>
-                  <TextField
-                    autoFocus
-                    margin="dense"
-                    id="college"
-                    value={dialogValue.college}
-                    onChange={(event) =>
-                      setDialogValue({
-                        ...dialogValue,
-                        college: event.target.value
-                      })
-                    }
-                    label="College"
-                    type="text"
-                    variant="standard"
-                  />
-                  <TextField
-                    margin="dense"
-                    id="address"
-                    value={dialogValue.address}
-                    onChange={(event) =>
-                      setDialogValue({
-                        ...dialogValue,
-                        address: event.target.value
-                      })
-                    }
-                    label="Address"
-                    type="text"
-                    variant="standard"
-                  />
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={handleClose}>Cancel</Button>
-                  <Button onClick={handleSubmit2} type="submit">
-                    Add
-                  </Button>
-                </DialogActions>
-                {/* </form> */}
-              </Dialog>
 
+              <Dialog open={open} onClose={handleClose}>
+                <form onSubmit={handleSubmitDialog}>
+                  <DialogTitle>Add a new College</DialogTitle>
+                  <DialogContent>
+                    <DialogContentText>
+                      Did you miss any college in our list? Please, add it!
+                    </DialogContentText>
+                    <TextField
+                      autoFocus
+                      margin="dense"
+                      id="name"
+                      value={dialogValue.c_name}
+                      onChange={(e) => setCollege(e.target.value)}
+                      label="College name"
+                      type="text"
+                      variant="standard"
+                    />
+                    <TextField
+                      margin="dense"
+                      id="address"
+                      value={dialogValue.c_name}
+                      onChange={(e) => setAddress(e.target.value)}
+                      label="Address"
+                      type="text"
+                      variant="standard"
+                    />
+                    {/* <TextField
+                      margin="dense"
+                      id="address"
+                      value={dialogValue.address}
+                      onChange={(e) => setAddress(e.target.value)}
+                      label="address"
+                      type="text"
+                      variant="standard"
+                    /> */}
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={handleClose}>Cancel</Button>
+                    <Button type="submit">Add</Button>
+                  </DialogActions>
+                </form>
+              </Dialog>
               <TextField
                 sx={{ mb: 4 }}
                 type="text"
@@ -623,7 +598,7 @@ const SimpleForm = () => {
             </Grid>
           </Grid>
         </Grid>
-        {selectedDivision === 'Queue Tech' ? (
+        {selectedDivision === 'QueueTech Solution' ? (
           <Grid container className="d-flex" spacing={10}>
             <Grid item xs={6} id="queuetech-project">
               <h4 sx={{ fontWeight: 'bolder' }} className="text-center">
@@ -808,7 +783,7 @@ const SimpleForm = () => {
               </Table>
             </Grid>
           </Grid>
-        ) : selectedDivision === 'Cognitive' ? (
+        ) : selectedDivision === 'Cognitive Solution' ? (
           <Grid container id="cognitive" className="d-flex" spacing={10}>
             <Grid item xs={6} id="cognitive">
               <h4 sx={{ fontWeight: 'bolder' }} className="text-center">
@@ -893,7 +868,7 @@ const SimpleForm = () => {
               />
             </Grid>
           </Grid>
-        ) : selectedDivision === 'CodeLab' ? (
+        ) : selectedDivision === 'CodeLab Systems' ? (
           <Grid container id="codeLab" className="d-flex" spacing={10}>
             <Grid item xs={6} id="codeLab">
               <h4 sx={{ fontWeight: 'bolder' }} className="text-center">
@@ -1002,5 +977,7 @@ const SimpleForm = () => {
     </div>
   );
 };
+
+const top100Films = [{ college: 'The Shawshank Redemption', address: 1994 }];
 
 export default SimpleForm;
