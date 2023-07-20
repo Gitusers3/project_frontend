@@ -181,8 +181,10 @@ const SimpleForm = () => {
   const handleSubmitDialog = (event) => {
     event.preventDefault();
     alert('a');
+    let c_name = dialogValue.college;
+    let c_address = dialogValue.address;
     axios
-      .post('http://localhost:4000/api/college/insert', { c_name: college, c_address: address })
+      .post('http://localhost:4000/api/college/insert', { college: c_name, address: c_address })
       .then((res) => {
         console.log('Inserted:', res);
         if (res.data.success) {
@@ -473,8 +475,7 @@ const SimpleForm = () => {
                   if (params.inputValue !== '') {
                     filtered.push({
                       inputValue: params.inputValue,
-                      college: `Add "${params.inputValue}"`,
-                      address: ''
+                      c_name: `Add "${params.inputValue}"`
                     });
                   }
 
@@ -505,32 +506,42 @@ const SimpleForm = () => {
               />
 
               <Dialog open={open} onClose={handleClose}>
-                <form onSubmit={handleSubmitDialog}>
-                  <DialogTitle>Add a new College</DialogTitle>
-                  <DialogContent>
-                    <DialogContentText>
-                      Did you miss any college in our list? Please, add it!
-                    </DialogContentText>
-                    <TextField
-                      autoFocus
-                      margin="dense"
-                      id="name"
-                      value={dialogValue.c_name}
-                      onChange={(e) => setCollege(e.target.value)}
-                      label="College name"
-                      type="text"
-                      variant="standard"
-                    />
-                    <TextField
-                      margin="dense"
-                      id="address"
-                      value={dialogValue.c_name}
-                      onChange={(e) => setAddress(e.target.value)}
-                      label="Address"
-                      type="text"
-                      variant="standard"
-                    />
-                    {/* <TextField
+                {/* <form> */}
+                <DialogTitle>Add a new College</DialogTitle>
+                <DialogContent>
+                  <DialogContentText>
+                    Did you miss any college in our list? Please, add it!
+                  </DialogContentText>
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    id="name"
+                    value={dialogValue.college}
+                    // onChange={(e) => setCollege(e.target.value)}
+                    onChange={(event) =>
+                      setDialogValue({
+                        ...dialogValue,
+                        college: event.target.value
+                      })
+                    }
+                    label="College name"
+                    type="text"
+                    variant="standard"
+                  />
+                  <TextField
+                    margin="dense"
+                    id="address"
+                    onChange={(event) =>
+                      setDialogValue({
+                        ...dialogValue,
+                        address: event.target.value
+                      })
+                    }
+                    label="Address"
+                    type="text"
+                    variant="standard"
+                  />
+                  {/* <TextField
                       margin="dense"
                       id="address"
                       value={dialogValue.address}
@@ -539,12 +550,14 @@ const SimpleForm = () => {
                       type="text"
                       variant="standard"
                     /> */}
-                  </DialogContent>
-                  <DialogActions>
-                    <Button onClick={handleClose}>Cancel</Button>
-                    <Button type="submit">Add</Button>
-                  </DialogActions>
-                </form>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleClose}>Cancel</Button>
+                  <Button onClick={handleSubmitDialog} type="submit">
+                    Add
+                  </Button>
+                </DialogActions>
+                {/* </form> */}
               </Dialog>
               <TextField
                 sx={{ mb: 4 }}

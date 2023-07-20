@@ -7,7 +7,7 @@ import axios from 'axios';
 import {
   MatxLoading
 } from 'app/components';
-
+import jwtDecode from 'jwt-decode';
 const initialState = {
   user: null,
   isInitialised: false,
