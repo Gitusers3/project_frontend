@@ -117,7 +117,7 @@ const SimpleForm = () => {
               value={currentDate}
               onChange={(e) => setCurrentDate(e.target.value)}
             />
-            <TextField select fullWidth onChange={PaymentType} label="Choose fees type">
+            <TextField select fullWidth onChange={PaymentType} label="Choose payment type">
               <MenuItem value="Cash">Cash</MenuItem>
               <MenuItem value="Bank">Bank</MenuItem>
             </TextField>
@@ -126,7 +126,7 @@ const SimpleForm = () => {
               id="outlined-multiline-static"
               multiline
               rows={4}
-              defaultValue="Description about receipt"
+              defaultValue="Remark about receipt"
             />
           </Grid>
         </Grid>
