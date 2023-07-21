@@ -41,8 +41,9 @@ const DoughnutChart = ({ height, color = [] }) => {
         },
 
         data: [
-          { value: 65, name: 'Pending' },
-          { value: 20, name: 'Paid' }
+          { value: 65, name: 'Google' },
+          { value: 20, name: 'Facebook' },
+          { value: 15, name: 'Others' }
         ],
 
         emphasis: {

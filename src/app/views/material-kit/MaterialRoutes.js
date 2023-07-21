@@ -5,6 +5,7 @@ import Loadable from 'app/components/Loadable';
 
 const Register = Loadable(lazy(() => import('../../views/student/register')));
 const Students = Loadable(lazy(() => import('../../views/student/students')));
+const ViewOne = Loadable(lazy(() => import('../../views/student/viewone')));
 const AppTable = Loadable(lazy(() => import('./tables/AppTable')));
 const AppForm = Loadable(lazy(() => import('./forms/AppForm')));
 const AppButton = Loadable(lazy(() => import('./buttons/AppButton')));
@@ -31,6 +32,10 @@ const materialRoutes = [{
   {
     path: 'student/students',
     element: < Students / >
+  },
+  {
+    path: 'student/students/view/:id',
+    element: < ViewOne / >
   },
   {
     path: '/material/form',
