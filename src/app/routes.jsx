@@ -7,7 +7,7 @@ import MatxLayout from './components/MatxLayout/MatxLayout';
 import materialRoutes from 'app/views/material-kit/MaterialRoutes';
 import Register from '../app/views/student/register';
 import Students from '../app/views/student/students';
-
+import Viewone from './views/student/viewone';
 // session pages
 const AppForm = Loadable(lazy(() => import('../app/views/material-kit/forms/AppForm')));
 
@@ -50,6 +50,7 @@ const routes = [
   // session pages route
   { path: '/student/register', element: <Register /> },
   { path: '/student/students', element: <Students /> },
+  { path: '/student/students/view/:id', element: <Viewone /> },
   { path: '/session/404', element: <NotFound /> },
   { path: '/session/signin', element: <JwtLogin /> },
   { path: '/session/signin', element: <JwtLogin /> },

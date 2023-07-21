@@ -81,7 +81,8 @@ const SimpleForm = () => {
   } = state;
   const [div, setDiv] = useState('');
   const [semester, setSemester] = useState('');
-  const [intern, setIntern] = useState('');
+  const [intern, setIntern] = useState([]);
+  const [selectedInternship, setSelectedInternship] = useState('');
   const [divsn, setDivsn] = useState([]);
   const [selectedDivision, setSelectedDivision] = useState('');
   const [courses, setCourses] = useState([]);
@@ -99,9 +100,24 @@ const SimpleForm = () => {
         console.log(err);
       });
   }, []);
+  useEffect(() => {
+    // Make the API request
+    axios
+      .get('http://localhost:4000/api/intership/view_intership')
+      .then((res) => {
+        console.log(res.data);
+        setIntern(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   const handleSelectChange = (event) => {
     setSelectedCourse(event.target.value);
+  };
+  const handleSelectInternship = (event) => {
+    setSelectedInternship(event.target.value);
   };
   const handleSelectChangeofDivision = (event) => {
     setSelectedDivision(event.target.value);
@@ -807,15 +823,15 @@ const SimpleForm = () => {
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
-                  label="Choose Internship"
-                  onChange={handleSelectChange4}
+                  label="Choose Division"
+                  value={selectedInternship.id}
+                  onChange={handleSelectInternship}
                 >
-                  <MenuItem value="PHP Web Development">PHP Web Development</MenuItem>
-                  <MenuItem value="Python Web Development">Python Web Development</MenuItem>
-                  <MenuItem value="MERN Stack">MERN Stack</MenuItem>
-                  <MenuItem value="Data Science">Data Science</MenuItem>
-                  <MenuItem value="Machine Learning">Machine Learning</MenuItem>
-                  <MenuItem value="Artificial Intelligence">Artificial Intelligence</MenuItem>
+                  {intern.map((intern) => (
+                    <MenuItem key={intern._id} value={intern._id}>
+                      {intern.intership_on}
+                    </MenuItem>
+                  ))}
                 </Select>
               </FormControl>
               <InputLabel sx={{ mt: '5px' }} id="demo-simple-select-label">

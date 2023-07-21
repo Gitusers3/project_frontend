@@ -1,25 +1,3 @@
-// import React, { useEffect, useState } from 'react';
-// import { MDBDataTable } from 'mdbreact';
-// import URL from '../../../../global';
-// const DatatablePage = () => {
-//   const [data, setData] = useState([]);
-//   useEffect(() => {
-//     URL.get('student/view')
-//       .then((res) => {
-//         console.log(res);
-//         setData(res.data);
-//         console.log(data);
-//       })
-//       .catch((err) => {
-//         console.log(err);
-//       });
-//   }, []);
-//   console.log(data?.st, 32322);
-
-//   return <MDBDataTable striped bordered small data={data?.st} />;
-// };
-
-// export default DatatablePage;
 import Axios from 'axios';
 import { MDBDataTable } from 'mdbreact';
 import React, { useEffect, useState } from 'react';
@@ -67,9 +45,13 @@ const DatatablePage = (divprop) => {
   }, []);
   console.log(display);
   const [centredModal, setCentredModal] = useState(false);
+  const [sid, setSid] = useState();
+
   const [deleteID, setDeleteID] = useState('');
 
-  const toggleShow = () => setCentredModal(!centredModal);
+  const toggleShow = (sid) => {
+    return setSid(sid), setCentredModal(!centredModal);
+  };
   const DeleteStudent = (id) => {
     const swalWithBootstrapButtons = Swal.mixin({
       customClass: {
@@ -113,7 +95,7 @@ const DatatablePage = (divprop) => {
   };
 
   const datta = display
-    .filter((va) => {
+    ?.filter((va) => {
       return divprop?.divprop?.props ? va?.division_id?.d_name === divprop?.divprop?.props : true;
     })
     .map((item, index) => {
@@ -137,7 +119,10 @@ const DatatablePage = (divprop) => {
               </Grid>
               <Grid item xs={4}>
                 <Item>
-                  <CurrencyRupeeIcon style={{ color: 'green' }} onClick={toggleShow} />
+                  <CurrencyRupeeIcon
+                    style={{ color: 'green' }}
+                    onClick={() => toggleShow(item._id)}
+                  />
                 </Item>
               </Grid>
               <Grid item xs={4}>
@@ -208,11 +193,11 @@ const DatatablePage = (divprop) => {
         <MDBModalDialog centered>
           <MDBModalContent>
             <MDBModalHeader>
-              <MDBModalTitle>Make reciepts</MDBModalTitle>
-              <MDBBtn className="btn-close" color="none" onClick={toggleShow}></MDBBtn>
+              <MDBModalTitle>Make reciepts </MDBModalTitle>
+              <MDBBtn className="btn-close" color="none" onClick={() => toggleShow()}></MDBBtn>
             </MDBModalHeader>
             <MDBModalBody>
-              <Fform />
+              <Fform Sid={sid} />
             </MDBModalBody>
             {/* <MDBModalFooter>
               <MDBBtn color="secondary" onClick={toggleShow}>
