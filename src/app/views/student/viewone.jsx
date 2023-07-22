@@ -41,20 +41,40 @@ export default function Viewone() {
   let param = useParams();
   console.log('Id : ' + param.id);
   const [student, setStudent] = useState({});
+  const [studentfees, setStudentfees] = useState({});
+  const [totalfeespaid, setTotalfeespaid] = useState(0);
   useEffect(() => {
     Axios.get(`http://localhost:4000/api/student/view/${param.id}`)
       .then((res) => {
         // console.log(res?.data?.s1?.student_name);
-        console.log(res?.data);
+        console.log(res?.data + 'response');
         let a = res.data.s1;
         setStudent(a);
-        // alert(one);
+
+        // alert(a);
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
-  // console.log(student);
+  useEffect(() => {
+    Axios.get(`http://localhost:4000/api/fees/view_student_fees/${param.id}`)
+      .then((res) => {
+        console.log(res?.data, 'response');
+        let d = res?.data || []; // Default to an empty array if data is not available
+        setStudentfees(d);
+
+        // Calculate the total sum of all amounts in the array
+        const totalPaid = d.reduce((total, item) => total + item.amount, 0);
+        setTotalfeespaid(totalPaid);
+        console.log(totalPaid + ' fees paid');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [param.id]);
+
+  console.log(student, 'student');
 
   return (
     <div>
@@ -70,7 +90,7 @@ export default function Viewone() {
             <AdditionalDetails studentD={student} setStudent={setStudent} />
           </Grid>
           <Grid item xs={4}>
-            <FeesDetails studentD={student} setStudent={setStudent} />
+            <FeesDetails studentD={student} setStudent={setStudent} paidFees={totalfeespaid} />
           </Grid>
         </Grid>
       </Container>

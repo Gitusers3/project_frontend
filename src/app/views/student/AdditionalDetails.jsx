@@ -35,7 +35,13 @@ export default function AdditionalDetails({ studentD, setStudent }) {
     'https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=';
 
   const [ton, setTOn] = useState(true);
+  const chanegTechie = () => {
+    setTOn((prevOn) => !prevOn);
+  };
   const [pon, setPOn] = useState(true);
+  const changeProject = () => {
+    setPOn((prevOn) => !prevOn);
+  };
   const [acon1, setAcOn1] = useState(true);
   const [acon2, setAcOn2] = useState(true);
   const [acon3, setAcOn3] = useState(true);
@@ -63,15 +69,22 @@ export default function AdditionalDetails({ studentD, setStudent }) {
   return (
     <div>
       <div>
-        <Item>
+        <Item sx={{ height: '60px' }}>
           <div style={{ float: 'right' }}>
-            {IconList.map((icon, key) => (
-              <Tooltip title={icon} key={key}>
-                <Icon fontSize="large" onClick={() => setTOn(false)}>
-                  {icon}
+            <Tooltip title={ton ? 'Check Icon' : 'Edit Icon'}>
+              <Icon fontSize="large" onClick={chanegTechie}>
+                {ton && <span style={{ marginTop: '2px' }}>edit</span>}
+
+                <span style={{ marginTop: '2px' }}>check</span>
+              </Icon>
+            </Tooltip>
+            {!ton && (
+              <Tooltip title={ton ? 'Check Icon' : 'Edit Icon'}>
+                <Icon fontSize="large" onClick={chanegTechie}>
+                  <span style={{ marginTop: '4px' }}>clear</span>
                 </Icon>
               </Tooltip>
-            ))}
+            )}
           </div>
           <h6 className="text-start text-black fw-bolder">Techie</h6>
         </Item>
@@ -96,6 +109,7 @@ export default function AdditionalDetails({ studentD, setStudent }) {
                     <FormControl variant="standard" fullWidth>
                       <InputLabel id="demo-simple-select-label">Choose Techie</InputLabel>
                       <Select
+                        disabled={ton}
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
                         label="Choose Division"
@@ -115,15 +129,22 @@ export default function AdditionalDetails({ studentD, setStudent }) {
             </Table>
           </TableContainer>
         </div>
-        <Item sx={{ marginTop: '2px' }}>
+        <Item sx={{ marginTop: '2px', height: '50px' }}>
           <div style={{ float: 'right' }}>
-            {IconList.map((icon, key) => (
-              <Tooltip title={icon} key={key}>
-                <Icon fontSize="large" onClick={() => setPOn(false)}>
-                  {icon}
+            <Tooltip title={pon ? 'Check Icon' : 'Edit Icon'}>
+              <Icon fontSize="large" onClick={changeProject}>
+                {pon && <span style={{ marginTop: '2px' }}>edit</span>}
+
+                <span style={{ marginTop: '2px' }}>check</span>
+              </Icon>
+            </Tooltip>
+            {!pon && (
+              <Tooltip title={pon ? 'Check Icon' : 'Edit Icon'}>
+                <Icon fontSize="large" onClick={changeProject}>
+                  <span style={{ marginTop: '4px' }}>clear</span>
                 </Icon>
               </Tooltip>
-            ))}
+            )}
           </div>
           <h6 className="text-start text-black fw-bolder">Project</h6>
         </Item>
