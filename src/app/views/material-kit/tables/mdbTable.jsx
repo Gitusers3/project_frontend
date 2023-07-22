@@ -1,25 +1,3 @@
-// import React, { useEffect, useState } from 'react';
-// import { MDBDataTable } from 'mdbreact';
-// import URL from '../../../../global';
-// const DatatablePage = () => {
-//   const [data, setData] = useState([]);
-//   useEffect(() => {
-//     URL.get('student/view')
-//       .then((res) => {
-//         console.log(res);
-//         setData(res.data);
-//         console.log(data);
-//       })
-//       .catch((err) => {
-//         console.log(err);
-//       });
-//   }, []);
-//   console.log(data?.st, 32322);
-
-//   return <MDBDataTable striped bordered small data={data?.st} />;
-// };
-
-// export default DatatablePage;
 import Axios from 'axios';
 import { MDBDataTable } from 'mdbreact';
 import React, { useEffect, useState } from 'react';
@@ -67,9 +45,19 @@ const DatatablePage = (divprop) => {
   }, []);
   console.log(display);
   const [centredModal, setCentredModal] = useState(false);
-  const [deleteID, setDeleteID] = useState('');
+  const [sid, setSid] = useState();
 
-  const toggleShow = () => setCentredModal(!centredModal);
+  const [deleteID, setDeleteID] = useState('');
+  const [count, setCount] = useState(1);
+
+  const toggleShow = (sid) => {
+    setCentredModal(!centredModal);
+    setCount((prevCount) => prevCount + 1);
+    return setSid(sid);
+  };
+  const toggleClose = () => {
+    setCentredModal(!centredModal);
+  };
   const DeleteStudent = (id) => {
     const swalWithBootstrapButtons = Swal.mixin({
       customClass: {
@@ -137,7 +125,10 @@ const DatatablePage = (divprop) => {
               </Grid>
               <Grid item xs={4}>
                 <Item>
-                  <CurrencyRupeeIcon style={{ color: 'green' }} onClick={toggleShow} />
+                  <CurrencyRupeeIcon
+                    style={{ color: 'green' }}
+                    onClick={() => toggleShow(item._id)}
+                  />
                 </Item>
               </Grid>
               <Grid item xs={4}>
@@ -209,10 +200,10 @@ const DatatablePage = (divprop) => {
           <MDBModalContent>
             <MDBModalHeader>
               <MDBModalTitle>Make reciepts</MDBModalTitle>
-              <MDBBtn className="btn-close" color="none" onClick={toggleShow}></MDBBtn>
+              <MDBBtn className="btn-close" color="none" onClick={() => toggleClose()}></MDBBtn>
             </MDBModalHeader>
             <MDBModalBody>
-              <Fform />
+              <Fform Sid={sid} count={count} />
             </MDBModalBody>
             {/* <MDBModalFooter>
               <MDBBtn color="secondary" onClick={toggleShow}>

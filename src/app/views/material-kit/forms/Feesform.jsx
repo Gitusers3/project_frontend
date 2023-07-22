@@ -10,6 +10,7 @@ import {
   RadioGroup,
   styled
 } from '@mui/material';
+import Axios from 'axios';
 import { Span } from 'app/components/Typography';
 import { useEffect, useState } from 'react';
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
@@ -20,8 +21,27 @@ const TextField = styled(TextValidator)(() => ({
   marginBottom: '16px'
 }));
 
-const SimpleForm = () => {
+const SimpleForm = ({ Sid, count }) => {
+  console.log('Student ID from prop : ' + Sid);
   const [state, setState] = useState({ date: new Date() });
+  const [one, setOne] = useState('');
+  const [totfees, setTotfees] = useState('');
+
+  useEffect(() => {
+    Axios.get(`http://localhost:4000/api/student/view/${Sid}`)
+      .then((res) => {
+        // console.log(res?.data?.s1?.student_name);
+        // console.log(res?.data?.s1?.division_id?.d_name);
+        let a = res.data.s1.division_id.d_name;
+        setOne(a);
+        let b = res.data.s1.pending_fees;
+        setTotfees(b);
+        // alert(one);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [count]);
 
   useEffect(() => {
     ValidatorForm.addValidationRule('isPasswordMatch', (value) => {
@@ -91,17 +111,23 @@ const SimpleForm = () => {
     <div>
       <ValidatorForm onSubmit={handleSubmit} onError={() => null}>
         <p>
-          <b>Division Name :</b>
+          <b>Division Name :{one}</b>
         </p>
         <Grid container spacing={6}>
           <Grid item lg={12} md={12} sm={12} xs={12} sx={{ mt: 2 }}>
-            <TextField select fullWidth onChange={SelectType} label="Choose fees type">
-              <MenuItem value="Partial">Partial</MenuItem>
+            <TextField
+              select
+              fullWidth
+              onChange={SelectType}
+              value={feesType}
+              label="Choose fees type"
+            >
+              <MenuItem value={'Partial'}>Partial</MenuItem>
               <MenuItem value="Registration">Registration</MenuItem>
               <MenuItem value="Course Fees">Course Fees</MenuItem>
             </TextField>
             <p>
-              <b>Pending Fees :</b>
+              <b>Pending Fees :{totfees}</b>
             </p>
             <TextField
               type="number"
@@ -117,7 +143,13 @@ const SimpleForm = () => {
               value={currentDate}
               onChange={(e) => setCurrentDate(e.target.value)}
             />
-            <TextField select fullWidth onChange={PaymentType} label="Choose fees type">
+            <TextField
+              select
+              fullWidth
+              value={payType}
+              onChange={PaymentType}
+              label="Choose payment type"
+            >
               <MenuItem value="Cash">Cash</MenuItem>
               <MenuItem value="Bank">Bank</MenuItem>
             </TextField>
@@ -126,7 +158,7 @@ const SimpleForm = () => {
               id="outlined-multiline-static"
               multiline
               rows={4}
-              defaultValue="Description about receipt"
+              defaultValue="Remark about receipt"
             />
           </Grid>
         </Grid>

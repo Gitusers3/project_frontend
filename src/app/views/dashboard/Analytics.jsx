@@ -36,12 +36,6 @@ const H4 = styled('h4')(({ theme }) => ({
 
 const Analytics = () => {
   const { palette } = useTheme();
-  let nav = useNavigate();
-  useEffect(() => {
-    if (!localStorage.getItem('accessToken')) {
-      nav('../../session/signin');
-    }
-  }, []);
 
   return (
     <Fragment>
