@@ -113,7 +113,7 @@ const DatatablePage = (divprop) => {
   };
 
   const datta = display
-    .filter((va) => {
+    ?.filter((va) => {
       return divprop?.divprop?.props ? va?.division_id?.d_name === divprop?.divprop?.props : true;
     })
     .map((item, index) => {
