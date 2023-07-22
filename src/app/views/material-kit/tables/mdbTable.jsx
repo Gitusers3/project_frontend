@@ -48,9 +48,15 @@ const DatatablePage = (divprop) => {
   const [sid, setSid] = useState();
 
   const [deleteID, setDeleteID] = useState('');
+  const [count, setCount] = useState(1);
 
   const toggleShow = (sid) => {
-    return setSid(sid), setCentredModal(!centredModal);
+    setCentredModal(!centredModal);
+    setCount((prevCount) => prevCount + 1);
+    return setSid(sid);
+  };
+  const toggleClose = () => {
+    setCentredModal(!centredModal);
   };
   const DeleteStudent = (id) => {
     const swalWithBootstrapButtons = Swal.mixin({
@@ -193,11 +199,11 @@ const DatatablePage = (divprop) => {
         <MDBModalDialog centered>
           <MDBModalContent>
             <MDBModalHeader>
-              <MDBModalTitle>Make reciepts </MDBModalTitle>
-              <MDBBtn className="btn-close" color="none" onClick={() => toggleShow()}></MDBBtn>
+              <MDBModalTitle>Make reciepts</MDBModalTitle>
+              <MDBBtn className="btn-close" color="none" onClick={() => toggleClose()}></MDBBtn>
             </MDBModalHeader>
             <MDBModalBody>
-              <Fform Sid={sid} />
+              <Fform Sid={sid} count={count} />
             </MDBModalBody>
             {/* <MDBModalFooter>
               <MDBBtn color="secondary" onClick={toggleShow}>

@@ -21,27 +21,27 @@ const TextField = styled(TextValidator)(() => ({
   marginBottom: '16px'
 }));
 
-const SimpleForm = ({ Sid }) => {
+const SimpleForm = ({ Sid, count }) => {
   console.log('Student ID from prop : ' + Sid);
   const [state, setState] = useState({ date: new Date() });
   const [one, setOne] = useState('');
   const [totfees, setTotfees] = useState('');
+
   useEffect(() => {
     Axios.get(`http://localhost:4000/api/student/view/${Sid}`)
       .then((res) => {
-        console.log(res?.data?.s1?.student_name, 122);
-        console.log(res?.data?.s1?.division_id?.d_name);
+        // console.log(res?.data?.s1?.student_name);
+        // console.log(res?.data?.s1?.division_id?.d_name);
         let a = res.data.s1.division_id.d_name;
         setOne(a);
-        let b = res.data.s1.fees;
+        let b = res.data.s1.pending_fees;
         setTotfees(b);
         // alert(one);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [one, totfees]);
-  console.log(one, totfees);
+  }, [count]);
 
   useEffect(() => {
     ValidatorForm.addValidationRule('isPasswordMatch', (value) => {

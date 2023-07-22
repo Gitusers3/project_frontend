@@ -27,7 +27,13 @@ import Checkbox from '@mui/material/Checkbox';
 import { green } from '@mui/material/colors';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormGroup from '@mui/material/FormGroup';
-
+import { Radio, RadioGroup, FormControl, FormLabel } from '@mui/material';
+const GreenRadio = styled(Radio)(({ theme }) => ({
+  color: green[400],
+  '&.Mui-checked': {
+    color: green[600]
+  }
+}));
 const GreenCheckbox = styled(Checkbox)(({ theme }) => ({
   color: green[400],
   '&$checked': { color: green[600] }
@@ -46,7 +52,7 @@ const Container = styled('div')(({ theme }) => ({
   }
 }));
 
-export default function FeesDetails({ studentD, setStudent }) {
+export default function FeesDetails({ studentD, setStudent, paidFees }) {
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#dcc715' : '#fff',
     ...theme.typography.body2,
@@ -67,26 +73,38 @@ export default function FeesDetails({ studentD, setStudent }) {
     checkedB: false,
     checkedD: false
   });
-
+  const [state1, setState1] = useState({
+    checkedA1: false,
+    checkedB1: false,
+    checkedD1: false
+  });
+  const handleChange1 = (name) => (event) => {
+    setState((prevState) => ({
+      ...prevState,
+      checkedA1: name === 'checkedA1' && event.target.checked,
+      checkedB1: name === 'checkedB1' && event.target.checked,
+      checkedD1: name === 'checkedD1' && event.target.checked
+    }));
+  };
   useEffect(() => {
-    // Update the state based on studentD.all_status
-    if (studentD.all_status === 'Ongoing') {
+    // Update the state based on studentD?.all_status
+    if (studentD?.all_status === 'Ongoing') {
       setState((prevState) => ({
         ...prevState,
         checkedA: true
       }));
-    } else if (studentD.all_status === 'Completed') {
+    } else if (studentD?.all_status === 'Completed') {
       setState((prevState) => ({
         ...prevState,
         checkedB: true
       }));
-    } else if (studentD.all_status === 'Discontinued') {
+    } else if (studentD?.all_status === 'Discontinued') {
       setState((prevState) => ({
         ...prevState,
         checkedD: true
       }));
     }
-  }, [studentD.all_status]);
+  }, [studentD?.all_status]);
 
   const handleChange = (name) => (event) => {
     setState({ ...state, [name]: event.target.checked });
@@ -112,7 +130,7 @@ export default function FeesDetails({ studentD, setStudent }) {
                     Total Fees
                   </TableCell>
                   <TableCell className="text-black" align="start" sx={{ padding: '16px' }}>
-                    <span>{studentD.fees}/-</span>
+                    <span>{studentD?.fees}/-</span>
                   </TableCell>
                 </TableRow>
               </TableBody>
@@ -133,7 +151,7 @@ export default function FeesDetails({ studentD, setStudent }) {
                     Paid Fees
                   </TableCell>
                   <TableCell className="text-black" align="start" sx={{ padding: '16px' }}>
-                    <span className="fw-bolder text-success">6000/-</span>
+                    <span className="fw-bolder text-success">{paidFees}/-</span>
                   </TableCell>
                 </TableRow>
               </TableBody>
@@ -154,7 +172,7 @@ export default function FeesDetails({ studentD, setStudent }) {
                     Pending Fees
                   </TableCell>
                   <TableCell className="text-black" align="start" sx={{ padding: '16px' }}>
-                    <span className="text-danger fw-bolder">6000/-</span>
+                    <span className="text-danger fw-bolder">{studentD?.pending_fees}/-</span>
                   </TableCell>
                 </TableRow>
               </TableBody>
@@ -186,7 +204,7 @@ export default function FeesDetails({ studentD, setStudent }) {
                     Student Status
                   </TableCell>
                 </TableRow>
-                <TableRow sx={{ margin: '5px' }}>
+                {/* <TableRow sx={{ margin: '5px' }}>
                   <TableCell
                     className="fw-bolder text-start"
                     component="th"
@@ -227,7 +245,7 @@ export default function FeesDetails({ studentD, setStudent }) {
                   </TableCell>
                 </TableRow>
                 {/* Add more rows for other checkboxes */}
-                <TableRow sx={{ margin: '5px' }}>
+                {/* <TableRow sx={{ margin: '5px' }}>
                   <TableCell
                     className="fw-bolder text-start"
                     component="th"
@@ -245,6 +263,43 @@ export default function FeesDetails({ studentD, setStudent }) {
                       }
                       label="Discontinued"
                     />
+                  </TableCell>
+                </TableRow>{' '} */}
+
+                <TableRow sx={{ margin: '5px' }}>
+                  <TableCell
+                    className="fw-bolder text-start"
+                    component="th"
+                    scope="row"
+                    sx={{ padding: '16px', fontSize: '16px', textTransform: 'uppercase' }}
+                  >
+                    <RadioGroup
+                      row
+                      sx={{ display: 'flex', flexDirection: 'column' }}
+                      aria-label="student-status"
+                      name="student-status"
+                      value={state.checkedA1}
+                      onChange={handleChange1('checkedA1')}
+                    >
+                      <FormControlLabel
+                        value="on-going"
+                        control={<GreenRadio />}
+                        label="On Going"
+                        checked={state.checkedA}
+                      />
+                      <FormControlLabel
+                        value="completed"
+                        control={<GreenRadio />}
+                        label="Completed"
+                        checked={state.checkedB}
+                      />
+                      <FormControlLabel
+                        value="discontinued"
+                        control={<GreenRadio />}
+                        label="Discontinued"
+                        checked={state.checkedD}
+                      />
+                    </RadioGroup>
                   </TableCell>
                 </TableRow>
               </TableBody>
