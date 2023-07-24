@@ -10,6 +10,7 @@ import {
   RadioGroup,
   styled
 } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import Axios from 'axios';
 import { Span } from 'app/components/Typography';
 import { useEffect, useState } from 'react';
@@ -25,15 +26,23 @@ const SimpleForm = ({ Sid, count }) => {
   console.log('Student ID from prop : ' + Sid);
   const [state, setState] = useState({ date: new Date() });
   const [one, setOne] = useState('');
+  const [divid, setDivid] = useState('');
   const [totfees, setTotfees] = useState('');
+  const [feesd, setFeesd] = useState('');
+  const [alldata, setAlldata] = useState({});
 
+  
+const nav=useNavigate()
   useEffect(() => {
+
     Axios.get(`http://localhost:4000/api/student/view/${Sid}`)
       .then((res) => {
         // console.log(res?.data?.s1?.student_name);
         // console.log(res?.data?.s1?.division_id?.d_name);
         let a = res.data.s1.division_id.d_name;
+        let divid = res.data.s1.division_id;
         setOne(a);
+        setDivid(divid);
         let b = res.data.s1.pending_fees;
         setTotfees(b);
         // alert(one);
@@ -44,6 +53,8 @@ const SimpleForm = ({ Sid, count }) => {
   }, [count]);
 
   useEffect(() => {
+
+
     ValidatorForm.addValidationRule('isPasswordMatch', (value) => {
       if (value !== state.password) return false;
 
@@ -53,13 +64,57 @@ const SimpleForm = ({ Sid, count }) => {
   }, [state.password]);
 
   const handleSubmit = (event) => {
-    // console.log("submitted");
+    event.preventDefault();
+  
+
+  };
+  var randVal = 1000+(Math.random()*(9999-1000));
+  const rec_num= Math.round(randVal);
+
+  
+  const formSubmit = (event) => {
+    event.preventDefault();
+   
+    setAlldata({
+      rec_num:rec_num,
+      div_id:divid,
+      std_id:Sid,
+      
+      pay_type:payType,
+      fees_type:feesType,
+      
+    
+    
+      status:"paid",
+      f_date:currentDate,
+      ...feesd
+
+
+      
+
+
+    })
+
+    Axios.post('http://localhost:4000/api/fees/add_fees',alldata)
+    .then((res) => {
+      console.log(res.data)
+      nav("/student/students")
+
+      
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  
+   
+ 
     // console.log(event);
   };
 
   const handleChange = (event) => {
-    event.persist();
-    setState({ ...state, [event.target.name]: event.target.value });
+
+   
+    setFeesd({ ...feesd, [event.target.name]: event.target.value });
   };
 
   const handleDateChange = (date) => setState({ ...state, date });
@@ -87,6 +142,11 @@ const SimpleForm = ({ Sid, count }) => {
     setPayType(event.target.value);
   };
   const [currentDate, setCurrentDate] = useState('');
+  // const [changeDate, changeDate] = useState('');
+
+
+console.log(feesd)
+
 
   // Function to get the current date in 'YYYY-MM-DD' format
   const getCurrentDate = () => {
@@ -111,7 +171,8 @@ const SimpleForm = ({ Sid, count }) => {
     <div>
       <ValidatorForm onSubmit={handleSubmit} onError={() => null}>
         <p>
-          <b>Division Name :{one}</b>
+          <b>Reciept Number :{rec_num} </b><br></br>
+          <b>Division Name :{one} </b>
         </p>
         <Grid container spacing={6}>
           <Grid item lg={12} md={12} sm={12} xs={12} sx={{ mt: 2 }}>
@@ -119,6 +180,7 @@ const SimpleForm = ({ Sid, count }) => {
               select
               fullWidth
               onChange={SelectType}
+              name="fees_type"
               value={feesType}
               label="Choose fees type"
             >
@@ -131,7 +193,7 @@ const SimpleForm = ({ Sid, count }) => {
             </p>
             <TextField
               type="number"
-              name="firstName"
+              name="amount"
               label="Paying fees"
               onChange={handleChange}
               validators={['required']}
@@ -140,13 +202,15 @@ const SimpleForm = ({ Sid, count }) => {
             <small>Paid date</small>
             <TextField
               type="date"
+              name="fdate"
               value={currentDate}
-              onChange={(e) => setCurrentDate(e.target.value)}
+              // onChange={(e) => setCurrentDate()}
             />
             <TextField
               select
               fullWidth
               value={payType}
+              name="pay_type"
               onChange={PaymentType}
               label="Choose payment type"
             >
@@ -158,15 +222,17 @@ const SimpleForm = ({ Sid, count }) => {
               id="outlined-multiline-static"
               multiline
               rows={4}
+              onChange={handleChange}
+              name="remark"
               defaultValue="Remark about receipt"
             />
           </Grid>
         </Grid>
 
-        <Button color="primary" variant="contained" type="submit">
+        <Button color="primary" variant="contained" type="submit" onClick={formSubmit}>
           <Span sx={{ pl: 1, textTransform: 'capitalize' }}>Submit</Span>
         </Button>
-        <Button color="warning" variant="contained" type="submit" sx={{ float: 'right' }}>
+        <Button color="warning" variant="contained"  sx={{ float: 'right' }}>
           <Span sx={{ pl: 1, textTransform: 'capitalize' }}>cancel</Span>
         </Button>
       </ValidatorForm>
