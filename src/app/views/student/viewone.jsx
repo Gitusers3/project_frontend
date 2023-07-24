@@ -68,6 +68,7 @@ export default function Viewone() {
         const totalPaid = d.reduce((total, item) => total + item.amount, 0);
         setTotalfeespaid(totalPaid);
         console.log(totalPaid + ' fees paid');
+        console.log(totalfeespaid + ' total fees paid');
       })
       .catch((err) => {
         console.log(err);

@@ -15,6 +15,8 @@ import TableRow from '@mui/material/TableRow';
 import SimpleForm from '../material-kit/forms/SimpleForm';
 import StepperForm from '../material-kit/forms/StepperForm';
 import Sidenav from '../../components/Sidenav';
+import Axios from 'axios';
+import { useParams } from 'react-router-dom';
 
 export default function StudentsAll({ studentD, setStudent }) {
   const Item = styled(Paper)(({ theme }) => ({
@@ -25,6 +27,25 @@ export default function StudentsAll({ studentD, setStudent }) {
     color: theme.palette.text.secondary
   }));
   const [on, setOn] = useState(true);
+  let param = useParams();
+  console.log('Id in student details : ' + param.id);
+  const [updatedStu, setUpdatedStudent] = useState({
+    student_name: '',
+    our_reg_no: '',
+    date_of_admission: '',
+    t_address: '',
+    t_pincode: '',
+    t_district: '',
+    t_state: '',
+    p_address: '',
+    p_pincode: '',
+    p_district: '',
+    p_state: '',
+    email_id: '',
+    contact_no1: '',
+    whatsup: '',
+    parent_contact: ''
+  });
   const IconList = ['edit'];
   const IconList1 = ['check'];
   const [check] = IconList1;
@@ -38,15 +59,60 @@ export default function StudentsAll({ studentD, setStudent }) {
 
   const updateStudent = (e) => {
     setStudent({ ...studentD, [e.target.name]: e.target.value });
+    setUpdatedStudent({ ...updatedStu, [e.target.name]: e.target.value });
+
     console.log(studentD);
   };
-  const SubmitForm = (e) => {
-    alert('a');
+
+  const Update = () => {
+    const student_name = updatedStu.student_name;
+    const our_reg_no = updatedStu.our_reg_no;
+    const date_of_admission = updatedStu.date_of_admission;
+    const t_address = updatedStu.t_address;
+    const p_address = updatedStu.p_address;
+    const t_pincode = updatedStu.t_pincode;
+    const p_pincode = updatedStu.p_pincode;
+    const t_district = updatedStu.t_district;
+    const p_district = updatedStu.p_district;
+    const t_state = updatedStu.t_state;
+    const p_state = updatedStu.p_state;
+    const email_id = updatedStu.email_id;
+    const contact_no1 = updatedStu.contact_no1;
+    const whatsup = updatedStu.whatsup;
+    const parent_contact = updatedStu.parent_contact;
+    console.log(student_name + ' : name');
+    console.log(updatedStu + ' : updated name');
+    Axios.put(`http://localhost:4000/api/student/update/${param.id}`, {
+      student_name,
+      our_reg_no,
+      date_of_admission,
+      t_address,
+      p_address,
+      t_pincode,
+      p_pincode,
+      t_district,
+      p_district,
+      t_state,
+      p_state,
+      email_id,
+      contact_no1,
+      whatsup,
+      parent_contact
+    })
+      .then((res) => {
+        console.log(res);
+        if (res.status == 200) {
+        }
+      })
+      .catch((err) => {
+        alert(' Error !');
+        console.log(err);
+      });
   };
 
   return (
     <div>
-      <form onSubmit={SubmitForm}>
+      <form>
         <div>
           <Item>
             <div style={{ float: 'right' }}>
@@ -54,7 +120,9 @@ export default function StudentsAll({ studentD, setStudent }) {
                 <Icon fontSize="large" onClick={handleIconClick}>
                   {on && <span style={{ marginTop: '2px' }}>edit</span>}
 
-                  <span style={{ marginTop: '2px' }}>check</span>
+                  <span onClick={() => Update()} style={{ marginTop: '2px' }}>
+                    check
+                  </span>
                 </Icon>
               </Tooltip>
               {!on && (
@@ -97,7 +165,7 @@ export default function StudentsAll({ studentD, setStudent }) {
                       scope="row"
                       sx={{ padding: '16px' }}
                     >
-                      Syudent Name
+                      Student Name
                     </TableCell>
                     <TableCell
                       className="text-black fw-bolder"
