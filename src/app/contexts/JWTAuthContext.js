@@ -187,7 +187,7 @@ export const AuthProvider = ({
         dispatch({
           type: 'INIT',
           payload: {
-            isAuthenticated: false,
+            isAuthenticated: true,
             user: null
           }
         });
