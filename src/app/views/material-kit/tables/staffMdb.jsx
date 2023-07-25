@@ -29,14 +29,14 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary
 }));
 
-const DatatablePage = (divprop) => {
+const DatatablePage = (prop) => {
   const [display, setDisplay] = useState([]);
-  console.log(divprop);
+  console.log(prop);
   useEffect(() => {
-    URL.get('student/view')
+    URL.get('staff/view')
       .then((res) => {
         console.log(res);
-        setDisplay(res.data.st);
+        setDisplay(res.data);
         console.log(display);
       })
       .catch((err) => {
@@ -79,7 +79,7 @@ const DatatablePage = (divprop) => {
       })
       .then((result) => {
         if (result.isConfirmed) {
-          Axios.delete(`http://localhost:4000/api/student/delete/${id}`)
+          Axios.delete(`http://localhost:4000/api/staff/delete/${id}`)
             .then((res) => {
               console.log(res);
               let newDisplay = display.filter((item) => {
@@ -102,17 +102,15 @@ const DatatablePage = (divprop) => {
 
   const datta = display
     ?.filter((va) => {
-      return divprop?.divprop?.props ? va?.division_id?.d_name === divprop?.divprop?.props : true;
+      // Check if the prop is "all" or if the designation matches "IT Operation"
+      return prop === 'all' || va?.designation === 'IT Operation';
     })
     .map((item, index) => {
       console.log(item._id);
       return {
         serial: index + 1,
-        college: item.college_id.c_name,
-        student: item.student_name,
-        contact: item.whatsup,
-        division: item.division_id.d_name,
-        fees: item.fees,
+        staff: item.staff_name,
+        contact: item.contact_no1,
         actions: (
           <div>
             <Grid container spacing={3}>
@@ -153,14 +151,8 @@ const DatatablePage = (divprop) => {
         width: 150
       },
       {
-        label: 'College',
-        field: 'college',
-        sort: 'asc',
-        width: 270
-      },
-      {
-        label: 'Student',
-        field: 'student',
+        label: 'Staff',
+        field: 'staff',
         sort: 'asc',
         width: 200
       },
@@ -170,18 +162,7 @@ const DatatablePage = (divprop) => {
         sort: 'asc',
         width: 100
       },
-      {
-        label: 'Division',
-        field: 'division',
-        sort: 'asc',
-        width: 150
-      },
-      {
-        label: 'Fees',
-        field: 'fees',
-        sort: 'asc',
-        width: 100
-      },
+
       {
         label: 'Actions',
         field: 'actions',
@@ -203,7 +184,7 @@ const DatatablePage = (divprop) => {
               <MDBBtn className="btn-close" color="none" onClick={() => toggleClose()}></MDBBtn>
             </MDBModalHeader>
             <MDBModalBody>
-              <Fform Sid={sid} count={count} setCentredModal={setCentredModal} />
+              <Fform Sid={sid} count={count} />
             </MDBModalBody>
             {/* <MDBModalFooter>
               <MDBBtn color="secondary" onClick={toggleShow}>
