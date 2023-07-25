@@ -20,6 +20,7 @@ import AdditionalDetails from './AdditionalDetails';
 import FeesDetails from './FeesDetails';
 import { useParams } from 'react-router-dom';
 import Axios from 'axios';
+import URL from 'global';
 import { useEffect, useState } from 'react';
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -43,8 +44,9 @@ export default function Viewone() {
   const [student, setStudent] = useState({});
   const [studentfees, setStudentfees] = useState({});
   const [totalfeespaid, setTotalfeespaid] = useState(0);
+  const [newprofile, setNewProfile] = useState(true);
   useEffect(() => {
-    Axios.get(`http://localhost:4000/api/student/view/${param.id}`)
+    URL.get(`student/view/${param.id}`)
       .then((res) => {
         // console.log(res?.data?.s1?.student_name);
         console.log(res?.data + 'response');
@@ -56,7 +58,7 @@ export default function Viewone() {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [newprofile]);
   useEffect(() => {
     Axios.get(`http://localhost:4000/api/fees/view_student_fees/${param.id}`)
       .then((res) => {
@@ -85,7 +87,7 @@ export default function Viewone() {
         </Box>
         <Grid container spacing={4}>
           <Grid item xs={4}>
-            <StudentsAll studentD={student} setStudent={setStudent} />
+            <StudentsAll studentD={student} setNewProfile={setNewProfile} setStudent={setStudent} />
           </Grid>
           <Grid item xs={4}>
             <AdditionalDetails studentD={student} setStudent={setStudent} />
