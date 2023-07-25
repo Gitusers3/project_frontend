@@ -22,7 +22,7 @@ const TextField = styled(TextValidator)(() => ({
   marginBottom: '16px'
 }));
 
-const SimpleForm = ({ Sid, count }) => {
+const SimpleForm = ({ Sid, count, setCentredModal }) => {
   console.log('Student ID from prop : ' + Sid);
   const [state, setState] = useState({ date: new Date() });
   const [one, setOne] = useState('');
@@ -30,11 +30,14 @@ const SimpleForm = ({ Sid, count }) => {
   const [totfees, setTotfees] = useState('');
   const [feesd, setFeesd] = useState('');
   const [alldata, setAlldata] = useState({});
+  // const [centredModal, setCentredModal] = useState(false);
+  // State to control the modal open/close
+  const toggleClose = () => {
+    setCentredModal(false);
+  };
 
-  
-const nav=useNavigate()
+  const nav = useNavigate();
   useEffect(() => {
-
     Axios.get(`http://localhost:4000/api/student/view/${Sid}`)
       .then((res) => {
         // console.log(res?.data?.s1?.student_name);
@@ -45,6 +48,7 @@ const nav=useNavigate()
         setDivid(divid);
         let b = res.data.s1.pending_fees;
         setTotfees(b);
+
         // alert(one);
       })
       .catch((err) => {
@@ -53,8 +57,6 @@ const nav=useNavigate()
   }, [count]);
 
   useEffect(() => {
-
-
     ValidatorForm.addValidationRule('isPasswordMatch', (value) => {
       if (value !== state.password) return false;
 
@@ -65,55 +67,35 @@ const nav=useNavigate()
 
   const handleSubmit = (event) => {
     event.preventDefault();
-  
-
   };
-  var randVal = 1000+(Math.random()*(9999-1000));
-  const rec_num= Math.round(randVal);
-
-  
+  var randVal = 1000 + Math.random() * (9999 - 1000);
+  const rec_num = Math.round(randVal);
   const formSubmit = (event) => {
     event.preventDefault();
-   
     setAlldata({
-      rec_num:rec_num,
-      div_id:divid,
-      std_id:Sid,
-      
-      pay_type:payType,
-      fees_type:feesType,
-      
-    
-    
-      status:"paid",
-      f_date:currentDate,
+      rec_num: rec_num,
+      div_id: divid,
+      std_id: Sid,
+      pay_type: payType,
+      fees_type: feesType,
+      status: 'paid',
+      f_date: currentDate,
       ...feesd
-
-
-      
-
-
-    })
-
-    Axios.post('http://localhost:4000/api/fees/add_fees',alldata)
-    .then((res) => {
-      console.log(res.data)
-      nav("/student/students")
-
-      
-    })
-    .catch((err) => {
-      console.log(err);
     });
-  
-   
- 
+
+    Axios.post('http://localhost:4000/api/fees/add_fees', alldata)
+      .then((res) => {
+        console.log(res.data);
+        setCentredModal(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
     // console.log(event);
   };
 
   const handleChange = (event) => {
-
-   
     setFeesd({ ...feesd, [event.target.name]: event.target.value });
   };
 
@@ -144,9 +126,7 @@ const nav=useNavigate()
   const [currentDate, setCurrentDate] = useState('');
   // const [changeDate, changeDate] = useState('');
 
-
-console.log(feesd)
-
+  console.log(feesd);
 
   // Function to get the current date in 'YYYY-MM-DD' format
   const getCurrentDate = () => {
@@ -171,7 +151,8 @@ console.log(feesd)
     <div>
       <ValidatorForm onSubmit={handleSubmit} onError={() => null}>
         <p>
-          <b>Reciept Number :{rec_num} </b><br></br>
+          <b>Reciept Number :{rec_num} </b>
+          <br></br>
           <b>Division Name :{one} </b>
         </p>
         <Grid container spacing={6}>
@@ -232,7 +213,12 @@ console.log(feesd)
         <Button color="primary" variant="contained" type="submit" onClick={formSubmit}>
           <Span sx={{ pl: 1, textTransform: 'capitalize' }}>Submit</Span>
         </Button>
-        <Button color="warning" variant="contained"  sx={{ float: 'right' }}>
+        <Button
+          onClick={() => toggleClose()}
+          color="warning"
+          variant="contained"
+          sx={{ float: 'right' }}
+        >
           <Span sx={{ pl: 1, textTransform: 'capitalize' }}>cancel</Span>
         </Button>
       </ValidatorForm>
