@@ -17,12 +17,13 @@ import { useEffect, useState } from 'react';
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
 import MenuItem from '@mui/material/MenuItem';
 
+
 const TextField = styled(TextValidator)(() => ({
   width: '100%',
   marginBottom: '16px'
 }));
 
-const SimpleForm = ({ Sid, count }) => {
+const SimpleForm = ({ Sid, count ,toggleClose}) => {
   console.log('Student ID from prop : ' + Sid);
   const [state, setState] = useState({ date: new Date() });
   const [one, setOne] = useState('');
@@ -68,7 +69,7 @@ const nav=useNavigate()
   
 
   };
-  var randVal = 1000+(Math.random()*(9999-1000));
+  var randVal = 1000+(Math.random()*(99999999-1000));
   const rec_num= Math.round(randVal);
 
   
@@ -98,7 +99,9 @@ const nav=useNavigate()
     Axios.post('http://localhost:4000/api/fees/add_fees',alldata)
     .then((res) => {
       console.log(res.data)
-      nav("/student/students")
+      alert("form submitted successfully")
+      toggleClose()
+      // nav("/student/students")
 
       
     })
@@ -191,6 +194,7 @@ console.log(feesd)
             <p>
               <b>Pending Fees :{totfees}</b>
             </p>
+            {totfees>0?(
             <TextField
               type="number"
               name="amount"
@@ -198,7 +202,18 @@ console.log(feesd)
               onChange={handleChange}
               validators={['required']}
               errorMessages={['this field is required']}
+            />):(
+              <TextField
+              type="number"
+              name="amount"
+              label="Paying fees"
+              onChange={handleChange}
+              validators={['required']}
+              errorMessages={['this field is required']}
+              readOnly // Make the field readonly if totfees is equal to or less than 0
             />
+            )
+}
             <small>Paid date</small>
             <TextField
               type="date"
@@ -232,7 +247,7 @@ console.log(feesd)
         <Button color="primary" variant="contained" type="submit" onClick={formSubmit}>
           <Span sx={{ pl: 1, textTransform: 'capitalize' }}>Submit</Span>
         </Button>
-        <Button color="warning" variant="contained"  sx={{ float: 'right' }}>
+        <Button color="warning" variant="contained"  sx={{ float: 'right' }} onClick={toggleClose}>
           <Span sx={{ pl: 1, textTransform: 'capitalize' }}>cancel</Span>
         </Button>
       </ValidatorForm>

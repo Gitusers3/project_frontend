@@ -203,7 +203,7 @@ const DatatablePage = (divprop) => {
               <MDBBtn className="btn-close" color="none" onClick={() => toggleClose()}></MDBBtn>
             </MDBModalHeader>
             <MDBModalBody>
-              <Fform Sid={sid} count={count} />
+              <Fform Sid={sid} count={count} toggleClose={toggleClose}/>
             </MDBModalBody>
             {/* <MDBModalFooter>
               <MDBBtn color="secondary" onClick={toggleShow}>
