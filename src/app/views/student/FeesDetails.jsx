@@ -65,6 +65,14 @@ export default function FeesDetails({ studentD, setStudent, paidFees }) {
     'https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=';
 
   const [on, setOn] = useState(true);
+  const [pending, setPending] = useState(0);
+  console.log(studentD.pending_fees + 'pending from props 123');
+  useEffect(() => {
+    const a = studentD.pending_fees;
+    setPending(a);
+  }, [pending]);
+  console.log(pending + ' pending fees in fees dvhjfjfg');
+
   const theme = useTheme();
 
   // Rest of your component code...
@@ -109,6 +117,12 @@ export default function FeesDetails({ studentD, setStudent, paidFees }) {
   const handleChange = (name) => (event) => {
     setState({ ...state, [name]: event.target.checked });
   };
+  const chartColors = [
+    '#E64848',
+    '#8EAC50',
+    theme.palette.primary.light
+    // Add more colors here if needed
+  ];
   return (
     <div>
       <div>
@@ -181,12 +195,10 @@ export default function FeesDetails({ studentD, setStudent, paidFees }) {
         </div>
         <SimpleCard>
           <DoughnutChart
+            paidFees={paidFees}
+            pending={studentD?.pending_fees}
             height="300px"
-            color={[
-              theme.palette.primary.dark,
-              theme.palette.primary.main,
-              theme.palette.primary.light
-            ]}
+            color={chartColors}
           />
         </SimpleCard>
 

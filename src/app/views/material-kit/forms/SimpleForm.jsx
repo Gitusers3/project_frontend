@@ -48,9 +48,19 @@ const TextField = styled(TextValidator)(() => ({
 const SimpleForm = () => {
   const [state, setState] = useState({ date: new Date() });
   const [student,setStudent]=useState({ date: new Date() });
-  const [course,setCourse]=useState([])
-  const [coll,setColl]=useState([])
-  const [percentage,setPercentage]=useState([])
+  const [academic, setAcademic] = useState({
+    course: [],
+    college: [],
+    percentage: [],
+  });
+
+  const handleAcademic = (e) => {
+    const { name, value } = e.target;
+    setAcademic((prevAcademic) => ({
+      ...prevAcademic,
+      [name]: value.split(',').map((item) => item.trim()),
+    }));
+  };
 
   useEffect(() => {
     ValidatorForm.addValidationRule('isPasswordMatch', (value) => {
@@ -61,21 +71,10 @@ const SimpleForm = () => {
     return () => ValidatorForm.removeValidationRule('isPasswordMatch');
   }, [state.password]);
 
-  const handleSubmit = (event) => {
-    event.preventDefault()
-   
-    console.log(student);
-  };
+ 
 
 
 
-
-  const handleChange = (event) => {
-    event.persist();
-    console.log(coll,course,percentage)
-    setStudent({ ...student, [event.target.name]: event.target.value });
-    console.log(student)
-  };
 
   const handleDateChange = (date) => setState({ ...state, date });
 
@@ -99,6 +98,21 @@ const SimpleForm = () => {
   const [courses, setCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState('');
 
+
+
+  console.log("academic",academic)
+
+
+
+
+
+
+  const handleChange = (event) => {
+    event.persist();
+ 
+    setStudent({ ...student, [event.target.name]: event.target.value });
+   
+  };
   useEffect(() => {
     // Make the API request
     axios
@@ -226,9 +240,28 @@ const SimpleForm = () => {
 
     handleClose();
   };
+
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    axios.post('http://localhost:4000/api/student/insert',{student},{academic}).then((res)=>{
+      console.log(res.data)
+      alert("Student Details added Successfully")
+
+
+    }).catch((err)=>{
+      alert(err)
+
+    })
+
+  };
+
+ 
+
+
+
   return (
     <div>
-      <ValidatorForm onSubmit={handleSubmit} onError={() => null}>
+      <ValidatorForm onSubmit={handleSubmit} >
         <h2 className="text-center">Personal Details</h2>
         <Grid container spacing={6}>
           <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
@@ -237,17 +270,16 @@ const SimpleForm = () => {
               name="reg"
               id="standard-basic"
               onChange={handleChange}
-              errorMessages={['this field is required']}
+             
               label="Register Number (for Office)"
-              validators={['required', 'minStringLength: 4', 'maxStringLength: 9']}
+            
             />
             <TextField
               type="date"
               name="firstName"
               label=""
               onChange={handleChange}
-              validators={['required']}
-              errorMessages={['this field is required']}
+            
             />
             <FormControl fullWidth>
               <InputLabel id="demo-simple-select-label">Choose Division</InputLabel>
@@ -266,24 +298,7 @@ const SimpleForm = () => {
                 ))}
               </Select>
             </FormControl>
-            {/* <TextField
-              type="text"
-              name="username"
-              id="standard-basic"
-              onChange={handleChange}
-              errorMessages={['this field is required']}
-              label="Username (Min length 4, Max length 9)"
-              validators={['required', 'minStringLength: 4', 'maxStringLength: 9']}
-            /> */}
-            {/* <TextField
-              sx={{ marginTop: '10px' }}
-              type="email"
-              name="email"
-              label="Email"
-              onChange={handleChange}
-              validators={['required', 'isEmail']}
-              errorMessages={['this field is required', 'email is not valid']}
-            /> */}
+     
             <InputLabel id="demo-simple-select-label">Student Image</InputLabel>
             <TextField
               sx={{ mb: 4 }}
@@ -291,8 +306,8 @@ const SimpleForm = () => {
               name="image"
               label=""
               onChange={handleChange}
-              errorMessages={['this field is required']}
-              validators={['required', 'minStringLength:16', 'maxStringLength: 16']}
+              
+              
             />
             <TextField
               sx={{ mb: 4 }}
@@ -300,18 +315,9 @@ const SimpleForm = () => {
               name="student_name"
               label="Name of the Student"
               onChange={handleChange}
-              errorMessages={['this field is required']}
-              validators={['required', 'minStringLength:16', 'maxStringLength: 16']}
+    
             />
-            {/* <TextField
-              sx={{ mb: 4 }}
-              type="text"
-              name="creditCard"
-              label="Place"
-              onChange={handleChange}
-              errorMessages={['this field is required']}
-              validators={['required', 'minStringLength:16', 'maxStringLength: 16']}
-            /> */}
+         
             <InputLabel id="demo-simple-select-label">Temporary Address</InputLabel>
             <TextField
               sx={{ mb: 4 }}
@@ -319,8 +325,7 @@ const SimpleForm = () => {
               name="creditCard"
               label="t_address"
               onChange={handleChange}
-              errorMessages={['this field is required']}
-              validators={['required', 'minStringLength:16', 'maxStringLength: 16']}
+            
             />
             <TextField
               sx={{ mb: 4 }}
@@ -328,8 +333,7 @@ const SimpleForm = () => {
               name="t_pincode"
               label="Pincode"
               onChange={handleChange}
-              errorMessages={['this field is required']}
-              validators={['required', 'minStringLength:16', 'maxStringLength: 16']}
+          
             />
             <TextField
               sx={{ mb: 4 }}
@@ -337,8 +341,7 @@ const SimpleForm = () => {
               name="t_district"
               label="District"
               onChange={handleChange}
-              errorMessages={['this field is required']}
-              validators={['required', 'minStringLength:16', 'maxStringLength: 16']}
+          
             />
             <TextField
               sx={{ mb: 4 }}
@@ -346,8 +349,7 @@ const SimpleForm = () => {
               name="t_state"
               label="State"
               onChange={handleChange}
-              errorMessages={['this field is required']}
-              validators={['required', 'minStringLength:16', 'maxStringLength: 16']}
+             
             />
             <InputLabel id="demo-simple-select-label">Permanent Address</InputLabel>
             <TextField
@@ -356,8 +358,7 @@ const SimpleForm = () => {
               name="p_address"
               label="Address"
               onChange={handleChange}
-              errorMessages={['this field is required']}
-              validators={['required', 'minStringLength:16', 'maxStringLength: 16']}
+         
             />
             <TextField
               sx={{ mb: 4 }}
@@ -365,8 +366,7 @@ const SimpleForm = () => {
               name="p_pincode"
               label="Pincode"
               onChange={handleChange}
-              errorMessages={['this field is required']}
-              validators={['required', 'minStringLength:16', 'maxStringLength: 16']}
+           
             />
             <TextField
               sx={{ mb: 4 }}
@@ -374,8 +374,7 @@ const SimpleForm = () => {
               name="p_district"
               label="District"
               onChange={handleChange}
-              errorMessages={['this field is required']}
-              validators={['required', 'minStringLength:16', 'maxStringLength: 16']}
+   
             />
             <TextField
               sx={{ mb: 4 }}
@@ -383,8 +382,7 @@ const SimpleForm = () => {
               name="p_state"
               label="State"
               onChange={handleChange}
-              errorMessages={['this field is required']}
-              validators={['required', 'minStringLength:16', 'maxStringLength: 16']}
+ 
             />
           </Grid>
 
@@ -394,82 +392,44 @@ const SimpleForm = () => {
               name="contact_no1"
               label="Contact Nubmer1( whatsapp )"
               onChange={handleChange}
-              validators={['required']}
-              errorMessages={['this field is required']}
+           
             />
             <TextField
               type="number"
               name="contact_no2"
               label="Contact Nubmer2"
               onChange={handleChange}
-              validators={['required']}
-              errorMessages={['this field is required']}
+             
             />
             <TextField
               name="email_id"
               type="email"
               label="Email ID"
               onChange={handleChange}
-              validators={['required']}
-              errorMessages={['this field is required']}
+           
             />
             <TextField
               type="text"
               name="parent_or_guardian_name"
               // onChange={handleChange}
               label="Parent/Guardian's Name"
-              validators={['required', 'isPasswordMatch']}
-              errorMessages={['this field is required', "password didn't match"]}
+          
             />
             <TextField
               type="text"
               name="relationship"
               // onChange={handleChange}
               label="Relationsship"
-              validators={['required', 'isPasswordMatch']}
-              errorMessages={['this field is required', "password didn't match"]}
+          
             />
             <TextField
               type="number"
               name="parent_contact"
               label="Parent's/guardian's Contact "
               onChange={handleChange}
-              validators={['required']}
-              errorMessages={['this field is required']}
+       
             />
 
-            {/* <RadioGroup
-              row
-              name="gender"
-              sx={{ mb: 2 }}
-              onChange={handleChange}
-            >
-              <FormControlLabel
-                value="Male"
-                label="Male"
-                labelPlacement="end"
-                control={<Radio color="secondary" />}
-              />
-
-              <FormControlLabel
-                value="Female"
-                label="Female"
-                labelPlacement="end"
-                control={<Radio color="secondary" />}
-              />
-
-              <FormControlLabel
-                value="Others"
-                label="Others"
-                labelPlacement="end"
-                control={<Radio color="secondary" />}
-              />
-            </RadioGroup>
-
-            <FormControlLabel
-              control={<Checkbox />}
-              label="I have read and agree to the terms of service."
-            /> */}
             <Grid fullWidth id="queuetech-college">
               <h4 sx={{ fontWeight: 'bolder' }} className="text-center">
                 <b>Academic Details</b>
@@ -569,15 +529,7 @@ const SimpleForm = () => {
                     type="text"
                     variant="standard"
                   />
-                  {/* <TextField
-                      margin="dense"
-                      id="address"
-                      value={dialogValue.address}
-                      onChange={(e) => setAddress(e.target.value)}
-                      label="address"
-                      type="text"
-                      variant="standard"
-                    /> */}
+                
                 </DialogContent>
                 <DialogActions>
                   <Button onClick={handleClose}>Cancel</Button>
@@ -593,8 +545,7 @@ const SimpleForm = () => {
                 name="university_reg_no"
                 label="Register number (University)"
                 onChange={handleChange}
-                errorMessages={['this field is required']}
-                validators={['required', 'minStringLength:16', 'maxStringLength: 16']}
+  
               />
               <FormControl fullWidth>
                 <InputLabel id="demo-simple-select-label">Select Course</InputLabel>
@@ -619,7 +570,7 @@ const SimpleForm = () => {
                 name="stream"
                 label="Stream"
                 onChange={handleChange}
-                errorMessages={['this field is required']}
+           
               />
               <FormControl fullWidth>
                 <InputLabel id="demo-simple-select-label">Select Semester</InputLabel>
@@ -653,38 +604,26 @@ const SimpleForm = () => {
                 name="project_title"
                 id="standard-basic"
                 onChange={handleChange}
-                errorMessages={['this field is required']}
+          
                 label="Project Title"
               />
 
-              {/* <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Choose Division</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                label="Choose Division"
-                onChange={handleSelectChange}
-              >
-                <MenuItem value="Queue Tech">Queue Tech</MenuItem>
-                <MenuItem value="Cognitive">Cognitive</MenuItem>
-                <MenuItem value="CodeLab">CodeLab</MenuItem>
-              </Select>
-            </FormControl> */}
+            
               <TextField
                 type="text"
                 name="username"
                 id="standard-basic"
                 onChange={handleChange}
-                errorMessages={['this field is required']}
+             
                 label="Project Company"
-                validators={['required', 'minStringLength: 4', 'maxStringLength: 9']}
+               
               />
               <TextField
                 type="text"
                 name="project_client_name"
                 id="standard-basic"
                 onChange={handleChange}
-                errorMessages={['this field is required']}
+          
                 label="Project Client Name"
               />
               <TextField
@@ -692,7 +631,7 @@ const SimpleForm = () => {
                 name="project_client_contact"
                 id="standard-basic"
                 onChange={handleChange}
-                errorMessages={['this field is required']}
+              
                 label="Project Client Contact number"
               />
               <TextField
@@ -700,7 +639,7 @@ const SimpleForm = () => {
                 name="project_client_email"
                 id="standard-basic"
                 onChange={handleChange}
-                errorMessages={['this field is required']}
+                
                 label="Project Client Email ID"
               />
 
@@ -710,7 +649,7 @@ const SimpleForm = () => {
                 name="project_description"
                 label="Project Decription"
                 onChange={handleChange}
-                errorMessages={['this field is required']}
+                
               />
               <TextField
                 sx={{ mb: 4 }}
@@ -718,7 +657,7 @@ const SimpleForm = () => {
                 name="front_end_pro_lang"
                 label="Frontend Programming Language"
                 onChange={handleChange}
-                errorMessages={['this field is required']}
+                
               />
               <TextField
                 sx={{ mb: 4 }}
@@ -726,7 +665,7 @@ const SimpleForm = () => {
                 name="backend_pro_lang"
                 label="Backend Programming Language"
                 onChange={handleChange}
-                errorMessages={['this field is required']}
+                
               />
               <TextField
                 sx={{ mb: 4 }}
@@ -734,7 +673,7 @@ const SimpleForm = () => {
                 name="total_fees"
                 label="Fees"
                 onChange={handleChange}
-                errorMessages={['this field is required']}
+                
               />
             </Grid>
             <Grid item xs={6} id="queuetech-project">
@@ -747,7 +686,7 @@ const SimpleForm = () => {
                 name="schedule_from"
                 id="standard-basic"
                 onChange={handleChange}
-                errorMessages={['this field is required']}
+                
               />
               <InputLabel id="demo-simple-select-label">To</InputLabel>
               <TextField
@@ -755,7 +694,7 @@ const SimpleForm = () => {
                 name="schedule_to"
                 id="standard-basic"
                 onChange={handleChange}
-                errorMessages={['this field is required']}
+                
               />
               <h4 sx={{ fontWeight: 'bolder' }} className="text-center">
                 <b>Academic Details</b>
@@ -773,51 +712,51 @@ const SimpleForm = () => {
                     <TableRow>
                       <TableCell component="th" scope="row">
                         <Box component="span" sx={{ p: 2 }}>
-                          <Input name="course[]"  onChange={(e)=>{setCourse(...course,e.target.value)}} />
+                          <Input  type="text" name="course"  onChange={handleAcademic} />
                         </Box>
                       </TableCell>
                       <TableCell component="th" scope="row">
                         <Box component="span" sx={{ p: 2 }}>
-                          <Input  name="college[]"  onChange={(e)=>{setColl(...coll,e.target.value)}}  />
+                          <Input  name="college" type="text"  onChange={handleAcademic}  />
                         </Box>
                       </TableCell>
                       <TableCell component="th" scope="row">
                         <Box component="span" sx={{ p: 2 }}>
-                          <Input  name="percentage[]"  onChange={(e)=>{setPercentage(...percentage,e.target.value)}} />
-                        </Box>
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell component="th" scope="row">
-                        <Box component="span" sx={{ p: 2 }}>
-                          <Input  name="course[]"  onChange={(e)=>{setCourse(...course,e.target.value)}} />
-                        </Box>
-                      </TableCell>
-                      <TableCell component="th" scope="row">
-                        <Box component="span" sx={{ p: 2 }}>
-                          <Input  name="college[]"  onChange={(e)=>{setColl(...coll,e.target.value)}} />
-                        </Box>
-                      </TableCell>
-                      <TableCell component="th" scope="row">
-                        <Box component="span" sx={{ p: 2 }}>
-                          <Input  name="percentage[]"  onChange={(e)=>{setPercentage(...percentage,e.target.value)}}/>
+                          <Input  name="percentage" type="text" onChange={handleAcademic} />
                         </Box>
                       </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell component="th" scope="row">
                         <Box component="span" sx={{ p: 2 }}>
-                          <Input  name="course[]"  onChange={(e)=>{setCourse(...course,e.target.value)}}  />
+                          <Input   type="text" name="course"  onChange={(e)=>{handleAcademic(e,1)}} />
                         </Box>
                       </TableCell>
                       <TableCell component="th" scope="row">
                         <Box component="span" sx={{ p: 2 }}>
-                          <Input   name="college[]" onChange={(e)=>{setColl(...coll,e.target.value)}} />
+                          <Input  name="college" type="text"  onChange={(e)=>{handleAcademic(e,1)}} />
                         </Box>
                       </TableCell>
                       <TableCell component="th" scope="row">
                         <Box component="span" sx={{ p: 2 }}>
-                          <Input  name="percentage[]"  onChange={(e)=>{setPercentage(...percentage,e.target.value)}} />
+                          <Input  name="percentage" type="text"  onChange={(e)=>{handleAcademic(e,1)}}/>
+                        </Box>
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell component="th" scope="row">
+                        <Box component="span" sx={{ p: 2 }}>
+                          <Input name="course"  type="text"  onChange={(e)=>{handleAcademic(e,2)}}  />
+                        </Box>
+                      </TableCell>
+                      <TableCell component="th" scope="row">
+                        <Box component="span" sx={{ p: 2 }}>
+                          <Input   name="college" type="text" onChange={(e)=>{handleAcademic(e,2)}} />
+                        </Box>
+                      </TableCell>
+                      <TableCell component="th" scope="row">
+                        <Box component="span" sx={{ p: 2 }}>
+                          <Input  name="percentage"  onChange={(e)=>{handleAcademic(e,2)}} />
                         </Box>
                       </TableCell>
                     </TableRow>
@@ -857,7 +796,7 @@ const SimpleForm = () => {
                 name="start_date"
                 id="standard-basic"
                 onChange={handleChange}
-                errorMessages={['this field is required']}
+                
               />
               <InputLabel id="demo-simple-select-label">End Date</InputLabel>
               <TextField
@@ -865,7 +804,7 @@ const SimpleForm = () => {
                 name="end_date"
                 id="standard-basic"
                 onChange={handleChange}
-                errorMessages={['this field is required']}
+                
               />
               <InputLabel sx={{ mt: '5px' }} id="demo-simple-select-label">
                 Time : From
@@ -875,7 +814,7 @@ const SimpleForm = () => {
                 name="start_time"
                 id="standard-basic"
                 onChange={handleChange}
-                errorMessages={['this field is required']}
+                
               />
               <InputLabel id="demo-simple-select-label">Time : To</InputLabel>
               <TextField
@@ -883,7 +822,7 @@ const SimpleForm = () => {
                 name="end_time"
                 id="standard-basic"
                 onChange={handleChange}
-                errorMessages={['this field is required']}
+                
               />
 
               <TextField
@@ -892,7 +831,7 @@ const SimpleForm = () => {
                 name="no_of_days"
                 label="Number of days "
                 onChange={handleChange}
-                errorMessages={['this field is required']}
+                
               />
               <TextField
                 sx={{ mb: 4 }}
@@ -900,7 +839,7 @@ const SimpleForm = () => {
                 name="no_of_hours"
                 label="Number of hours"
                 onChange={handleChange}
-                errorMessages={['this field is required']}
+                
               />
               <TextField
                 sx={{ mb: 4 }}
@@ -908,7 +847,7 @@ const SimpleForm = () => {
                 name="total_fees"
                 label="Fees"
                 onChange={handleChange}
-                errorMessages={['this field is required']}
+                
               />
             </Grid>
           </Grid>
@@ -933,22 +872,10 @@ const SimpleForm = () => {
                       {intern.intership_on}
                     </MenuItem>
                   ))}
-                  {/* <MenuItem value="PHP Web Development">PHP Web Development</MenuItem>
-                  <MenuItem value="Python Web Development">Python Web Development</MenuItem>
-                  <MenuItem value="MERN Stack">MERN Stack</MenuItem>
-                  <MenuItem value="Data Science">Data Science</MenuItem>
-                  <MenuItem value="Machine Learning">Machine Learning</MenuItem>
-                  <MenuItem value="Artificial Intelligence">Artificial Intelligence</MenuItem> */}
+       
                 </Select>
               </FormControl>
-              {/* <TextField
-                sx={{ mt: 4 }}
-                type="text"
-                name="creditCard"
-                label="Project title"
-                onChange={handleChange}
-                errorMessages={['this field is required']}
-              /> */}
+           
               <InputLabel sx={{ mt: '5px' }} id="demo-simple-select-label">
                 Starting date
               </InputLabel>
@@ -957,7 +884,7 @@ const SimpleForm = () => {
                 name="start_date"
                 id="standard-basic"
                 onChange={handleChange}
-                errorMessages={['this field is required']}
+                
               />
               <InputLabel id="demo-simple-select-label">End Date</InputLabel>
               <TextField
@@ -965,7 +892,7 @@ const SimpleForm = () => {
                 name="end_date"
                 id="standard-basic"
                 onChange={handleChange}
-                errorMessages={['this field is required']}
+                
               />
               <InputLabel sx={{ mt: '5px' }} id="demo-simple-select-label">
                 Time : From
@@ -975,7 +902,7 @@ const SimpleForm = () => {
                 name="start_time"
                 id="standard-basic"
                 onChange={handleChange}
-                errorMessages={['this field is required']}
+                
               />
               <InputLabel id="demo-simple-select-label">Time : To</InputLabel>
               <TextField
@@ -983,7 +910,7 @@ const SimpleForm = () => {
                 name="end_time"
                 id="standard-basic"
                 onChange={handleChange}
-                errorMessages={['this field is required']}
+                
               />
 
               <TextField
@@ -992,7 +919,7 @@ const SimpleForm = () => {
                 name="no_of_days"
                 label="Number of days "
                 onChange={handleChange}
-                errorMessages={['this field is required']}
+                
               />
               <TextField
                 sx={{ mb: 4 }}
@@ -1000,7 +927,7 @@ const SimpleForm = () => {
                 name="no_of_hours"
                 label="Number of hours"
                 onChange={handleChange}
-                errorMessages={['this field is required']}
+                
               />
               <TextField
                 sx={{ mb: 4 }}
@@ -1008,7 +935,7 @@ const SimpleForm = () => {
                 name="total_fees"
                 label="Fees"
                 onChange={handleChange}
-                errorMessages={['this field is required']}
+                
               />
             </Grid>
           </Grid>

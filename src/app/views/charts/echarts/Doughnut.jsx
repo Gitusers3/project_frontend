@@ -1,7 +1,17 @@
 import { useTheme } from '@mui/material';
 import ReactEcharts from 'echarts-for-react';
+import { useState, useEffect } from 'react';
 
-const DoughnutChart = ({ height, color = [] }) => {
+const DoughnutChart = ({ pending, paidFees, height, color = [] }) => {
+  console.log(pending);
+  console.log(paidFees);
+  // alert(pending + ' paid fees in chart from prop in doughnut');
+  // alert(paidFees + ' pending fees in chart from prop in doughnut cgcg');
+  const [pd, setPd] = useState(0);
+  const [pnd, setPnd] = useState(0);
+
+  console.log(pnd + 'pending fees in chart');
+  console.log(pnd + 'pending fees in chart');
   const theme = useTheme();
 
   const option = {
@@ -41,8 +51,8 @@ const DoughnutChart = ({ height, color = [] }) => {
         },
 
         data: [
-          { value: 65, name: 'Pending' },
-          { value: 20, name: 'Paid' }
+          { value: pending, name: `Pending: ${pending}` },
+          { value: paidFees, name: `Paid: ${paidFees}` }
         ],
 
         emphasis: {

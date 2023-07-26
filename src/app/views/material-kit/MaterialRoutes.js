@@ -4,8 +4,11 @@ import {
 import Loadable from 'app/components/Loadable';
 
 const Register = Loadable(lazy(() => import('../../views/student/register')));
+const StaffRegister = Loadable(lazy(() => import('../../views/staffs/Register')));
 const Students = Loadable(lazy(() => import('../../views/student/students')));
 const ViewOne = Loadable(lazy(() => import('../../views/student/viewone')));
+const Staffs = Loadable(lazy(() => import('../../views/staffs/Staffs')));
+const Timetable = Loadable(lazy(() => import('../../views/timetable/timetable')));
 const AppTable = Loadable(lazy(() => import('./tables/AppTable')));
 const AppForm = Loadable(lazy(() => import('./forms/AppForm')));
 const AppButton = Loadable(lazy(() => import('./buttons/AppButton')));
@@ -34,12 +37,24 @@ const materialRoutes = [{
     element: < Students / >
   },
   {
+    path: 'staffs/register',
+    element: < StaffRegister / >
+  },
+  {
     path: 'student/students/view/:id',
     element: < ViewOne / >
   },
   {
+    path: 'timetable',
+    element: < Timetable / >
+  },
+  {
     path: '/material/form',
     element: < AppForm / >
+  },
+  {
+    path: '/staffs',
+    element: < Staffs / >
   }, {
     path: '/material/buttons',
     element: < AppButton / >

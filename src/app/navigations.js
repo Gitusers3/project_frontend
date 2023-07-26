@@ -38,17 +38,17 @@ export const navigations = [{
     path: '/student/students'
 
   },
- 
+
   {
     name: 'Staffs',
     icon: 'persons',
-    path: '/staff/staffs'
+    path: '/staffs'
 
   },
   {
     name: 'Timetable',
     icon: 'picture_in_picture_alt',
-    path: '/timetable/table'
+    path: '/timetable'
 
   },
   {
