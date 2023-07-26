@@ -178,6 +178,12 @@ export default function StudentsAll({ studentD, setStudent, setNewProfile }) {
                       width="100"
                       height="100"
                     />
+                    <Input
+                      type="file"
+                      id="file-upload"
+                      style={{ display: 'none' }}
+                      onChange={handleFileChange}
+                    />
                     <label htmlFor="file-upload">
                       <Tooltip title="Upload Picture">
                         <InputAdornment>

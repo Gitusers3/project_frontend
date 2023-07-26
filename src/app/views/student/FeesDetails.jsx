@@ -28,6 +28,8 @@ import { green } from '@mui/material/colors';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormGroup from '@mui/material/FormGroup';
 import { Radio, RadioGroup, FormControl, FormLabel } from '@mui/material';
+import { useParams } from 'react-router-dom';
+import Axios from 'axios';
 const GreenRadio = styled(Radio)(({ theme }) => ({
   color: green[400],
   '&.Mui-checked': {
@@ -74,49 +76,81 @@ export default function FeesDetails({ studentD, setStudent, paidFees }) {
   console.log(pending + ' pending fees in fees dvhjfjfg');
 
   const theme = useTheme();
+  let param = useParams();
+  console.log('Id in Fees details : ' + param.id);
 
   // Rest of your component code...
-  const [state, setState] = useState({
-    checkedA: false,
-    checkedB: false,
-    checkedD: false
-  });
+
+  const [sts, setSts] = useState('');
   const [state1, setState1] = useState({
     checkedA1: false,
     checkedB1: false,
     checkedD1: false
   });
+
   const handleChange1 = (name) => (event) => {
-    setState((prevState) => ({
-      ...prevState,
-      checkedA1: name === 'checkedA1' && event.target.checked,
-      checkedB1: name === 'checkedB1' && event.target.checked,
-      checkedD1: name === 'checkedD1' && event.target.checked
-    }));
+    if (name === 'Ongoing') {
+      setState1({
+        checkedA1: true,
+        checkedB1: false,
+        checkedD1: false
+      });
+    } else if (name === 'Completed') {
+      setState1({
+        checkedA1: false,
+        checkedB1: true,
+        checkedD1: false
+      });
+    } else if (name === 'Discontinued') {
+      setState1({
+        checkedA1: false,
+        checkedB1: false,
+        checkedD1: true
+      });
+    }
+    console.log(name);
+    setSts(name);
+
+    // Trigger the API call here based on the selected radio button
+    Axios.put(`http://localhost:4000/api/student/update/${param.id}`, {
+      sts: name
+    })
+      .then((res) => {
+        console.log(res);
+        if (res.status === 200) {
+          // Handle successful update if needed
+        }
+      })
+      .catch((err) => {
+        alert('Error!');
+        console.log(err);
+      });
   };
+
   useEffect(() => {
     // Update the state based on studentD?.all_status
     if (studentD?.all_status === 'Ongoing') {
-      setState((prevState) => ({
-        ...prevState,
-        checkedA: true
-      }));
+      setState1({
+        checkedA1: true,
+        checkedB1: false,
+        checkedD1: false
+      });
     } else if (studentD?.all_status === 'Completed') {
-      setState((prevState) => ({
-        ...prevState,
-        checkedB: true
-      }));
+      setState1({
+        checkedA1: false,
+        checkedB1: true,
+        checkedD1: false
+      });
     } else if (studentD?.all_status === 'Discontinued') {
-      setState((prevState) => ({
-        ...prevState,
-        checkedD: true
-      }));
+      setState1({
+        checkedA1: false,
+        checkedB1: false,
+        checkedD1: true
+      });
     }
   }, [studentD?.all_status]);
+  console.log(studentD?.all_status);
 
-  const handleChange = (name) => (event) => {
-    setState({ ...state, [name]: event.target.checked });
-  };
   const chartColors = [
     '#E64848',
     '#8EAC50',
@@ -227,7 +261,7 @@ export default function FeesDetails({ studentD, setStudent, paidFees }) {
                       control={
                         <GreenCheckbox
                           color="default"
-                          checked={state.checkedA}
+                          checked={state1.checkedA}
                           onChange={handleChange('checkedA')}
                           value="checkedA"
                         />
@@ -290,26 +324,32 @@ export default function FeesDetails({ studentD, setStudent, paidFees }) {
                       sx={{ display: 'flex', flexDirection: 'column' }}
                       aria-label="student-status"
                       name="student-status"
-                      value={state.checkedA1}
-                      onChange={handleChange1('checkedA1')}
+                      value={
+                        state1.checkedA1
+                          ? 'Ongoing'
+                          : state1.checkedB1
+                          ? 'Completed'
+                          : 'Discontinued'
+                      }
+                      onChange={(event) => handleChange1(event.target.value)()}
                     >
                       <FormControlLabel
-                        value="on-going"
-                        control={<GreenRadio />}
+                        value="Ongoing"
+                        control={<Radio color="primary" />}
                         label="On Going"
-                        checked={state.checkedA}
+                        checked={state1.checkedA1}
                       />
                       <FormControlLabel
-                        value="completed"
-                        control={<GreenRadio />}
+                        value="Completed"
+                        control={<Radio color="primary" />}
                         label="Completed"
-                        checked={state.checkedB}
+                        checked={state1.checkedB1}
                       />
                       <FormControlLabel
-                        value="discontinued"
-                        control={<GreenRadio />}
+                        value="Discontinued"
+                        control={<Radio color="primary" />}
                         label="Discontinued"
-                        checked={state.checkedD}
+                        checked={state1.checkedD1}
                       />
                     </RadioGroup>
                   </TableCell>
