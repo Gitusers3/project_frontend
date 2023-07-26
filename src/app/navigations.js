@@ -41,8 +41,14 @@ export const navigations = [{
 
   {
     name: 'Staffs',
-    icon: 'persons',
+    icon: 'Staff',
     path: '/staffs'
+
+  },
+  {
+    name: 'Batches',
+    icon: 'table',
+    path: '/batches'
 
   },
   {

@@ -15,9 +15,8 @@ const initialState = {
 };
 
 const isValidToken = (accessToken) => {
-  alert(accessToken)
+  // alert(accessToken)
   if (!accessToken) return false;
-
   const decodedToken = jwtDecode(accessToken);
   console.log(decodedToken)
   const currentTime = Date.now() / 1000;
