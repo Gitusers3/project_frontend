@@ -16,9 +16,12 @@ import SimpleForm from '../material-kit/forms/SimpleForm';
 import StepperForm from '../material-kit/forms/StepperForm';
 import Sidenav from '../../components/Sidenav';
 import Axios from 'axios';
+import url from '../../../global';
 import { useParams } from 'react-router-dom';
-
-export default function StudentsAll({ studentD, setStudent }) {
+import FileUpload from '../material-kit/fileUpload/Propic';
+import { Input, InputAdornment, IconButton } from '@mui/material';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+export default function StudentsAll({ studentD, setStudent, setNewProfile }) {
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
     ...theme.typography.body2,
@@ -27,6 +30,14 @@ export default function StudentsAll({ studentD, setStudent }) {
     color: theme.palette.text.secondary
   }));
   const [on, setOn] = useState(true);
+  const [uon, setUOn] = useState(true);
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    setSelectedFile(file);
+    console.log(selectedFile);
+  };
   let param = useParams();
   console.log('Id in student details : ' + param.id);
   const [updatedStu, setUpdatedStudent] = useState({
@@ -53,6 +64,9 @@ export default function StudentsAll({ studentD, setStudent }) {
   const handleIconClick = () => {
     setOn((prevState) => !prevState);
   };
+  const handleProfile = () => {
+    setUOn((prevState) => !prevState);
+  };
 
   const imageUrl =
     'https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=';
@@ -63,7 +77,25 @@ export default function StudentsAll({ studentD, setStudent }) {
 
     console.log(studentD);
   };
+  const UpdateProfile = () => {
+    console.log('Id in student details : ' + param.id);
+    let file = new FormData();
 
+    file.append('name', selectedFile);
+    Axios.put(`http://localhost:4000/api/student/update_profile/${param.id}`, file)
+      .then((res) => {
+        console.log(res);
+        if (res.status == 200) {
+          setNewProfile((prevState) => !prevState);
+          // StudentsAll();
+        }
+      })
+      .catch((err) => {
+        alert(' Error !');
+        console.log(err);
+        // setNewProfile((prevState) => !prevState);
+      });
+  };
   const Update = () => {
     const student_name = updatedStu.student_name;
     const our_reg_no = updatedStu.our_reg_no;
@@ -109,6 +141,9 @@ export default function StudentsAll({ studentD, setStudent }) {
         console.log(err);
       });
   };
+  const uploadUri = url.defaults.UPLOAD_URI;
+  // alert(uploadUri);
+  console.log(studentD.image);
 
   return (
     <div>
@@ -117,7 +152,7 @@ export default function StudentsAll({ studentD, setStudent }) {
           <Item>
             <div style={{ float: 'right' }}>
               <Tooltip title={on ? 'Check Icon' : 'Edit Icon'}>
-                <Icon fontSize="large" onClick={handleIconClick}>
+                <Icon fontSize="small" onClick={handleIconClick}>
                   {on && <span style={{ marginTop: '2px' }}>edit</span>}
 
                   <span onClick={() => Update()} style={{ marginTop: '2px' }}>
@@ -127,15 +162,79 @@ export default function StudentsAll({ studentD, setStudent }) {
               </Tooltip>
               {!on && (
                 <Tooltip title={on ? 'Check Icon' : 'Edit Icon'}>
-                  <Icon fontSize="large" onClick={handleIconClick}>
+                  <Icon fontSize="small" onClick={handleIconClick}>
                     <span style={{ marginTop: '4px' }}>clear</span>
                   </Icon>
                 </Tooltip>
               )}
             </div>
-            <img src={imageUrl} alt="avatar" width="150" height="150" style={{ marginLeft: 8 }} />
-            <div className="text-center">
-              <h5 className="text-black text-center">{studentD?.student_name}</h5>
+            <div>
+              <div>
+                {studentD?.image ? (
+                  <>
+                    <img
+                      src={`${uploadUri}/${studentD?.image}`}
+                      alt="default-avatar"
+                      width="100"
+                      height="100"
+                    />
+                    <label htmlFor="file-upload">
+                      <Tooltip title="Upload Picture">
+                        <InputAdornment>
+                          <IconButton disabled={uon} color="primary" component="span">
+                            <CloudUploadIcon />
+                          </IconButton>
+                        </InputAdornment>
+                      </Tooltip>
+                    </label>
+                  </>
+                ) : (
+                  <>
+                    <img src={imageUrl} alt="avatar" width="150" height="150" />
+                    <div>
+                      <Input
+                        type="file"
+                        id="file-upload"
+                        style={{ display: 'none' }}
+                        onChange={handleFileChange}
+                      />
+                      <label htmlFor="file-upload">
+                        <Tooltip title="Upload Picture">
+                          <InputAdornment>
+                            <IconButton disabled={uon} color="primary" component="span">
+                              <CloudUploadIcon />
+                            </IconButton>
+                          </InputAdornment>
+                        </Tooltip>
+                      </label>
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
+            <div className="text-center" style={{ marginTop: '10px' }}>
+              <h5 className="text-black text-center">
+                <div>
+                  <Tooltip title={uon ? 'Check Icon' : 'Edit Icon'}>
+                    <Icon fontSize="large" onClick={handleProfile}>
+                      {uon && <span style={{ marginTop: '2px' }}>edit</span>}
+
+                      <span onClick={() => UpdateProfile()} style={{ marginTop: '2px' }}>
+                        check
+                      </span>
+                    </Icon>
+                  </Tooltip>
+                  {!uon && (
+                    <Tooltip title={uon ? 'Check Icon' : 'Edit Icon'}>
+                      <Icon fontSize="large" onClick={handleProfile}>
+                        <span style={{ marginTop: '4px' }}>clear</span>
+                      </Icon>
+                    </Tooltip>
+                  )}
+                </div>
+                {studentD?.student_name}
+              </h5>
+
               {/* <TextField
               id="standard-basic"
               value={studentD?.student_name}
