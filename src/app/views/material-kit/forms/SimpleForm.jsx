@@ -48,20 +48,49 @@ const TextField = styled(TextValidator)(() => ({
 const SimpleForm = () => {
   const [state, setState] = useState({ date: new Date() });
   const [student,setStudent]=useState({ date: new Date() });
-  const [academic, setAcademic] = useState({
-    course: [],
-    college: [],
-    percentage: [],
-  });
+  const [ug,setUg]=useState({})
+  const [puc,setPuc]=useState({})
+  const [sslc,setSslc]=useState({})
 
-  const handleAcademic = (e) => {
-    const { name, value } = e.target;
-    setAcademic((prevAcademic) => ({
-      ...prevAcademic,
-      [name]: value.split(',').map((item) => item.trim()),
-    }));
-  };
 
+  const handleUg=(e)=>{
+    setUg({...ug,
+      [e.target.name]:e.target.value,
+      [e.target.name]:e.target.value,
+      [e.target.name]:e.target.value
+    }
+    )
+
+  }
+  
+  const handlePuc=(e)=>{
+
+    setPuc({...puc,
+      [e.target.name]:e.target.value,
+      [e.target.name]:e.target.value,
+      [e.target.name]:e.target.value
+    }
+    )
+
+  }
+
+  
+  const handleSslc=(e)=>{
+   
+    setSslc({...sslc,
+      [e.target.name]:e.target.value,
+      [e.target.name]:e.target.value,
+      [e.target.name]:e.target.value
+    }
+    )
+
+  }
+
+
+  console.log("setpuc",puc)
+
+
+ 
   useEffect(() => {
     ValidatorForm.addValidationRule('isPasswordMatch', (value) => {
       if (value !== state.password) return false;
@@ -100,7 +129,7 @@ const SimpleForm = () => {
 
 
 
-  console.log("academic",academic)
+
 
 
 
@@ -243,7 +272,7 @@ const SimpleForm = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    axios.post('http://localhost:4000/api/student/insert',{student},{academic}).then((res)=>{
+    axios.post('http://localhost:4000/api/student/insert',{student,ug,sslc,puc}).then((res)=>{
       console.log(res.data)
       alert("Student Details added Successfully")
 
@@ -712,51 +741,53 @@ const SimpleForm = () => {
                     <TableRow>
                       <TableCell component="th" scope="row">
                         <Box component="span" sx={{ p: 2 }}>
-                          <Input  type="text" name="course"  onChange={handleAcademic} />
+                          <Input  type="text" name="ucourse"  onChange={handleUg} />
                         </Box>
                       </TableCell>
                       <TableCell component="th" scope="row">
                         <Box component="span" sx={{ p: 2 }}>
-                          <Input  name="college" type="text"  onChange={handleAcademic}  />
+                          <Input  name="ucollege" type="text"  onChange={handleUg}  />
                         </Box>
                       </TableCell>
                       <TableCell component="th" scope="row">
                         <Box component="span" sx={{ p: 2 }}>
-                          <Input  name="percentage" type="text" onChange={handleAcademic} />
-                        </Box>
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell component="th" scope="row">
-                        <Box component="span" sx={{ p: 2 }}>
-                          <Input   type="text" name="course"  onChange={(e)=>{handleAcademic(e,1)}} />
-                        </Box>
-                      </TableCell>
-                      <TableCell component="th" scope="row">
-                        <Box component="span" sx={{ p: 2 }}>
-                          <Input  name="college" type="text"  onChange={(e)=>{handleAcademic(e,1)}} />
-                        </Box>
-                      </TableCell>
-                      <TableCell component="th" scope="row">
-                        <Box component="span" sx={{ p: 2 }}>
-                          <Input  name="percentage" type="text"  onChange={(e)=>{handleAcademic(e,1)}}/>
+                          <Input  name="upercentage" type="text" onChange={handleUg} />
                         </Box>
                       </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell component="th" scope="row">
                         <Box component="span" sx={{ p: 2 }}>
-                          <Input name="course"  type="text"  onChange={(e)=>{handleAcademic(e,2)}}  />
+                          <Input   type="text" name="pcourse"  onChange={handlePuc} />
+
+                          
                         </Box>
                       </TableCell>
                       <TableCell component="th" scope="row">
                         <Box component="span" sx={{ p: 2 }}>
-                          <Input   name="college" type="text" onChange={(e)=>{handleAcademic(e,2)}} />
+                          <Input  name="pcollege" type="text"  onChange={handlePuc} />
                         </Box>
                       </TableCell>
                       <TableCell component="th" scope="row">
                         <Box component="span" sx={{ p: 2 }}>
-                          <Input  name="percentage"  onChange={(e)=>{handleAcademic(e,2)}} />
+                          <Input  name="ppercentage" type="text"  onChange={handlePuc}/>
+                        </Box>
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell component="th" scope="row">
+                        <Box component="span" sx={{ p: 2 }}>
+                          <Input name="scourse"  type="text"  onChange={handleSslc}  />
+                        </Box>
+                      </TableCell>
+                      <TableCell component="th" scope="row">
+                        <Box component="span" sx={{ p: 2 }}>
+                          <Input   name="scollege" type="text" onChange={handleSslc} />
+                        </Box>
+                      </TableCell>
+                      <TableCell component="th" scope="row">
+                        <Box component="span" sx={{ p: 2 }}>
+                          <Input  name="spercentage"  onChange={handleSslc} />
                         </Box>
                       </TableCell>
                     </TableRow>
