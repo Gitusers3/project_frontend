@@ -47,50 +47,11 @@ const TextField = styled(TextValidator)(() => ({
 
 const SimpleForm = () => {
   const [state, setState] = useState({ date: new Date() });
-  const [student,setStudent]=useState({ date: new Date() });
-  const [ug,setUg]=useState({})
-  const [puc,setPuc]=useState({})
-  const [sslc,setSslc]=useState({})
+  const [student, setStudent] = useState({ date: new Date() });
+  const [course, setCourse] = useState([]);
+  const [coll, setColl] = useState([]);
+  const [percentage, setPercentage] = useState([]);
 
-
-  const handleUg=(e)=>{
-    setUg({...ug,
-      [e.target.name]:e.target.value,
-      [e.target.name]:e.target.value,
-      [e.target.name]:e.target.value
-    }
-    )
-
-  }
-  
-  const handlePuc=(e)=>{
-
-    setPuc({...puc,
-      [e.target.name]:e.target.value,
-      [e.target.name]:e.target.value,
-      [e.target.name]:e.target.value
-    }
-    )
-
-  }
-
-  
-  const handleSslc=(e)=>{
-   
-    setSslc({...sslc,
-      [e.target.name]:e.target.value,
-      [e.target.name]:e.target.value,
-      [e.target.name]:e.target.value
-    }
-    )
-
-  }
-
-
-  console.log("setpuc",puc)
-
-
- 
   useEffect(() => {
     ValidatorForm.addValidationRule('isPasswordMatch', (value) => {
       if (value !== state.password) return false;
@@ -100,10 +61,25 @@ const SimpleForm = () => {
     return () => ValidatorForm.removeValidationRule('isPasswordMatch');
   }, [state.password]);
 
- 
+  const handleSubmit = (event) => {
+    event.preventDefault();
 
+    console.log(student);
+  };
 
-
+  // profile picture uploading to state
+  const [selectedFile, setSelectedFile] = useState(null);
+  const UploadPic = (event) => {
+    const file = event.target.files[0];
+    setSelectedFile(file);
+    console.log(selectedFile);
+  };
+  const handleChange = (event) => {
+    event.persist();
+    console.log(coll, course, percentage);
+    setStudent({ ...student, [event.target.name]: event.target.value });
+    console.log(student);
+  };
 
   const handleDateChange = (date) => setState({ ...state, date });
 
@@ -327,17 +303,28 @@ const SimpleForm = () => {
                 ))}
               </Select>
             </FormControl>
-     
-            <InputLabel id="demo-simple-select-label">Student Image</InputLabel>
-            <TextField
-              sx={{ mb: 4 }}
-              type="file"
-              name="image"
-              label=""
+            {/* <TextField
+              type="text"
+              name="username"
+              id="standard-basic"
               onChange={handleChange}
-              
-              
-            />
+              errorMessages={['this field is required']}
+              label="Username (Min length 4, Max length 9)"
+              validators={['required', 'minStringLength: 4', 'maxStringLength: 9']}
+            /> */}
+            {/* <TextField
+              sx={{ marginTop: '10px' }}
+              type="email"
+              name="email"
+              label="Email"
+              onChange={handleChange}
+              validators={['required', 'isEmail']}
+              errorMessages={['this field is required', 'email is not valid']}
+            /> */}
+            <InputLabel sx={{ marginTop: '8px' }} id="demo-simple-select-label">
+              Student Image
+            </InputLabel>
+            <TextField sx={{ mb: 4 }} type="file" name="image" label="" onChange={UploadPic} />
             <TextField
               sx={{ mb: 4 }}
               type="text"
@@ -741,53 +728,96 @@ const SimpleForm = () => {
                     <TableRow>
                       <TableCell component="th" scope="row">
                         <Box component="span" sx={{ p: 2 }}>
-                          <Input  type="text" name="ucourse"  onChange={handleUg} />
+                          <Input
+                            name="course[]"
+                            onChange={(e) => {
+                              setCourse(...course, e.target.value);
+                            }}
+                          />
                         </Box>
                       </TableCell>
                       <TableCell component="th" scope="row">
                         <Box component="span" sx={{ p: 2 }}>
-                          <Input  name="ucollege" type="text"  onChange={handleUg}  />
+                          <Input
+                            name="college[]"
+                            onChange={(e) => {
+                              setColl(...coll, e.target.value);
+                            }}
+                          />
                         </Box>
                       </TableCell>
                       <TableCell component="th" scope="row">
                         <Box component="span" sx={{ p: 2 }}>
-                          <Input  name="upercentage" type="text" onChange={handleUg} />
-                        </Box>
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell component="th" scope="row">
-                        <Box component="span" sx={{ p: 2 }}>
-                          <Input   type="text" name="pcourse"  onChange={handlePuc} />
-
-                          
-                        </Box>
-                      </TableCell>
-                      <TableCell component="th" scope="row">
-                        <Box component="span" sx={{ p: 2 }}>
-                          <Input  name="pcollege" type="text"  onChange={handlePuc} />
-                        </Box>
-                      </TableCell>
-                      <TableCell component="th" scope="row">
-                        <Box component="span" sx={{ p: 2 }}>
-                          <Input  name="ppercentage" type="text"  onChange={handlePuc}/>
+                          <Input
+                            name="percentage[]"
+                            onChange={(e) => {
+                              setPercentage(...percentage, e.target.value);
+                            }}
+                          />
                         </Box>
                       </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell component="th" scope="row">
                         <Box component="span" sx={{ p: 2 }}>
-                          <Input name="scourse"  type="text"  onChange={handleSslc}  />
+                          <Input
+                            name="course[]"
+                            onChange={(e) => {
+                              setCourse(...course, e.target.value);
+                            }}
+                          />
                         </Box>
                       </TableCell>
                       <TableCell component="th" scope="row">
                         <Box component="span" sx={{ p: 2 }}>
-                          <Input   name="scollege" type="text" onChange={handleSslc} />
+                          <Input
+                            name="college[]"
+                            onChange={(e) => {
+                              setColl(...coll, e.target.value);
+                            }}
+                          />
                         </Box>
                       </TableCell>
                       <TableCell component="th" scope="row">
                         <Box component="span" sx={{ p: 2 }}>
-                          <Input  name="spercentage"  onChange={handleSslc} />
+                          <Input
+                            name="percentage[]"
+                            onChange={(e) => {
+                              setPercentage(...percentage, e.target.value);
+                            }}
+                          />
+                        </Box>
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell component="th" scope="row">
+                        <Box component="span" sx={{ p: 2 }}>
+                          <Input
+                            name="course[]"
+                            onChange={(e) => {
+                              setCourse(...course, e.target.value);
+                            }}
+                          />
+                        </Box>
+                      </TableCell>
+                      <TableCell component="th" scope="row">
+                        <Box component="span" sx={{ p: 2 }}>
+                          <Input
+                            name="college[]"
+                            onChange={(e) => {
+                              setColl(...coll, e.target.value);
+                            }}
+                          />
+                        </Box>
+                      </TableCell>
+                      <TableCell component="th" scope="row">
+                        <Box component="span" sx={{ p: 2 }}>
+                          <Input
+                            name="percentage[]"
+                            onChange={(e) => {
+                              setPercentage(...percentage, e.target.value);
+                            }}
+                          />
                         </Box>
                       </TableCell>
                     </TableRow>
@@ -898,7 +928,7 @@ const SimpleForm = () => {
                   value="{selectedInternship.id}"
                   onChange={handleSelectChange4}
                 >
-                   {intern.map((intern) => (
+                  {intern.map((intern) => (
                     <MenuItem key={intern._id} value={intern._id}>
                       {intern.intership_on}
                     </MenuItem>
