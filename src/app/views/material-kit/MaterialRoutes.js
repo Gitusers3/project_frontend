@@ -9,6 +9,7 @@ const Students = Loadable(lazy(() => import('../../views/student/students')));
 const ViewOne = Loadable(lazy(() => import('../../views/student/viewone')));
 const Staffs = Loadable(lazy(() => import('../../views/staffs/Staffs')));
 const Batches = Loadable(lazy(() => import('../../views/Batches/batches')));
+const CreateBatch = Loadable(lazy(() => import('../../views/Batches/CreateBatch')));
 const Timetable = Loadable(lazy(() => import('../../views/timetable/timetable')));
 const AppTable = Loadable(lazy(() => import('./tables/AppTable')));
 const AppForm = Loadable(lazy(() => import('./forms/AppForm')));
@@ -48,6 +49,10 @@ const materialRoutes = [{
   {
     path: 'batches',
     element: < Batches / >
+  },
+  {
+    path: 'batches/create',
+    element: < CreateBatch / >
   },
   {
     path: 'timetable',

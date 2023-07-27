@@ -47,42 +47,33 @@ const TextField = styled(TextValidator)(() => ({
 }));
 
 const SimpleForm = () => {
-  const nav=useNavigate()
+  const nav = useNavigate();
   const [state, setState] = useState({ date: new Date() });
   const [student, setStudent] = useState({ date: new Date() });
   const [ug, setUg] = useState({});
   const [puc, setPuc] = useState({});
   const [sslc, setSslc] = useState({});
 
-
-
-  const handleUg=(e)=>{
-    setUg({...ug,
-      [e.target.name]:e.target.value
-     
-    })
-  }
-  const handlePuc=(e)=>{
+  const handleUg = (e) => {
+    setUg({ ...ug, [e.target.name]: e.target.value });
+  };
+  const handlePuc = (e) => {
     setPuc({
       ...puc,
-      [e.target.name]:e.target.value
-      
-    })
-  }
+      [e.target.name]: e.target.value
+    });
+  };
 
-  const handleSslc=(e)=>{
+  const handleSslc = (e) => {
     setSslc({
       ...sslc,
-      [e.target.name]:e.target.value
-      
-    })
-  }
+      [e.target.name]: e.target.value
+    });
+  };
 
-  console.log("ug",ug)
-  console.log("sslc",sslc)
-  console.log("puc",puc)
-
-
+  // console.log('ug', ug);
+  // console.log('sslc', sslc);
+  // console.log('puc', puc);
 
   useEffect(() => {
     ValidatorForm.addValidationRule('isPasswordMatch', (value) => {
@@ -92,29 +83,6 @@ const SimpleForm = () => {
     });
     return () => ValidatorForm.removeValidationRule('isPasswordMatch');
   }, [state.password]);
-
-  const handleSubmit = (event) => {
-    event.preventDefault()
-    axios.post('http://localhost:4000/api/student/insert',{student,ug,sslc,puc}).then((res)=>{
-      console.log(res.data)
-      alert("Student Details added Successfully")
-      nav('/student/students')
-
-
-    }).catch((err)=>{
-      alert(err)
-
-    })
-
-  };
-
-  // profile picture uploading to state
-  const [selectedFile, setSelectedFile] = useState(null);
-  const UploadPic = (event) => {
-    const file = event.target.files[0];
-    setSelectedFile(file);
-    console.log(selectedFile);
-  };
 
   const handleDateChange = (date) => setState({ ...state, date });
 
@@ -137,20 +105,6 @@ const SimpleForm = () => {
   const [selectedDivision, setSelectedDivision] = useState('');
   const [courses, setCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState('');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   useEffect(() => {
     // Make the API request
@@ -187,10 +141,6 @@ const SimpleForm = () => {
     setSelectedDivision(event.target.value);
   };
 
-
-
-
-  
   useEffect(() => {
     // Make the API request
     axios
@@ -205,18 +155,18 @@ const SimpleForm = () => {
     // alert(selectedDivision);
   }, [selectedDivision]);
 
-  useEffect(() => {
-    // Make the API request
-    axios
-      .get('http://localhost:4000/api/division/view_division')
-      .then((res) => {
-        // console.log(res.data);
-        setDivsn(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+  // useEffect(() => {
+  //   // Make the API request
+  //   axios
+  //     .get('http://localhost:4000/api/division/view_division')
+  //     .then((res) => {
+  //       // console.log(res.data);
+  //       setDivsn(res.data);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }, []);
 
   const handleSelectChange3 = (event) => {
     setSemester(event.target.value);
@@ -261,12 +211,11 @@ const SimpleForm = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, [disc]);
+  }, []);
   const [college, setCollege] = useState('');
   const [address, setAddress] = useState('');
   const handleSubmitDialog = (event) => {
     event.preventDefault();
-    alert('a');
     let c_name = dialogValue.college;
     let c_address = dialogValue.address;
     axios
@@ -286,21 +235,49 @@ const SimpleForm = () => {
     handleClose();
   };
 
+  // profile picture uploading to state
+  const [selectedFile, setSelectedFile] = useState();
+
+  const UploadPic = (event) => {
+    const file = event.target.files[0];
+    setSelectedFile(file);
+  };
+  useEffect(() => {
+    console.log(selectedFile); // This will log the updated value of selectedFile
+  }, [selectedFile]);
+
   const handleChange = (event) => {
     event.persist();
- 
-    setStudent({ ...student,division_id:selectedDivision,course_id:selectedCourse,college_id:selectedcollege,[event.target.name]: event.target.value });
-   
+
+    setStudent({
+      ...student,
+      image: selectedFile,
+      division_id: selectedDivision,
+      course_id: selectedCourse,
+      college_id: selectedcollege,
+      [event.target.name]: event.target.value
+    });
   };
 
- 
- console.log(selectedcollege+" selected college")
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    axios
+      .post('http://localhost:4000/api/student/insert', { student, ug, sslc, puc })
+      .then((res) => {
+        console.log(res.data);
+        alert('Student Details added Successfully');
+        nav('/student/students');
+      })
+      .catch((err) => {
+        alert(err);
+      });
+  };
 
-
+  // console.log(selectedcollege + ' selected college');
 
   return (
     <div>
-      <ValidatorForm onSubmit={handleSubmit} >
+      <ValidatorForm onSubmit={handleSubmit}>
         <h2 className="text-center">Personal Details</h2>
         <Grid container spacing={6}>
           <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
@@ -309,17 +286,9 @@ const SimpleForm = () => {
               name="reg"
               id="standard-basic"
               onChange={handleChange}
-             
               label="Register Number (for Office)"
-            
             />
-            <TextField
-              type="date"
-              name="firstName"
-              label=""
-              onChange={handleChange}
-            
-            />
+            <TextField type="date" name="firstName" label="" onChange={handleChange} />
             <FormControl fullWidth>
               <InputLabel id="demo-simple-select-label">Choose Division</InputLabel>
               <Select
@@ -365,9 +334,8 @@ const SimpleForm = () => {
               name="student_name"
               label="Name of the Student"
               onChange={handleChange}
-    
             />
-         
+
             <InputLabel id="demo-simple-select-label">Temporary Address</InputLabel>
             <TextField
               sx={{ mb: 4 }}
@@ -375,7 +343,6 @@ const SimpleForm = () => {
               name="creditCard"
               label="t_address"
               onChange={handleChange}
-            
             />
             <TextField
               sx={{ mb: 4 }}
@@ -383,7 +350,6 @@ const SimpleForm = () => {
               name="t_pincode"
               label="Pincode"
               onChange={handleChange}
-          
             />
             <TextField
               sx={{ mb: 4 }}
@@ -391,7 +357,6 @@ const SimpleForm = () => {
               name="t_district"
               label="District"
               onChange={handleChange}
-          
             />
             <TextField
               sx={{ mb: 4 }}
@@ -399,7 +364,6 @@ const SimpleForm = () => {
               name="t_state"
               label="State"
               onChange={handleChange}
-             
             />
             <InputLabel id="demo-simple-select-label">Permanent Address</InputLabel>
             <TextField
@@ -408,7 +372,6 @@ const SimpleForm = () => {
               name="p_address"
               label="Address"
               onChange={handleChange}
-         
             />
             <TextField
               sx={{ mb: 4 }}
@@ -416,7 +379,6 @@ const SimpleForm = () => {
               name="p_pincode"
               label="Pincode"
               onChange={handleChange}
-           
             />
             <TextField
               sx={{ mb: 4 }}
@@ -424,7 +386,6 @@ const SimpleForm = () => {
               name="p_district"
               label="District"
               onChange={handleChange}
-   
             />
             <TextField
               sx={{ mb: 4 }}
@@ -432,7 +393,6 @@ const SimpleForm = () => {
               name="p_state"
               label="State"
               onChange={handleChange}
- 
             />
           </Grid>
 
@@ -442,42 +402,31 @@ const SimpleForm = () => {
               name="contact_no1"
               label="Contact Nubmer1( whatsapp )"
               onChange={handleChange}
-           
             />
             <TextField
               type="number"
               name="contact_no2"
               label="Contact Nubmer2"
               onChange={handleChange}
-             
             />
-            <TextField
-              name="email_id"
-              type="email"
-              label="Email ID"
-              onChange={handleChange}
-           
-            />
+            <TextField name="email_id" type="email" label="Email ID" onChange={handleChange} />
             <TextField
               type="text"
               name="parent_or_guardian_name"
               // onChange={handleChange}
               label="Parent/Guardian's Name"
-          
             />
             <TextField
               type="text"
               name="relationship"
               // onChange={handleChange}
               label="Relationsship"
-          
             />
             <TextField
               type="number"
               name="parent_contact"
               label="Parent's/guardian's Contact "
               onChange={handleChange}
-       
             />
 
             <Grid fullWidth id="queuetech-college">
@@ -535,14 +484,14 @@ const SimpleForm = () => {
                 clearOnBlur
                 handleHomeEndKeys
                 renderOption={(props, option) => {
-                setSelectedCollege(option._id)
-                return (
-                  <>
-                  <li {...props}>
-                    {option.c_name} {option.c_address}
-                  </li>
-                  </>
-                )
+                  setSelectedCollege(option._id);
+                  return (
+                    <>
+                      <li {...props}>
+                        {option.c_name} {option.c_address}
+                      </li>
+                    </>
+                  );
                 }}
                 freeSolo
                 renderInput={(params) => <TextField {...params} label="Choose College" />}
@@ -584,7 +533,6 @@ const SimpleForm = () => {
                     type="text"
                     variant="standard"
                   />
-                
                 </DialogContent>
                 <DialogActions>
                   <Button onClick={handleClose}>Cancel</Button>
@@ -600,7 +548,6 @@ const SimpleForm = () => {
                 name="university_reg_no"
                 label="Register number (University)"
                 onChange={handleChange}
-  
               />
               <FormControl fullWidth>
                 <InputLabel id="demo-simple-select-label">Select Course</InputLabel>
@@ -625,7 +572,6 @@ const SimpleForm = () => {
                 name="stream"
                 label="Stream"
                 onChange={handleChange}
-           
               />
               <FormControl fullWidth>
                 <InputLabel id="demo-simple-select-label">Select Semester</InputLabel>
@@ -659,26 +605,21 @@ const SimpleForm = () => {
                 name="project_title"
                 id="standard-basic"
                 onChange={handleChange}
-          
                 label="Project Title"
               />
 
-            
               <TextField
                 type="text"
                 name="username"
                 id="standard-basic"
                 onChange={handleChange}
-             
                 label="Project Company"
-               
               />
               <TextField
                 type="text"
                 name="project_client_name"
                 id="standard-basic"
                 onChange={handleChange}
-          
                 label="Project Client Name"
               />
               <TextField
@@ -686,7 +627,6 @@ const SimpleForm = () => {
                 name="project_client_contact"
                 id="standard-basic"
                 onChange={handleChange}
-              
                 label="Project Client Contact number"
               />
               <TextField
@@ -694,7 +634,6 @@ const SimpleForm = () => {
                 name="project_client_email"
                 id="standard-basic"
                 onChange={handleChange}
-                
                 label="Project Client Email ID"
               />
 
@@ -704,7 +643,6 @@ const SimpleForm = () => {
                 name="project_description"
                 label="Project Decription"
                 onChange={handleChange}
-                
               />
               <TextField
                 sx={{ mb: 4 }}
@@ -712,7 +650,6 @@ const SimpleForm = () => {
                 name="front_end_pro_lang"
                 label="Frontend Programming Language"
                 onChange={handleChange}
-                
               />
               <TextField
                 sx={{ mb: 4 }}
@@ -720,7 +657,6 @@ const SimpleForm = () => {
                 name="backend_pro_lang"
                 label="Backend Programming Language"
                 onChange={handleChange}
-                
               />
               <TextField
                 sx={{ mb: 4 }}
@@ -728,7 +664,6 @@ const SimpleForm = () => {
                 name="total_fees"
                 label="Fees"
                 onChange={handleChange}
-                
               />
             </Grid>
             <Grid item xs={6} id="queuetech-project">
@@ -741,7 +676,6 @@ const SimpleForm = () => {
                 name="schedule_from"
                 id="standard-basic"
                 onChange={handleChange}
-                
               />
               <InputLabel id="demo-simple-select-label">To</InputLabel>
               <TextField
@@ -749,7 +683,6 @@ const SimpleForm = () => {
                 name="schedule_to"
                 id="standard-basic"
                 onChange={handleChange}
-                
               />
               <h4 sx={{ fontWeight: 'bolder' }} className="text-center">
                 <b>Academic Details</b>
@@ -767,79 +700,51 @@ const SimpleForm = () => {
                     <TableRow>
                       <TableCell component="th" scope="row">
                         <Box component="span" sx={{ p: 2 }}>
-                          <Input
-                            name="ucourse"
-                            onChange={handleUg}
-                          />
+                          <Input name="ucourse" onChange={handleUg} />
                         </Box>
                       </TableCell>
                       <TableCell component="th" scope="row">
                         <Box component="span" sx={{ p: 2 }}>
-                          <Input
-                            name="ucollege"
-                            onChange={handleUg}
-                          />
+                          <Input name="ucollege" onChange={handleUg} />
                         </Box>
                       </TableCell>
                       <TableCell component="th" scope="row">
                         <Box component="span" sx={{ p: 2 }}>
-                          <Input
-                            name="upercenatge"
-                            onChange={handleUg}
-                          />
+                          <Input name="upercenatge" onChange={handleUg} />
                         </Box>
                       </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell component="th" scope="row">
                         <Box component="span" sx={{ p: 2 }}>
-                          <Input
-                            name="pcourse"
-                            onChange={handlePuc}
-                          />
+                          <Input name="pcourse" onChange={handlePuc} />
                         </Box>
                       </TableCell>
                       <TableCell component="th" scope="row">
                         <Box component="span" sx={{ p: 2 }}>
-                          <Input
-                            name="pcollege"
-                            onChange={handlePuc}
-                          />
+                          <Input name="pcollege" onChange={handlePuc} />
                         </Box>
                       </TableCell>
                       <TableCell component="th" scope="row">
                         <Box component="span" sx={{ p: 2 }}>
-                          <Input
-                           name="ppercenatge"
-                           onChange={handlePuc}
-                          />
+                          <Input name="ppercenatge" onChange={handlePuc} />
                         </Box>
                       </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell component="th" scope="row">
                         <Box component="span" sx={{ p: 2 }}>
-                          <Input
-                            name="scourse"
-                            onChange={handleSslc}
-                          />
+                          <Input name="scourse" onChange={handleSslc} />
                         </Box>
                       </TableCell>
                       <TableCell component="th" scope="row">
                         <Box component="span" sx={{ p: 2 }}>
-                          <Input
-                            
-                            name="scollege"
-                            onChange={handleSslc}
-                          />
+                          <Input name="scollege" onChange={handleSslc} />
                         </Box>
                       </TableCell>
                       <TableCell component="th" scope="row">
                         <Box component="span" sx={{ p: 2 }}>
-                          <Input
-                            name="spercentage"
-                            onChange={handleSslc}
-                          />
+                          <Input name="spercentage" onChange={handleSslc} />
                         </Box>
                       </TableCell>
                     </TableRow>
@@ -879,16 +784,9 @@ const SimpleForm = () => {
                 name="start_date"
                 id="standard-basic"
                 onChange={handleChange}
-                
               />
               <InputLabel id="demo-simple-select-label">End Date</InputLabel>
-              <TextField
-                type="date"
-                name="end_date"
-                id="standard-basic"
-                onChange={handleChange}
-                
-              />
+              <TextField type="date" name="end_date" id="standard-basic" onChange={handleChange} />
               <InputLabel sx={{ mt: '5px' }} id="demo-simple-select-label">
                 Time : From
               </InputLabel>
@@ -897,16 +795,9 @@ const SimpleForm = () => {
                 name="start_time"
                 id="standard-basic"
                 onChange={handleChange}
-                
               />
               <InputLabel id="demo-simple-select-label">Time : To</InputLabel>
-              <TextField
-                type="time"
-                name="end_time"
-                id="standard-basic"
-                onChange={handleChange}
-                
-              />
+              <TextField type="time" name="end_time" id="standard-basic" onChange={handleChange} />
 
               <TextField
                 sx={{ mb: 4 }}
@@ -914,7 +805,6 @@ const SimpleForm = () => {
                 name="no_of_days"
                 label="Number of days "
                 onChange={handleChange}
-                
               />
               <TextField
                 sx={{ mb: 4 }}
@@ -922,7 +812,6 @@ const SimpleForm = () => {
                 name="no_of_hours"
                 label="Number of hours"
                 onChange={handleChange}
-                
               />
               <TextField
                 sx={{ mb: 4 }}
@@ -930,7 +819,6 @@ const SimpleForm = () => {
                 name="total_fees"
                 label="Fees"
                 onChange={handleChange}
-                
               />
             </Grid>
           </Grid>
@@ -955,10 +843,9 @@ const SimpleForm = () => {
                       {intern.intership_on}
                     </MenuItem>
                   ))}
-       
                 </Select>
               </FormControl>
-           
+
               <InputLabel sx={{ mt: '5px' }} id="demo-simple-select-label">
                 Starting date
               </InputLabel>
@@ -967,16 +854,9 @@ const SimpleForm = () => {
                 name="start_date"
                 id="standard-basic"
                 onChange={handleChange}
-                
               />
               <InputLabel id="demo-simple-select-label">End Date</InputLabel>
-              <TextField
-                type="date"
-                name="end_date"
-                id="standard-basic"
-                onChange={handleChange}
-                
-              />
+              <TextField type="date" name="end_date" id="standard-basic" onChange={handleChange} />
               <InputLabel sx={{ mt: '5px' }} id="demo-simple-select-label">
                 Time : From
               </InputLabel>
@@ -985,16 +865,9 @@ const SimpleForm = () => {
                 name="start_time"
                 id="standard-basic"
                 onChange={handleChange}
-                
               />
               <InputLabel id="demo-simple-select-label">Time : To</InputLabel>
-              <TextField
-                type="time"
-                name="end_time"
-                id="standard-basic"
-                onChange={handleChange}
-                
-              />
+              <TextField type="time" name="end_time" id="standard-basic" onChange={handleChange} />
 
               <TextField
                 sx={{ mb: 4 }}
@@ -1002,7 +875,6 @@ const SimpleForm = () => {
                 name="no_of_days"
                 label="Number of days "
                 onChange={handleChange}
-                
               />
               <TextField
                 sx={{ mb: 4 }}
@@ -1010,7 +882,6 @@ const SimpleForm = () => {
                 name="no_of_hours"
                 label="Number of hours"
                 onChange={handleChange}
-                
               />
               <TextField
                 sx={{ mb: 4 }}
@@ -1018,7 +889,6 @@ const SimpleForm = () => {
                 name="total_fees"
                 label="Fees"
                 onChange={handleChange}
-                
               />
             </Grid>
           </Grid>
