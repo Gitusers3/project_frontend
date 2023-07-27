@@ -10,6 +10,7 @@ import Students from '../app/views/student/students';
 import Viewone from './views/student/viewone';
 import Staffs from './views/staffs/Staffs';
 import Batches from './views/Batches/batches';
+import CreateBatch from './views/Batches/CreateBatch';
 import Timetable from './views/timetable/timetable';
 import StaffRegister from './views/staffs/Register';
 // session pages
@@ -59,6 +60,7 @@ const routes = [
   { path: '/staffs', element: <Staffs /> },
   { path: '/staffs/register', element: <StaffRegister /> },
   { path: '/batches', element: <Batches /> },
+  { path: '/batches/create', element: <CreateBatch /> },
   { path: '/timetable', element: <Timetable /> },
   { path: '/session/404', element: <NotFound /> },
   { path: '/session/signin', element: <JwtLogin /> },

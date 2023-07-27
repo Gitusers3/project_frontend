@@ -41,7 +41,7 @@ const SimpleTable = (propid) => {
         console.log(err);
       });
   }, []);
-
+  console.log(batch);
   const DeleteBatch = (id) => {
     const swalWithBootstrapButtons = Swal.mixin({
       customClass: {
@@ -99,31 +99,32 @@ const SimpleTable = (propid) => {
         <TableBody>
           {batch
             ?.filter((va) => va?.d_id?._id === propid.propid)
+            .map((item, index) => {
+              const techNames = item.tech_id.map((tech) => tech.staff_name).join(', ');
 
-            .map((item, index) => (
-              <TableRow key={index}>
-                <TableCell align="left">{index + 1}</TableCell>
-                <TableCell align="center">{item?.b_name}</TableCell>
-                <TableCell align="center">{item?.tech_id?.staff_name}</TableCell>
-                <TableCell align="center">{item?.status}</TableCell>
-                <TableCell align="right">
-                  <IconButton>
-                    <Icon onClick={() => DeleteBatch(item._id)} color="error">
-                      delete
-                    </Icon>
-                  </IconButton>
-                </TableCell>
-              </TableRow>
-            ))}
+              return (
+                <TableRow key={item._id}>
+                  <TableCell align="left">{index + 1}</TableCell>
+                  <TableCell align="center">{item.b_name}</TableCell>
+                  <TableCell align="center">{techNames}</TableCell>
+                  <TableCell align="center">{item.status}</TableCell>
+                  <TableCell align="right">
+                    <IconButton>
+                      <Icon onClick={() => DeleteBatch(item._id)} color="error">
+                        delete
+                      </Icon>
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
         </TableBody>
       </StyledTable>
-      <Stack direction="row" spacing={2} sx={{ padding: '10px' }}>
-        <Link to="/create">
-          <Button variant="outlined" fullWidth>
-            Create
-          </Button>
-        </Link>
-      </Stack>
+      <Link to="create">
+        <Button fullWidth sx={{ marginTop: '10px' }} variant="outlined">
+          Create
+        </Button>
+      </Link>
     </Box>
   );
 };
