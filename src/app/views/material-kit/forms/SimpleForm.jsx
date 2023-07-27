@@ -261,8 +261,7 @@ const SimpleForm = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
-  console.log(disc)
+  }, [disc]);
   const [college, setCollege] = useState('');
   const [address, setAddress] = useState('');
   const handleSubmitDialog = (event) => {

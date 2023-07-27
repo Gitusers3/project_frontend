@@ -90,20 +90,20 @@ const DatatablePage = (prop) => {
             .catch((err) => {
               console.log(err);
             });
-          swalWithBootstrapButtons.fire('Deleted!', 'Student has been deleted.', 'success');
+          swalWithBootstrapButtons.fire('Deleted!', 'Staff has been deleted.', 'success');
         } else if (
           /* Read more about handling dismissals below */
           result.dismiss === Swal.DismissReason.cancel
         ) {
-          swalWithBootstrapButtons.fire('Cancelled', 'Student record is safe :)', 'error');
+          swalWithBootstrapButtons.fire('Cancelled', 'Staff record is safe :)', 'error');
         }
       });
   };
-
+  console.log(display);
   const datta = display
     ?.filter((va) => {
       // Check if the prop is "all" or if the designation matches "IT Operation"
-      return prop === 'all' || va?.designation === 'IT Operation';
+      return prop?.prop?.all === 'all' || va?.designation === 'Software Developer';
     })
     .map((item, index) => {
       console.log(item._id);
@@ -111,6 +111,7 @@ const DatatablePage = (prop) => {
         serial: index + 1,
         staff: item.staff_name,
         contact: item.contact_no1,
+        designation: item.designation,
         actions: (
           <div>
             <Grid container spacing={3}>
@@ -121,14 +122,14 @@ const DatatablePage = (prop) => {
                   </Link>
                 </Item>
               </Grid>
-              <Grid item xs={4}>
+              {/* <Grid item xs={4}>
                 <Item>
                   <CurrencyRupeeIcon
                     style={{ color: 'green' }}
                     onClick={() => toggleShow(item._id)}
                   />
                 </Item>
-              </Grid>
+              </Grid> */}
               <Grid item xs={4}>
                 <Item>
                   <DeleteOutlineIcon
@@ -159,6 +160,12 @@ const DatatablePage = (prop) => {
       {
         label: 'Contact',
         field: 'contact',
+        sort: 'asc',
+        width: 100
+      },
+      {
+        label: 'Designation',
+        field: 'designation',
         sort: 'asc',
         width: 100
       },
