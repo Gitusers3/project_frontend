@@ -40,10 +40,6 @@ import { use } from 'echarts';
 import url from 'global';
 import { useNavigate } from 'react-router-dom';
 
-
-
-
-
 const filter = createFilterOptions();
 // const mock = new MockAdapter(axios);
 
@@ -53,53 +49,32 @@ const TextField = styled(TextValidator)(() => ({
 }));
 
 const Staffform = () => {
-    const nav=useNavigate()
+  const nav = useNavigate();
   const [state, setState] = useState({ date: new Date() });
 
-  const [role,setRole]=useState([])
+  const [role, setRole] = useState([]);
 
-  const [type,setType]=useState("")
-  const [category,setCategory]=useState("")
-  const [gender,setGender]=useState("")
-  const [staff,setStaff]=useState({})
-  const [staffdetails,setStaffdetails]=useState({})
-  const [roleid,setRoleid]=useState("")
-  const [designation,setDesignation]=useState("")
+  const [type, setType] = useState('');
+  const [category, setCategory] = useState('');
+  const [gender, setGender] = useState('');
+  const [staff, setStaff] = useState({});
+  const [staffdetails, setStaffdetails] = useState({});
+  const [roleid, setRoleid] = useState('');
+  const [designation, setDesignation] = useState('');
 
+  const handleType = (e) => {
+    setType(e.target.value);
+  };
 
-  const handleType=(e)=>{
-    setType(e.target.value)
-  }
-  
-  const handleGender=(e)=>{
-    setGender(e.target.value)
-  }
-  const handleCategory=(e)=>{
-    setCategory(e.target.value)
-  }
-  const handledesignation=(e)=>{
-    setDesignation(e.target.value)
-  }
-  
-
-
-
-
-  useEffect(()=>{
-  
-    url.get('http://localhost:4000/api/role/view').then((res)=>{
-        console.log(res.data)
-        setRole(res.data)
-  
-        
-        
-
-    }).catch((err)=>{
-        alert(err)
-
-    })
-},[])
-
+  const handleGender = (e) => {
+    setGender(e.target.value);
+  };
+  const handleCategory = (e) => {
+    setCategory(e.target.value);
+  };
+  const handledesignation = (e) => {
+    setDesignation(e.target.value);
+  };
 
 const handleChange = (event) => {
   event.persist();
@@ -122,7 +97,7 @@ const handleChange = (event) => {
   }, [state.password]);
 
   const handleSubmit = (event) => {
-    event.preventDefault()
+    event.preventDefault();
     setStaffdetails({
    
       
@@ -148,20 +123,13 @@ const handleChange = (event) => {
         alert(err)
   
       })
-
-
-
-
-   
-  
+      .catch((err) => {
+        alert(err);
+      });
   };
 
-
-  console.log("sdfr",staffdetails)
-
-
-
-
+  console.log('sdfr', staffdetails);
+  console.log('staff', staff);
 
 
   const handleDateChange = (date) => setState({ ...state, date });
@@ -173,16 +141,10 @@ const handleChange = (event) => {
     mobile,
     password,
     confirmPassword,
-    
+
     date,
     email
   } = state;
-
-
-  
-
- 
-
 
   const [disc, setDisc] = useState([]);
   const [value, setValue] = useState(null);
@@ -201,7 +163,6 @@ const handleChange = (event) => {
     address: ''
   });
 
-
   return (
     <div>
       <ValidatorForm onSubmit={handleSubmit} onError={() => null}>
@@ -213,32 +174,20 @@ const handleChange = (event) => {
               name="employee_code"
               id="standard-basic"
               onChange={handleChange}
-      
               label="Employee Code"
-            
             />
-             <TextField
+            <TextField
               type="text"
               name="staff_name"
               id="standard-basic"
               onChange={handleChange}
-      
               label="Employee Name "
-            
             />
 
-           
-           <InputLabel id="demo-simple-select-label">Date Of Joining </InputLabel>
-            <TextField
-              type="date"
-              name="doj"
-              label=""
-              onChange={handleChange}
-           
-      
-            />
-            
-            <FormControl fullWidth style={{marginBottom:"20px"}}>
+            <InputLabel id="demo-simple-select-label">Date Of Joining </InputLabel>
+            <TextField type="date" name="doj" label="" onChange={handleChange} />
+
+            <FormControl fullWidth style={{ marginBottom: '20px' }}>
               <InputLabel id="demo-simple-select-label">Employee Type </InputLabel>
               <Select
                 labelId="demo-simple-select-label"
@@ -246,18 +195,13 @@ const handleChange = (event) => {
                 name="employee_type"
                 label="Choose Employee type"
                 value={type}
-              
-                
                 onChange={handleType}
-              
               >
-                
-                  <MenuItem value="Full Time">Full Time</MenuItem>
-                  <MenuItem value="Full Time">Part Time</MenuItem>
-               
+                <MenuItem value="Full Time">Full Time</MenuItem>
+                <MenuItem value="Full Time">Part Time</MenuItem>
               </Select>
             </FormControl>
-            <FormControl fullWidth >
+            <FormControl fullWidth>
               <InputLabel id="demo-simple-select-label">Employee Category </InputLabel>
               <Select
                 labelId="demo-simple-select-label"
@@ -266,43 +210,30 @@ const handleChange = (event) => {
                 label="Choose Division"
                 onChange={handleCategory}
                 value={category}
-               
-            
               >
-                
-                  <MenuItem value="Permanent">Permanent</MenuItem>
-                  <MenuItem value="Temporry">Temporary</MenuItem>
-               
+                <MenuItem value="Permanent">Permanent</MenuItem>
+                <MenuItem value="Temporry">Temporary</MenuItem>
               </Select>
             </FormControl>
 
-            <FormControl fullWidth sx={{mt:2}} >
+            <FormControl fullWidth sx={{ mt: 2 }}>
               <InputLabel id="demo-simple-select-label">Employee Role </InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-             
                 label="Employee Role"
                 name="role_id"
-                onChange={(e)=>{setRoleid(e.target.value)}}
-                
-              
-            
+                value={roleid}
+                onChange={(e) => {
+                  setRoleid(e.target.value);
+                }}
               >
-                {role.map((item)=>{
-                    return(
-                     <MenuItem value={item._id}>{item.role}</MenuItem>
-                    )
-
-
+                {role.map((item) => {
+                  return <MenuItem value={item._id}>{item.role}</MenuItem>;
                 })}
-                
-              
-               
               </Select>
             </FormControl>
-            
-            
+
             {/* <TextField
               type="text"
               name="username"
@@ -332,9 +263,6 @@ const handleChange = (event) => {
              
             /> */}
 
-
-            
-           
             {/* <TextField
               sx={{ mb: 4 }}
               type="text"
@@ -345,7 +273,7 @@ const handleChange = (event) => {
              
             /> */}
 
-<FormControl fullWidth style={{marginTop:"20px",marginBottom:"20px"}}>
+            <FormControl fullWidth style={{ marginTop: '20px', marginBottom: '20px' }}>
               <InputLabel id="demo-simple-select-label">Employee Designation </InputLabel>
               <Select
                 labelId="demo-simple-select-label"
@@ -353,20 +281,13 @@ const handleChange = (event) => {
                 name="designation"
                 label="Choose Employee designation"
                 value={designation}
-              
-                
                 onChange={handledesignation}
-              
               >
-                
-                  <MenuItem value="Administartor">Administartor</MenuItem>
-                  <MenuItem value="HR">HR </MenuItem>
-                  <MenuItem value="Software Developer">Software Developer </MenuItem>
-                  <MenuItem value="Marketing Executive ">Marketing Executive </MenuItem>
-                  <MenuItem value="Accountant">Accountant </MenuItem>
-
-
-               
+                <MenuItem value="Administartor">Administartor</MenuItem>
+                <MenuItem value="HR">HR </MenuItem>
+                <MenuItem value="Software Developer">Software Developer </MenuItem>
+                <MenuItem value="Marketing Executive ">Marketing Executive </MenuItem>
+                <MenuItem value="Accountant">Accountant </MenuItem>
               </Select>
             </FormControl>
             <InputLabel id="demo-simple-select-label">Gardian Name</InputLabel>
@@ -376,8 +297,6 @@ const handleChange = (event) => {
               name="gname"
               label="Gardian Name"
               onChange={handleChange}
-      
-             
             />
             <TextField
               sx={{ mb: 4 }}
@@ -385,8 +304,6 @@ const handleChange = (event) => {
               name="relationship"
               label="Relationship"
               onChange={handleChange}
-      
-             
             />
             <TextField
               sx={{ mb: 4 }}
@@ -394,8 +311,6 @@ const handleChange = (event) => {
               name="gcontact"
               label="Gaurdian Conatct"
               onChange={handleChange}
-      
-             
             />
             <TextField
               sx={{ mb: 4 }}
@@ -403,34 +318,26 @@ const handleChange = (event) => {
               name="taddress"
               label="Contact Address"
               onChange={handleChange}
-      
-             
             />
-        
+
             <TextField
               sx={{ mb: 4 }}
               type="text"
               name="paddress"
               label="Address"
               onChange={handleChange}
-      
-             
             />
-             <TextField
+            <TextField
               type="number"
               name="contact_no1"
               label="Contact Nubmer1( whatsapp )"
               onChange={handleChange}
-           
-      
             />
             <TextField
               type="number"
               name="contact_no2"
               label="Contact Nubmer2"
               onChange={handleChange}
-           
-      
             />
             <TextField
               sx={{ mb: 4 }}
@@ -438,31 +345,13 @@ const handleChange = (event) => {
               name="email"
               label="Email"
               onChange={handleChange}
-      
-             
             />
-            <TextField
-              sx={{ mb: 4 }}
-              type="date"
-              name="dob"
-              label="DOB"
-              onChange={handleChange}
-      
-             
-            />
-           
+            <TextField sx={{ mb: 4 }} type="date" name="dob" label="DOB" onChange={handleChange} />
           </Grid>
 
           <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
-            <TextField
-              type="text"
-              name="blood_group"
-              label="Bood Group"
-              onChange={handleChange}
-           
-      
-            />
-            <FormControl fullWidth style={{marginBottom:"20px"}}>
+            <TextField type="text" name="blood_group" label="Bood Group" onChange={handleChange} />
+            <FormControl fullWidth style={{ marginBottom: '20px' }}>
               <InputLabel id="demo-simple-select-label">Gender </InputLabel>
               <Select
                 labelId="demo-simple-select-label"
@@ -471,13 +360,9 @@ const handleChange = (event) => {
                 label="Choose Division"
                 onChange={handleGender}
                 value={gender}
-          
-               
               >
-                
-                  <MenuItem value="male">Male</MenuItem>
-                  <MenuItem value="female">Female</MenuItem>
-               
+                <MenuItem value="male">Male</MenuItem>
+                <MenuItem value="female">Female</MenuItem>
               </Select>
             </FormControl>
             <TextField
@@ -485,24 +370,19 @@ const handleChange = (event) => {
               type="text"
               label="Marital Status"
               onChange={handleChange}
-           
-      
             />
             <TextField
               type="text"
               name="pan_no"
               // onChange={handleChange}
               label="Pan Number"
-           
             />
             <TextField
               type="text"
               name="adhar_no"
               // onChange={handleChange}
               label="Adhar Number"
-           
             />
-           
 
             {/* <RadioGroup
               row
@@ -536,10 +416,8 @@ const handleChange = (event) => {
               control={<Checkbox />}
               label="I have read and agree to the terms of service."
             /> */}
-           
           </Grid>
         </Grid>
-        
 
         {/* project details for queuetech */}
 
