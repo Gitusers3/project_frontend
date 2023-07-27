@@ -8,6 +8,7 @@ const StaffRegister = Loadable(lazy(() => import('../../views/staffs/Register'))
 const Students = Loadable(lazy(() => import('../../views/student/students')));
 const ViewOne = Loadable(lazy(() => import('../../views/student/viewone')));
 const Staffs = Loadable(lazy(() => import('../../views/staffs/Staffs')));
+const Fees = Loadable(lazy(() => import('../../views/fees_receipt/Fees')));
 const Batches = Loadable(lazy(() => import('../../views/Batches/batches')));
 const Timetable = Loadable(lazy(() => import('../../views/timetable/timetable')));
 const AppTable = Loadable(lazy(() => import('./tables/AppTable')));
@@ -60,7 +61,11 @@ const materialRoutes = [{
   {
     path: '/staffs',
     element: < Staffs / >
-  }, {
+  },
+  {
+    path: '/fees',
+    element: < Fees / >
+  },  {
     path: '/material/buttons',
     element: < AppButton / >
   }, {

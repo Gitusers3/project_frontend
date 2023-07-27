@@ -101,6 +101,16 @@ const Staffform = () => {
 },[])
 
 
+const handleChange = (event) => {
+  event.persist();
+  setStaff({
+      ...staff,
+      [event.target.name]:event.target.value
+  })
+
+};
+
+
 
   useEffect(() => {
     ValidatorForm.addValidationRule('isPasswordMatch', (value) => {
@@ -114,17 +124,19 @@ const Staffform = () => {
   const handleSubmit = (event) => {
     event.preventDefault()
     setStaffdetails({
-        ...staff,
-        role_id:role,
+   
+      
         employee_type:type,
         employee_category:category,
-        gender:gender,
+        gname:gender,
         role_id:roleid,
         designation:designation
     })
 
 
-    axios.post('http://localhost:4000/api/staff/insert',{staffdetails}).then((res)=>{
+
+
+    axios.post('http://localhost:4000/api/staff/insert',{staffdetails,staff}).then((res)=>{
         console.log(res.data)
         alert("Staff Details added Successfully")
   
@@ -151,14 +163,6 @@ const Staffform = () => {
 
 
 
-  const handleChange = (event) => {
-    event.persist();
-    setStaff({
-        ...staff,
-        [event.target.name]:event.target.value
-    })
-
-  };
 
   const handleDateChange = (date) => setState({ ...state, date });
 

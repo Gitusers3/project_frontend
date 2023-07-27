@@ -98,7 +98,7 @@ const SimpleForm = () => {
     axios.post('http://localhost:4000/api/student/insert',{student,ug,sslc,puc}).then((res)=>{
       console.log(res.data)
       alert("Student Details added Successfully")
-      nav('/student/students')
+      // nav('/student/students')
 
 
     }).catch((err)=>{
