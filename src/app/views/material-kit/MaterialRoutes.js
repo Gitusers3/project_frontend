@@ -4,6 +4,7 @@ import {
 import Loadable from 'app/components/Loadable';
 
 const Register = Loadable(lazy(() => import('../../views/student/register')));
+const StaffRegister = Loadable(lazy(() => import('../../views/staffs/Register')));
 const Students = Loadable(lazy(() => import('../../views/student/students')));
 const ViewOne = Loadable(lazy(() => import('../../views/student/viewone')));
 const Staffs = Loadable(lazy(() => import('../../views/staffs/Staffs')));
@@ -35,6 +36,10 @@ const materialRoutes = [{
   {
     path: 'student/students',
     element: < Students / >
+  },
+  {
+    path: 'staffs/register',
+    element: < StaffRegister / >
   },
   {
     path: 'student/students/view/:id',

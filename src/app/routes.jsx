@@ -11,6 +11,7 @@ import Viewone from './views/student/viewone';
 import Staffs from './views/staffs/Staffs';
 import Batches from './views/Batches/batches';
 import Timetable from './views/timetable/timetable';
+import StaffRegister from './views/staffs/Register';
 // session pages
 const AppForm = Loadable(lazy(() => import('../app/views/material-kit/forms/AppForm')));
 
@@ -56,6 +57,7 @@ const routes = [
   { path: '/student/students', element: <Students /> },
   { path: '/student/students/view/:id', element: <Viewone /> },
   { path: '/staffs', element: <Staffs /> },
+  { path: '/staffs/register', element: <StaffRegister /> },
   { path: '/batches', element: <Batches /> },
   { path: '/timetable', element: <Timetable /> },
   { path: '/session/404', element: <NotFound /> },

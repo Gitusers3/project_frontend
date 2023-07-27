@@ -21,7 +21,7 @@ const AppTable = () => {
         </Box>
         <SimpleCard title="Staffs">
           <Tabs />
-          <Link to="/student/register">
+          <Link to="/staffs/register">
             <Button variant="contained" fullWidth color="primary">
               Register
             </Button>
