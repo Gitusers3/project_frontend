@@ -10,6 +10,7 @@ import Paper from '@mui/material/Paper';
 import Input from '@mui/material/Input';
 import Box from '@mui/material/Box';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 // import MockAdapter from 'axios-mock-adapter';
 import {
   Button,
@@ -46,11 +47,42 @@ const TextField = styled(TextValidator)(() => ({
 }));
 
 const SimpleForm = () => {
+  const nav=useNavigate()
   const [state, setState] = useState({ date: new Date() });
   const [student, setStudent] = useState({ date: new Date() });
-  const [course, setCourse] = useState([]);
-  const [coll, setColl] = useState([]);
-  const [percentage, setPercentage] = useState([]);
+  const [ug, setUg] = useState({});
+  const [puc, setPuc] = useState({});
+  const [sslc, setSslc] = useState({});
+
+
+
+  const handleUg=(e)=>{
+    setUg({...ug,
+      [e.target.name]:e.target.value
+     
+    })
+  }
+  const handlePuc=(e)=>{
+    setPuc({
+      ...puc,
+      [e.target.name]:e.target.value
+      
+    })
+  }
+
+  const handleSslc=(e)=>{
+    setSslc({
+      ...sslc,
+      [e.target.name]:e.target.value
+      
+    })
+  }
+
+  console.log("ug",ug)
+  console.log("sslc",sslc)
+  console.log("puc",puc)
+
+
 
   useEffect(() => {
     ValidatorForm.addValidationRule('isPasswordMatch', (value) => {
@@ -62,9 +94,18 @@ const SimpleForm = () => {
   }, [state.password]);
 
   const handleSubmit = (event) => {
-    event.preventDefault();
+    event.preventDefault()
+    axios.post('http://localhost:4000/api/student/insert',{student,ug,sslc,puc}).then((res)=>{
+      console.log(res.data)
+      alert("Student Details added Successfully")
+      nav('/student/students')
 
-    console.log(student);
+
+    }).catch((err)=>{
+      alert(err)
+
+    })
+
   };
 
   // profile picture uploading to state
@@ -73,12 +114,6 @@ const SimpleForm = () => {
     const file = event.target.files[0];
     setSelectedFile(file);
     console.log(selectedFile);
-  };
-  const handleChange = (event) => {
-    event.persist();
-    console.log(coll, course, percentage);
-    setStudent({ ...student, [event.target.name]: event.target.value });
-    console.log(student);
   };
 
   const handleDateChange = (date) => setState({ ...state, date });
@@ -112,12 +147,11 @@ const SimpleForm = () => {
 
 
 
-  const handleChange = (event) => {
-    event.persist();
- 
-    setStudent({ ...student, [event.target.name]: event.target.value });
-   
-  };
+
+
+
+
+
   useEffect(() => {
     // Make the API request
     axios
@@ -152,6 +186,11 @@ const SimpleForm = () => {
   const handleSelectChangeofDivision = (event) => {
     setSelectedDivision(event.target.value);
   };
+
+
+
+
+  
   useEffect(() => {
     // Make the API request
     axios
@@ -196,6 +235,7 @@ const SimpleForm = () => {
   }, [intern]);
 
   const [disc, setDisc] = useState([]);
+  const [selectedcollege, setSelectedCollege] = useState('');
   const [value, setValue] = useState(null);
   const [open, toggleOpen] = useState(false);
 
@@ -222,6 +262,7 @@ const SimpleForm = () => {
         console.log(err);
       });
   }, []);
+  console.log(disc)
   const [college, setCollege] = useState('');
   const [address, setAddress] = useState('');
   const handleSubmitDialog = (event) => {
@@ -246,21 +287,15 @@ const SimpleForm = () => {
     handleClose();
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault()
-    axios.post('http://localhost:4000/api/student/insert',{student,ug,sslc,puc}).then((res)=>{
-      console.log(res.data)
-      alert("Student Details added Successfully")
-
-
-    }).catch((err)=>{
-      alert(err)
-
-    })
-
+  const handleChange = (event) => {
+    event.persist();
+ 
+    setStudent({ ...student,division_id:selectedDivision,course_id:selectedCourse,college_id:selectedcollege,[event.target.name]: event.target.value });
+   
   };
 
  
+ console.log(selectedcollege+" selected college")
 
 
 
@@ -297,7 +332,7 @@ const SimpleForm = () => {
                 onChange={handleSelectChangeofDivision}
               >
                 {divsn.map((division) => (
-                  <MenuItem key={division._id} value={division.d_name}>
+                  <MenuItem key={division._id} value={division._id}>
                     {division.d_name}
                   </MenuItem>
                 ))}
@@ -500,11 +535,16 @@ const SimpleForm = () => {
                 selectOnFocus
                 clearOnBlur
                 handleHomeEndKeys
-                renderOption={(props, option) => (
+                renderOption={(props, option) => {
+                setSelectedCollege(option._id)
+                return (
+                  <>
                   <li {...props}>
                     {option.c_name} {option.c_address}
                   </li>
-                )}
+                  </>
+                )
+                }}
                 freeSolo
                 renderInput={(params) => <TextField {...params} label="Choose College" />}
               />
@@ -574,7 +614,7 @@ const SimpleForm = () => {
                   onChange={handleSelectChange}
                 >
                   {courses.map((course) => (
-                    <MenuItem key={course._id} value={course.cou_name}>
+                    <MenuItem key={course._id} value={course._id}>
                       {course.cou_name}
                     </MenuItem>
                   ))}
@@ -608,7 +648,7 @@ const SimpleForm = () => {
             </Grid>
           </Grid>
         </Grid>
-        {selectedDivision === 'QueueTech Solution' ? (
+        {selectedDivision === '64b63281e4c71dfecf988dda' ? (
           <Grid container className="d-flex" spacing={10}>
             <Grid item xs={6} id="queuetech-project">
               <h4 sx={{ fontWeight: 'bolder' }} className="text-center">
@@ -729,30 +769,24 @@ const SimpleForm = () => {
                       <TableCell component="th" scope="row">
                         <Box component="span" sx={{ p: 2 }}>
                           <Input
-                            name="course[]"
-                            onChange={(e) => {
-                              setCourse(...course, e.target.value);
-                            }}
+                            name="ucourse"
+                            onChange={handleUg}
                           />
                         </Box>
                       </TableCell>
                       <TableCell component="th" scope="row">
                         <Box component="span" sx={{ p: 2 }}>
                           <Input
-                            name="college[]"
-                            onChange={(e) => {
-                              setColl(...coll, e.target.value);
-                            }}
+                            name="ucollege"
+                            onChange={handleUg}
                           />
                         </Box>
                       </TableCell>
                       <TableCell component="th" scope="row">
                         <Box component="span" sx={{ p: 2 }}>
                           <Input
-                            name="percentage[]"
-                            onChange={(e) => {
-                              setPercentage(...percentage, e.target.value);
-                            }}
+                            name="upercenatge"
+                            onChange={handleUg}
                           />
                         </Box>
                       </TableCell>
@@ -761,30 +795,24 @@ const SimpleForm = () => {
                       <TableCell component="th" scope="row">
                         <Box component="span" sx={{ p: 2 }}>
                           <Input
-                            name="course[]"
-                            onChange={(e) => {
-                              setCourse(...course, e.target.value);
-                            }}
+                            name="pcourse"
+                            onChange={handlePuc}
                           />
                         </Box>
                       </TableCell>
                       <TableCell component="th" scope="row">
                         <Box component="span" sx={{ p: 2 }}>
                           <Input
-                            name="college[]"
-                            onChange={(e) => {
-                              setColl(...coll, e.target.value);
-                            }}
+                            name="pcollege"
+                            onChange={handlePuc}
                           />
                         </Box>
                       </TableCell>
                       <TableCell component="th" scope="row">
                         <Box component="span" sx={{ p: 2 }}>
                           <Input
-                            name="percentage[]"
-                            onChange={(e) => {
-                              setPercentage(...percentage, e.target.value);
-                            }}
+                           name="ppercenatge"
+                           onChange={handlePuc}
                           />
                         </Box>
                       </TableCell>
@@ -793,30 +821,25 @@ const SimpleForm = () => {
                       <TableCell component="th" scope="row">
                         <Box component="span" sx={{ p: 2 }}>
                           <Input
-                            name="course[]"
-                            onChange={(e) => {
-                              setCourse(...course, e.target.value);
-                            }}
+                            name="scourse"
+                            onChange={handleSslc}
                           />
                         </Box>
                       </TableCell>
                       <TableCell component="th" scope="row">
                         <Box component="span" sx={{ p: 2 }}>
                           <Input
-                            name="college[]"
-                            onChange={(e) => {
-                              setColl(...coll, e.target.value);
-                            }}
+                            
+                            name="scollege"
+                            onChange={handleSslc}
                           />
                         </Box>
                       </TableCell>
                       <TableCell component="th" scope="row">
                         <Box component="span" sx={{ p: 2 }}>
                           <Input
-                            name="percentage[]"
-                            onChange={(e) => {
-                              setPercentage(...percentage, e.target.value);
-                            }}
+                            name="spercentage"
+                            onChange={handleSslc}
                           />
                         </Box>
                       </TableCell>
@@ -826,7 +849,7 @@ const SimpleForm = () => {
               </Table>
             </Grid>
           </Grid>
-        ) : selectedDivision === 'Cognitive Solution' ? (
+        ) : selectedDivision === '64b63271e4c71dfecf988dd8' ? (
           <Grid container id="cognitive" className="d-flex" spacing={10}>
             <Grid item xs={6} id="cognitive">
               <h4 sx={{ fontWeight: 'bolder' }} className="text-center">
@@ -912,7 +935,7 @@ const SimpleForm = () => {
               />
             </Grid>
           </Grid>
-        ) : selectedDivision === 'CodeLab Systems' ? (
+        ) : selectedDivision === '64b6328ce4c71dfecf988ddc' ? (
           <Grid container id="codeLab" className="d-flex" spacing={10}>
             <Grid item xs={6} id="codeLab">
               <h4 sx={{ fontWeight: 'bolder' }} className="text-center">
@@ -925,7 +948,7 @@ const SimpleForm = () => {
                   id="demo-simple-select"
                   name="intenship_id"
                   label="Choose Internship"
-                  value="{selectedInternship.id}"
+                  value={selectedInternship}
                   onChange={handleSelectChange4}
                 >
                   {intern.map((intern) => (

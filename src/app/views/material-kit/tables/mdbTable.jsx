@@ -108,10 +108,10 @@ const DatatablePage = (divprop) => {
       console.log(item._id);
       return {
         serial: index + 1,
-        college: item.college_id.c_name,
+        college: item?.college_id?.c_name,
         student: item.student_name,
         contact: item.whatsup,
-        division: item.division_id.d_name,
+        division: item?.division_id?.d_name,
         fees: item.fees,
         actions: (
           <div>

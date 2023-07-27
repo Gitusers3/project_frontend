@@ -38,6 +38,7 @@ import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import { Subject } from '@mui/icons-material';
 import { use } from 'echarts';
 import url from 'global';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -52,9 +53,36 @@ const TextField = styled(TextValidator)(() => ({
 }));
 
 const Staffform = () => {
+    const nav=useNavigate()
   const [state, setState] = useState({ date: new Date() });
 
   const [role,setRole]=useState([])
+
+  const [type,setType]=useState("")
+  const [category,setCategory]=useState("")
+  const [gender,setGender]=useState("")
+  const [staff,setStaff]=useState({})
+  const [staffdetails,setStaffdetails]=useState({})
+  const [roleid,setRoleid]=useState("")
+  const [designation,setDesignation]=useState("")
+
+
+  const handleType=(e)=>{
+    setType(e.target.value)
+  }
+  
+  const handleGender=(e)=>{
+    setGender(e.target.value)
+  }
+  const handleCategory=(e)=>{
+    setCategory(e.target.value)
+  }
+  const handledesignation=(e)=>{
+    setDesignation(e.target.value)
+  }
+  
+
+
 
 
   useEffect(()=>{
@@ -85,9 +113,39 @@ const Staffform = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault()
+    setStaffdetails({
+        ...staff,
+        role_id:role,
+        employee_type:type,
+        employee_category:category,
+        gender:gender,
+        role_id:roleid,
+        designation:designation
+    })
+
+
+    axios.post('http://localhost:4000/api/staff/insert',{staffdetails}).then((res)=>{
+        console.log(res.data)
+        alert("Staff Details added Successfully")
+  
+    nav("/staffs")
+        
+  
+  
+      }).catch((err)=>{
+        alert(err)
+  
+      })
+
+
+
+
    
   
   };
+
+
+  console.log("sdfr",staffdetails)
 
 
 
@@ -95,6 +153,10 @@ const Staffform = () => {
 
   const handleChange = (event) => {
     event.persist();
+    setStaff({
+        ...staff,
+        [event.target.name]:event.target.value
+    })
 
   };
 
@@ -107,7 +169,7 @@ const Staffform = () => {
     mobile,
     password,
     confirmPassword,
-    gender,
+    
     date,
     email
   } = state;
@@ -147,18 +209,18 @@ const Staffform = () => {
               name="employee_code"
               id="standard-basic"
               onChange={handleChange}
-              errorMessages={['this field is required']}
-              label="Employee Code "
-              validators={['required', 'minStringLength: 4', 'maxStringLength: 9']}
+      
+              label="Employee Code"
+            
             />
              <TextField
               type="text"
               name="staff_name"
               id="standard-basic"
               onChange={handleChange}
-              errorMessages={['this field is required']}
+      
               label="Employee Name "
-              validators={['required', 'minStringLength: 4', 'maxStringLength: 9']}
+            
             />
 
            
@@ -168,8 +230,8 @@ const Staffform = () => {
               name="doj"
               label=""
               onChange={handleChange}
-              validators={['required']}
-              errorMessages={['this field is required']}
+           
+      
             />
             
             <FormControl fullWidth style={{marginBottom:"20px"}}>
@@ -178,8 +240,11 @@ const Staffform = () => {
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 name="employee_type"
-                label="Choose Division"
-                // value={selectedDivision}
+                label="Choose Employee type"
+                value={type}
+              
+                
+                onChange={handleType}
               
               >
                 
@@ -195,7 +260,9 @@ const Staffform = () => {
                 id="demo-simple-select"
                 name="employee_category"
                 label="Choose Division"
-                // value={selectedDivision}
+                onChange={handleCategory}
+                value={category}
+               
             
               >
                 
@@ -210,9 +277,12 @@ const Staffform = () => {
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                name="employee_category"
+             
                 label="Employee Role"
-                // value={selectedDivision}
+                name="role_id"
+                onChange={(e)=>{setRoleid(e.target.value)}}
+                
+              
             
               >
                 {role.map((item)=>{
@@ -234,9 +304,9 @@ const Staffform = () => {
               name="username"
               id="standard-basic"
               onChange={handleChange}
-              errorMessages={['this field is required']}
+      
               label="Username (Min length 4, Max length 9)"
-              validators={['required', 'minStringLength: 4', 'maxStringLength: 9']}
+            
             /> */}
             {/* <TextField
               sx={{ marginTop: '10px' }}
@@ -247,16 +317,16 @@ const Staffform = () => {
               validators={['required', 'isEmail']}
               errorMessages={['this field is required', 'email is not valid']}
             /> */}
-            <InputLabel id="demo-simple-select-label">Employee Profile Image</InputLabel>
+            {/* <InputLabel id="demo-simple-select-label">Employee Profile Image</InputLabel>
             <TextField
               sx={{ mb: 4 }}
               type="file"
               name="profile_img"
               label=""
               onChange={handleChange}
-              errorMessages={['this field is required']}
-              validators={['required', 'minStringLength:16', 'maxStringLength: 16']}
-            />
+      
+             
+            /> */}
 
 
             
@@ -267,20 +337,34 @@ const Staffform = () => {
               name="creditCard"
               label="Place"
               onChange={handleChange}
-              errorMessages={['this field is required']}
-              validators={['required', 'minStringLength:16', 'maxStringLength: 16']}
+      
+             
             /> */}
 
-            <InputLabel id="demo-simple-select-label">Designation</InputLabel>
-            <TextField
-              sx={{ mb: 4 }}
-              type="text"
-              name="designation"
-              label="Designation"
-              onChange={handleChange}
-              errorMessages={['this field is required']}
-              validators={['required', 'minStringLength:16', 'maxStringLength: 16']}
-            />
+<FormControl fullWidth style={{marginTop:"20px",marginBottom:"20px"}}>
+              <InputLabel id="demo-simple-select-label">Employee Designation </InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                name="designation"
+                label="Choose Employee designation"
+                value={designation}
+              
+                
+                onChange={handledesignation}
+              
+              >
+                
+                  <MenuItem value="Administartor">Administartor</MenuItem>
+                  <MenuItem value="HR">HR </MenuItem>
+                  <MenuItem value="Software Developer">Software Developer </MenuItem>
+                  <MenuItem value="Marketing Executive ">Marketing Executive </MenuItem>
+                  <MenuItem value="Accountant">Accountant </MenuItem>
+
+
+               
+              </Select>
+            </FormControl>
             <InputLabel id="demo-simple-select-label">Gardian Name</InputLabel>
             <TextField
               sx={{ mb: 4 }}
@@ -288,26 +372,26 @@ const Staffform = () => {
               name="gname"
               label="Gardian Name"
               onChange={handleChange}
-              errorMessages={['this field is required']}
-              validators={['required', 'minStringLength:16', 'maxStringLength: 16']}
-            />
-            <TextField
-              sx={{ mb: 4 }}
-              type="number"
-              name="relationship"
-              label="Relationship"
-              onChange={handleChange}
-              errorMessages={['this field is required']}
-              validators={['required', 'minStringLength:16', 'maxStringLength: 16']}
+      
+             
             />
             <TextField
               sx={{ mb: 4 }}
               type="text"
+              name="relationship"
+              label="Relationship"
+              onChange={handleChange}
+      
+             
+            />
+            <TextField
+              sx={{ mb: 4 }}
+              type="tel"
               name="gcontact"
               label="Gaurdian Conatct"
               onChange={handleChange}
-              errorMessages={['this field is required']}
-              validators={['required', 'minStringLength:16', 'maxStringLength: 16']}
+      
+             
             />
             <TextField
               sx={{ mb: 4 }}
@@ -315,43 +399,43 @@ const Staffform = () => {
               name="taddress"
               label="Contact Address"
               onChange={handleChange}
-              errorMessages={['this field is required']}
-              validators={['required', 'minStringLength:16', 'maxStringLength: 16']}
+      
+             
             />
-            <InputLabel id="demo-simple-select-label">Permanent Address</InputLabel>
+        
             <TextField
               sx={{ mb: 4 }}
               type="text"
               name="paddress"
               label="Address"
               onChange={handleChange}
-              errorMessages={['this field is required']}
-              validators={['required', 'minStringLength:16', 'maxStringLength: 16']}
+      
+             
             />
              <TextField
               type="number"
               name="contact_no1"
               label="Contact Nubmer1( whatsapp )"
               onChange={handleChange}
-              validators={['required']}
-              errorMessages={['this field is required']}
+           
+      
             />
             <TextField
               type="number"
               name="contact_no2"
               label="Contact Nubmer2"
               onChange={handleChange}
-              validators={['required']}
-              errorMessages={['this field is required']}
+           
+      
             />
             <TextField
               sx={{ mb: 4 }}
-              type="number"
+              type="email"
               name="email"
               label="Email"
               onChange={handleChange}
-              errorMessages={['this field is required']}
-              validators={['required', 'minStringLength:16', 'maxStringLength: 16']}
+      
+             
             />
             <TextField
               sx={{ mb: 4 }}
@@ -359,20 +443,20 @@ const Staffform = () => {
               name="dob"
               label="DOB"
               onChange={handleChange}
-              errorMessages={['this field is required']}
-              validators={['required', 'minStringLength:16', 'maxStringLength: 16']}
+      
+             
             />
            
           </Grid>
 
           <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
             <TextField
-              type="number"
+              type="text"
               name="blood_group"
               label="Bood Group"
               onChange={handleChange}
-              validators={['required']}
-              errorMessages={['this field is required']}
+           
+      
             />
             <FormControl fullWidth style={{marginBottom:"20px"}}>
               <InputLabel id="demo-simple-select-label">Gender </InputLabel>
@@ -381,38 +465,38 @@ const Staffform = () => {
                 id="demo-simple-select"
                 name="gender"
                 label="Choose Division"
-                // value={selectedDivision}
+                onChange={handleGender}
+                value={gender}
+          
                
               >
                 
-                  <MenuItem value="Full Time">Male</MenuItem>
-                  <MenuItem value="Full Time">Female</MenuItem>
+                  <MenuItem value="male">Male</MenuItem>
+                  <MenuItem value="female">Female</MenuItem>
                
               </Select>
             </FormControl>
             <TextField
               name="marital_status"
-              type="email"
+              type="text"
               label="Marital Status"
               onChange={handleChange}
-              validators={['required']}
-              errorMessages={['this field is required']}
+           
+      
             />
             <TextField
               type="text"
               name="pan_no"
               // onChange={handleChange}
               label="Pan Number"
-              validators={['required', 'isPasswordMatch']}
-              errorMessages={['this field is required', "password didn't match"]}
+           
             />
             <TextField
               type="text"
               name="adhar_no"
               // onChange={handleChange}
               label="Adhar Number"
-              validators={['required', 'isPasswordMatch']}
-              errorMessages={['this field is required', "password didn't match"]}
+           
             />
            
 
