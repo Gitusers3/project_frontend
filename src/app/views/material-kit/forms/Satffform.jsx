@@ -86,6 +86,17 @@ const handleChange = (event) => {
 };
 
 
+  useEffect(() => {
+    url
+      .get('http://localhost:4000/api/role/view')
+      .then((res) => {
+        console.log(res.data);
+        setRole(res.data);
+      })
+      .catch((err) => {
+        alert(err);
+      });
+  }, []);
 
   useEffect(() => {
     ValidatorForm.addValidationRule('isPasswordMatch', (value) => {
