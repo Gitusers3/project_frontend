@@ -13,6 +13,7 @@ import Batches from './views/Batches/batches';
 import CreateBatch from './views/Batches/CreateBatch';
 import Timetable from './views/timetable/timetable';
 import StaffRegister from './views/staffs/Register';
+import Fees from './views/fees_receipt/Fees';
 // session pages
 const AppForm = Loadable(lazy(() => import('../app/views/material-kit/forms/AppForm')));
 
@@ -59,6 +60,9 @@ const routes = [
   { path: '/student/students/view/:id', element: <Viewone /> },
   { path: '/staffs', element: <Staffs /> },
   { path: '/staffs/register', element: <StaffRegister /> },
+  { path: '/fees', element: <Fees /> },
+  { path: '/staffs/register', element: <StaffRegister /> },
+  
   { path: '/batches', element: <Batches /> },
   { path: '/batches/create', element: <CreateBatch /> },
   { path: '/timetable', element: <Timetable /> },

@@ -76,6 +76,16 @@ const Staffform = () => {
     setDesignation(e.target.value);
   };
 
+const handleChange = (event) => {
+  event.persist();
+  setStaff({
+      ...staff,
+      [event.target.name]:event.target.value
+  })
+
+};
+
+
   useEffect(() => {
     url
       .get('http://localhost:4000/api/role/view')
@@ -100,20 +110,29 @@ const Staffform = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     setStaffdetails({
-      ...staff,
-      employee_type: type,
-      employee_category: category,
-      gender: gender,
-      role_id: roleid,
-      designation: designation
-    });
+   
+      
+        employee_type:type,
+        employee_category:category,
+        gname:gender,
+        role_id:roleid,
+        designation:designation
+    })
 
-    axios
-      .post('http://localhost:4000/api/staff/insert', { staffdetails })
-      .then((res) => {
-        console.log(res.data);
-        alert('Staff Details added Successfully');
-        // nav("/staffs")
+
+
+
+    axios.post('http://localhost:4000/api/staff/insert',{staffdetails,staff}).then((res)=>{
+        console.log(res.data)
+        alert("Staff Details added Successfully")
+  
+    nav("/staffs")
+        
+  
+  
+      }).catch((err)=>{
+        alert(err)
+  
       })
       .catch((err) => {
         alert(err);
@@ -123,13 +142,6 @@ const Staffform = () => {
   console.log('sdfr', staffdetails);
   console.log('staff', staff);
 
-  const handleChange = (event) => {
-    event.persist();
-    setStaff({
-      ...staff,
-      [event.target.name]: event.target.value
-    });
-  };
 
   const handleDateChange = (date) => setState({ ...state, date });
 

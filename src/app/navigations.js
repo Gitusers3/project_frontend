@@ -46,6 +46,12 @@ export const navigations = [{
 
   },
   {
+    name: 'Fees Receipt',
+    icon: 'receipt',
+    path: '/fees'
+
+  },
+  {
     name: 'Batches',
     icon: 'table',
     path: '/batches'

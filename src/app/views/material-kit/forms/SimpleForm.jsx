@@ -84,6 +84,15 @@ const SimpleForm = () => {
     return () => ValidatorForm.removeValidationRule('isPasswordMatch');
   }, [state.password]);
 
+
+  // profile picture uploading to state
+  const [selectedFile, setSelectedFile] = useState(null);
+  const UploadPic = (event) => {
+    const file = event.target.files[0];
+    setSelectedFile(file);
+    console.log(selectedFile);
+  };
+
   const handleDateChange = (date) => setState({ ...state, date });
 
   const {
@@ -236,12 +245,7 @@ const SimpleForm = () => {
   };
 
   // profile picture uploading to state
-  const [selectedFile, setSelectedFile] = useState();
 
-  const UploadPic = (event) => {
-    const file = event.target.files[0];
-    setSelectedFile(file);
-  };
   useEffect(() => {
     console.log(selectedFile); // This will log the updated value of selectedFile
   }, [selectedFile]);
@@ -272,6 +276,7 @@ const SimpleForm = () => {
         alert(err);
       });
   };
+  
 
   // console.log(selectedcollege + ' selected college');
 
