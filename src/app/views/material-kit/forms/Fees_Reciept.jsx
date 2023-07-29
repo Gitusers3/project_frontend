@@ -40,9 +40,9 @@ export default function Fees_Reciept({ Fid, count, setCentredModal }) {
           let divid = res.data.div_id;
           setOne(a);
           setDivid(divid);
-          let b = res.data?.st_id?.pending_fees;
+          let b = res.data?.std_id?.pending_fees;
           setTotfees(b);
-          console.log(a,b,divid)
+          console.log(b,"b")
           setFees(res.data)
   
           

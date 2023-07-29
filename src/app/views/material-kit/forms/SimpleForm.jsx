@@ -140,6 +140,9 @@ const SimpleForm = () => {
       });
   }, []);
 
+
+  console.log("intern",intern)
+
   const handleSelectChange = (event) => {
     setSelectedCourse(event.target.value);
   };
@@ -269,8 +272,8 @@ const SimpleForm = () => {
       .post('http://localhost:4000/api/student/insert', { student, ug, sslc, puc })
       .then((res) => {
         console.log(res.data);
-        alert('Student Details added Successfully');
-        nav('/student/students');
+        // alert('Student Details added Successfully');
+        // nav('/student/students');
       })
       .catch((err) => {
         alert(err);

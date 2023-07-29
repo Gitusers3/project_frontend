@@ -73,8 +73,8 @@ const Staffform = () => {
   const theme = useTheme();
 
   const nav = useNavigate();
-  const [division, setDivision] = useState([]);
-  const [selectedDivision, setSelectedDivision] = useState('');
+  const [college, setCollege] = useState([]);
+  const [selectedCollege, setSelectedCollege] = useState('');
   const [batch, setBatch] = useState('');
   const [finalBatch, setFinalBatch] = useState({});
   const [techie, setTechie] = useState([]);
@@ -83,22 +83,19 @@ const Staffform = () => {
 
   useEffect(() => {
     url
-      .get('http://localhost:4000/api/division/view_division')
+      .get('http://localhost:4000/api/college/view')
       .then((res) => {
         console.log(res.data);
-        setDivision(res.data);
+        setCollege(res.data);
       })
       .catch((err) => {
         alert(err);
       });
-  }, [selectedDivision]);
-  const filteredDivision = division.filter(
-    (t) => t.d_name === 'Cognitive Solution' || t.d_name === 'CodeLab Systems'
-  );
+  }, [selectedCollege]);
 
-  const handleSelectChangeofDivision = (event) => {
-    setSelectedDivision(event.target.value);
-    console.log(selectedDivision + ' Division ID');
+  const handleSelectChangeofCollege = (event) => {
+    setSelectedCollege(event.target.value);
+    console.log(selectedCollege + ' college');
   };
 
   useEffect(() => {
@@ -137,7 +134,7 @@ const Staffform = () => {
     event.preventDefault();
     const a = {
       batch,
-      d_id: selectedDivision,
+      d_id: selectedCollege,
       tech_id: selectedTechie,
       status: status
     };
@@ -177,17 +174,17 @@ const Staffform = () => {
               label="Batch Name"
             />
             <FormControl fullWidth sx={{ mt: 2 }}>
-              <InputLabel id="demo-simple-select-label">Choose Division</InputLabel>
+              <InputLabel id="demo-simple-select-label">Collge</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 label="Choose Division"
-                value={selectedDivision}
-                onChange={handleSelectChangeofDivision.bind(this)}
+                value={selectedCollege}
+                onChange={handleSelectChangeofCollege.bind(this)}
               >
-                {filteredDivision.map((t) => (
+                {college.map((t) => (
                   <MenuItem key={t._id} value={t._id}>
-                    {t.d_name}
+                    {t.c_name}
                   </MenuItem>
                 ))}
               </Select>

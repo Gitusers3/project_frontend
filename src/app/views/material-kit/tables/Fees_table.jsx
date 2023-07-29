@@ -22,6 +22,7 @@ import {
   MDBModalFooter
 } from 'mdb-react-ui-kit';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import url from '../../../../global';
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
   ...theme.typography.body2,
@@ -84,7 +85,7 @@ export default function Fees_table(divprop) {
         })
         .then((result) => {
           if (result.isConfirmed) {
-            Axios.delete(`http://localhost:4000/api/student/delete/${id}`)
+            url.delete(`fees/delete/${id}`)
               .then((res) => {
                 console.log(res);
                 let newDisplay = display.filter((item) => {
@@ -108,7 +109,13 @@ export default function Fees_table(divprop) {
     console.log("datatta",datta)
   
     const datta = display?.filter((va) => {
-        return divprop?.divprop?.props ? va?.div_id?.d_name === divprop?.divprop?.props : true;
+      
+           
+                return(
+                (divprop?.divprop?.props ? va?.div_id?.d_name === divprop?.divprop?.props : true) )
+
+        
+       
       })
       .map((item, index) => {
         console.log(item._id);
@@ -125,14 +132,24 @@ export default function Fees_table(divprop) {
           actions: (
             <div>
              
-               
-                <Grid item xs={4}>
+               <Grid   container spacing={2}>
+                <Grid item xs={5}>
                   <Item>
                     <CurrencyRupeeIcon
                       style={{ color: 'green' }}
                       onClick={() => toggleShow(item._id)}
                     />
                   </Item>
+                </Grid>
+                   
+                <Grid item xs={5}>
+                  <Item>
+                  <DeleteOutlineIcon
+                    style={{ color: 'red' }}
+                    onClick={() => DeleteStudent(item._id)}
+                  />
+                  </Item>
+                </Grid>
                 </Grid>
                 
             
