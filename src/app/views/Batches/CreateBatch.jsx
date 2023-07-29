@@ -1,7 +1,7 @@
 import { Stack } from '@mui/material';
 import { Box, styled } from '@mui/material';
 import { Breadcrumb, SimpleCard } from 'app/components';
-import BatchForm from '../material-kit/forms/batchform/CreateBatchForm';
+import BatchForm from '../material-kit/forms/batchfrom/CreateBatchForm';
 const Container = styled('div')(({ theme }) => ({
   margin: '30px',
   [theme.breakpoints.down('sm')]: { margin: '16px' },

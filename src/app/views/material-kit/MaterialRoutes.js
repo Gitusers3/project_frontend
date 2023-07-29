@@ -13,6 +13,7 @@ const Batches = Loadable(lazy(() => import('../../views/Batches/batches')));
 const CreateBatch = Loadable(lazy(() => import('../../views/Batches/CreateBatch')));
 const QuetechBatch=Loadable(lazy(()=>import('../../views/Batches/QuetechBatches')));
 const Timetable = Loadable(lazy(() => import('../../views/timetable/timetable')));
+const Print = Loadable(lazy(() => import('../../views/material-kit/forms/PrintFeesReciept')));
 const AppTable = Loadable(lazy(() => import('./tables/AppTable')));
 const AppForm = Loadable(lazy(() => import('./forms/AppForm')));
 const AppButton = Loadable(lazy(() => import('./buttons/AppButton')));
@@ -49,6 +50,10 @@ const materialRoutes = [{
     element: < ViewOne / >
   },
   {
+    path: 'fees/view/:id',
+    element: < Print / >
+  },
+  {
     path: 'batches',
     element: < Batches / >
   },
@@ -75,7 +80,7 @@ const materialRoutes = [{
   {
     path: '/fees',
     element: < Fees / >
-  },  {
+  }, {
     path: '/material/buttons',
     element: < AppButton / >
   }, {
