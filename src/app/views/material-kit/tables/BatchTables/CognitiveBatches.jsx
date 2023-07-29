@@ -16,6 +16,8 @@ import Swal from 'sweetalert2';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import { Link } from 'react-router-dom';
+import { ClassComponentText } from './ClassComponentText';
+
 const StyledTable = styled(Table)(({ theme }) => ({
   whiteSpace: 'pre',
   '& thead': {
@@ -83,6 +85,7 @@ const SimpleTable = (propid) => {
         }
       });
   };
+
   return (
     <Box width="100%" overflow="auto">
       <StyledTable>
