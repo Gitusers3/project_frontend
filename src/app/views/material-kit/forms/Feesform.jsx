@@ -180,8 +180,7 @@ const SimpleForm = ({ Sid, count, setCentredModal }) => {
               name="amount"
               label="Paying fees"
               onChange={handleChange}
-              validators={['required']}
-              errorMessages={['this field is required']}
+            
        
             />):(
               <TextField

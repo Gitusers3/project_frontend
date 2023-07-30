@@ -27,6 +27,7 @@ import {
   MDBModalFooter
 } from 'mdb-react-ui-kit';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import url from '../../../../global';
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
   ...theme.typography.body2,

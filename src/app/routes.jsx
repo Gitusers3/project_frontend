@@ -14,6 +14,7 @@ import CreateBatch from './views/Batches/CreateBatch';
 import Timetable from './views/timetable/timetable';
 import StaffRegister from './views/staffs/Register';
 import Fees from './views/fees_receipt/Fees';
+import QuetechBatches from './views/Batches/QuetechBatches';
 import PrintFeesReceipt from './views/material-kit/forms/PrintFeesReciept';
 // session pages
 const AppForm = Loadable(lazy(() => import('../app/views/material-kit/forms/AppForm')));
@@ -67,6 +68,7 @@ const routes = [
 
   { path: '/batches', element: <Batches /> },
   { path: '/batches/create', element: <CreateBatch /> },
+  { path: '/batches/qtech_create', element: <QuetechBatches /> },
   { path: '/timetable', element: <Timetable /> },
   { path: '/session/404', element: <NotFound /> },
   { path: '/session/signin', element: <JwtLogin /> },

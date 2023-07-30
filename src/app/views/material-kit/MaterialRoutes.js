@@ -11,6 +11,7 @@ const Staffs = Loadable(lazy(() => import('../../views/staffs/Staffs')));
 const Fees = Loadable(lazy(() => import('../../views/fees_receipt/Fees')));
 const Batches = Loadable(lazy(() => import('../../views/Batches/batches')));
 const CreateBatch = Loadable(lazy(() => import('../../views/Batches/CreateBatch')));
+const QuetechBatch=Loadable(lazy(()=>import('../../views/Batches/QuetechBatches')));
 const Timetable = Loadable(lazy(() => import('../../views/timetable/timetable')));
 const Print = Loadable(lazy(() => import('../../views/material-kit/forms/PrintFeesReciept')));
 const AppTable = Loadable(lazy(() => import('./tables/AppTable')));
@@ -59,6 +60,10 @@ const materialRoutes = [{
   {
     path: 'batches/create',
     element: < CreateBatch / >
+  },
+  {
+    path:'batches/qtech_create',
+    element:<QuetechBatch/>
   },
   {
     path: 'timetable',

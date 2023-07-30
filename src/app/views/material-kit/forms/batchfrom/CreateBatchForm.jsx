@@ -73,32 +73,39 @@ const Staffform = () => {
   const theme = useTheme();
 
   const nav = useNavigate();
-  const [division, setDivision] = useState([]);
-  const [selectedDivision, setSelectedDivision] = useState('');
+  const [college, setCollege] = useState([]);
+  const [selectedCollege, setSelectedCollege] = useState('');
   const [batch, setBatch] = useState('');
   const [finalBatch, setFinalBatch] = useState({});
   const [techie, setTechie] = useState([]);
   const [status, setStatus] = useState('Assigned');
   const [selectedTechie, setSelectedTechie] = useState([]);
+  const [project,setProject]=useState([])
 
   useEffect(() => {
     url
-      .get('http://localhost:4000/api/division/view_division')
+      .get('http://localhost:4000/api/college/view')
       .then((res) => {
         console.log(res.data);
-        setDivision(res.data);
+        setCollege(res.data);
       })
       .catch((err) => {
         alert(err);
       });
-  }, [selectedDivision]);
-  const filteredDivision = division.filter(
-    (t) => t.d_name === 'Cognitive Solution' || t.d_name === 'CodeLab Systems'
-  );
+      url
+      .get('http://localhost:4000/api/student/view_project')
+      .then((res) => {
+        console.log("coll",res.data);
+        setProject(res.data);
+      })
+      .catch((err) => {
+        alert(err);
+      });
+  }, [selectedCollege]);
 
-  const handleSelectChangeofDivision = (event) => {
-    setSelectedDivision(event.target.value);
-    console.log(selectedDivision + ' Division ID');
+  const handleSelectChangeofCollege = (event) => {
+    setSelectedCollege(event.target.value);
+    console.log(selectedCollege + ' college');
   };
 
   useEffect(() => {
@@ -137,7 +144,7 @@ const Staffform = () => {
     event.preventDefault();
     const a = {
       batch,
-      d_id: selectedDivision,
+      d_id: selectedCollege,
       tech_id: selectedTechie,
       status: status
     };
@@ -177,17 +184,17 @@ const Staffform = () => {
               label="Batch Name"
             />
             <FormControl fullWidth sx={{ mt: 2 }}>
-              <InputLabel id="demo-simple-select-label">Choose Division</InputLabel>
+              <InputLabel id="demo-simple-select-label">Choose Collge</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 label="Choose Division"
-                value={selectedDivision}
-                onChange={handleSelectChangeofDivision.bind(this)}
+                value={selectedCollege}
+                onChange={handleSelectChangeofCollege.bind(this)}
               >
-                {filteredDivision.map((t) => (
+                {college.map((t) => (
                   <MenuItem key={t._id} value={t._id}>
-                    {t.d_name}
+                    {t.c_name}
                   </MenuItem>
                 ))}
               </Select>
@@ -243,6 +250,23 @@ const Staffform = () => {
                     )} // Pass an array of IDs to getStyles
                   >
                     {name.staff_name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
+            <FormControl fullWidth sx={{ mt: 2 }}>
+              <InputLabel id="demo-simple-select-label">Choose Project</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                label="Choose project"
+                value={selectedCollege}
+                onChange={handleSelectChangeofCollege.bind(this)}
+              >
+                {project.map((t) => (
+                  <MenuItem key={t._id} value={t._id}>
+                    {t.project_title}
                   </MenuItem>
                 ))}
               </Select>
