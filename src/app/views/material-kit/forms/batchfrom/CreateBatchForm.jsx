@@ -80,6 +80,7 @@ const Staffform = () => {
   const [techie, setTechie] = useState([]);
   const [status, setStatus] = useState('Assigned');
   const [selectedTechie, setSelectedTechie] = useState([]);
+  const [project,setProject]=useState([])
 
   useEffect(() => {
     url
@@ -87,6 +88,15 @@ const Staffform = () => {
       .then((res) => {
         console.log(res.data);
         setCollege(res.data);
+      })
+      .catch((err) => {
+        alert(err);
+      });
+      url
+      .get('http://localhost:4000/api/student/view_project')
+      .then((res) => {
+        console.log("coll",res.data);
+        setProject(res.data);
       })
       .catch((err) => {
         alert(err);
@@ -174,7 +184,7 @@ const Staffform = () => {
               label="Batch Name"
             />
             <FormControl fullWidth sx={{ mt: 2 }}>
-              <InputLabel id="demo-simple-select-label">Collge</InputLabel>
+              <InputLabel id="demo-simple-select-label">Choose Collge</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
@@ -240,6 +250,23 @@ const Staffform = () => {
                     )} // Pass an array of IDs to getStyles
                   >
                     {name.staff_name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
+            <FormControl fullWidth sx={{ mt: 2 }}>
+              <InputLabel id="demo-simple-select-label">Choose Project</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                label="Choose project"
+                value={selectedCollege}
+                onChange={handleSelectChangeofCollege.bind(this)}
+              >
+                {project.map((t) => (
+                  <MenuItem key={t._id} value={t._id}>
+                    {t.project_title}
                   </MenuItem>
                 ))}
               </Select>
