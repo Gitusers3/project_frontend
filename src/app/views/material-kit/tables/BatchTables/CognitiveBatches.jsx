@@ -128,6 +128,11 @@ const SimpleTable = (propid) => {
           Create
         </Button>
       </Link>
+      <Link to="time_table/cognitive">
+        <Button fullWidth sx={{ marginTop: '10px' }} variant="outlined">
+           TimeTable
+        </Button>
+      </Link>
     </Box>
   );
 };

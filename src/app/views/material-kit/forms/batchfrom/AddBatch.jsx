@@ -73,52 +73,33 @@ const Staffform = () => {
   const theme = useTheme();
 
   const nav = useNavigate();
-  const [college, setCollege] = useState([]);
-  const [selectedCollege, setSelectedCollege] = useState('');
+  const [division, setDivision] = useState([]);
+  const [selectedDivision, setSelectedDivision] = useState('');
   const [batch, setBatch] = useState('');
   const [finalBatch, setFinalBatch] = useState({});
   const [techie, setTechie] = useState([]);
   const [status, setStatus] = useState('Assigned');
   const [selectedTechie, setSelectedTechie] = useState([]);
-  const [project,setProject]=useState([])
-  const [selectedProject, setSelectedProject] = useState([]);
-
 
   useEffect(() => {
     url
-      .get('http://localhost:4000/api/college/view')
+      .get('http://localhost:4000/api/division/view_division')
       .then((res) => {
         console.log(res.data);
-        setCollege(res.data);
+        setDivision(res.data);
       })
       .catch((err) => {
         alert(err);
       });
-      url
-      .get('http://localhost:4000/api/student/view_project')
-      .then((res) => {
-        console.log("coll",res.data);
+  }, [selectedDivision]);
+  const filteredDivision = division.filter(
+    (t) => t.d_name === 'Cognitive Solution' || t.d_name === 'CodeLab Systems'
+  );
 
-        setProject(res.data);
-       
-      })
-      .catch((err) => {
-        alert(err);
-      });
-  }, [selectedCollege]);
-
- const filteredproject=project.filter((item)=>{
-    return item.college_id===selectedCollege;
-  })
-
-
-  console.log("filterproject",filteredproject)
-
-  const handleSelectChangeofCollege = (event) => {
-    setSelectedCollege(event.target.value);
-    console.log(selectedCollege + ' college');
+  const handleSelectChangeofDivision = (event) => {
+    setSelectedDivision(event.target.value);
+    console.log(selectedDivision + ' Division ID');
   };
- 
 
   useEffect(() => {
     // Make the API request
@@ -152,33 +133,12 @@ const Staffform = () => {
     console.log(selectedTechiesWithNames); // Selected techies with names and IDs
   };
 
-
-  
-  const handleChange2 = (event) => {
-    const {
-      target: { value }
-    } = event;
-    const selectedProjectsWithNames = value.map((id) => {
-      const pro = filteredproject.find((pro) => pro._id === id);
-      return pro ? { _id: pro._id, project_title: pro.project_title } : null;
-    });
-
-    setSelectedProject(selectedProjectsWithNames);
-    console.log(selectedProjectsWithNames); // Selected techies with names and IDs
-  };
-
-  console.log("selectedpro",selectedProject)
-
-
-
   const handleSubmit = (event) => {
     event.preventDefault();
     const a = {
       batch,
-      d_id:'64b63281e4c71dfecf988dda',
-      c_id: selectedCollege,
+      d_id: selectedDivision,
       tech_id: selectedTechie,
-      project_id:selectedProject,
       status: status
     };
     console.log(a);
@@ -217,17 +177,17 @@ const Staffform = () => {
               label="Batch Name"
             />
             <FormControl fullWidth sx={{ mt: 2 }}>
-              <InputLabel id="demo-simple-select-label">Choose Collge</InputLabel>
+              <InputLabel id="demo-simple-select-label">Choose Division</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 label="Choose Division"
-                value={selectedCollege}
-                onChange={handleSelectChangeofCollege.bind(this)}
+                value={selectedDivision}
+                onChange={handleSelectChangeofDivision.bind(this)}
               >
-                {college.map((t) => (
+                {filteredDivision.map((t) => (
                   <MenuItem key={t._id} value={t._id}>
-                    {t.c_name}
+                    {t.d_name}
                   </MenuItem>
                 ))}
               </Select>
@@ -283,41 +243,6 @@ const Staffform = () => {
                     )} // Pass an array of IDs to getStyles
                   >
                     {name.staff_name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-
-            <FormControl fullWidth sx={{ mt:4  }}>
-              <InputLabel id="demo-simple-select-label">Choose Project</InputLabel>
-              <Select
-                labelId="demo-multiple-chip-label"
-                id="demo-multiple-chip"
-                multiple
-                value={selectedProject?.map((pro) => pro._id)} // Pass an array of IDs to the Select component
-                onChange={handleChange2}
-                input={<OutlinedInput id="select-multiple-chip" label="Choose Project" />}
-                renderValue={(selected) => (
-                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                    {selectedProject?.map((pro) => (
-                      <Chip key={pro._id} label={pro.project_title} />
-                    ))}
-                  </Box>
-                )}
-                MenuProps={MenuProps}
-              >
-                {filteredproject.map((name) => (
-                  <MenuItem
-                    key={name._id}
-                    value={name._id}
-                    label={name.project_title}
-                    style={getStyles(
-                      name,
-                      selectedProject?.map((pro) => pro._id),
-                      theme
-                    )} // Pass an array of IDs to getStyles
-                  >
-                    {name.project_title}
                   </MenuItem>
                 ))}
               </Select>
