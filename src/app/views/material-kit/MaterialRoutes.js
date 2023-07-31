@@ -28,6 +28,8 @@ const AppDialog = Loadable(lazy(() => import('./dialog/AppDialog')));
 const AppSnackbar = Loadable(lazy(() => import('./snackbar/AppSnackbar')));
 const AppAutoComplete = Loadable(lazy(() => import('./auto-complete/AppAutoComplete')));
 const AppExpansionPanel = Loadable(lazy(() => import('./expansion-panel/AppExpansionPanel')));
+const Cognitive_TimeTable=Loadable(lazy(()=>import('./tables/TimeTable/Cognitive_TimeTable')))
+const AddCogTimeTable=Loadable(lazy(()=>import('./tables/TimeTable/AddCogTimeTable.jsx')))
 
 const materialRoutes = [{
     path: '/material/table',
@@ -64,6 +66,14 @@ const materialRoutes = [{
   {
     path:'batches/qtech_create',
     element:<QuetechBatch/>
+  },
+   {
+    path:'batches/time_table/cognitive',
+    element:<Cognitive_TimeTable/>
+  },
+   {
+    path:'time_table/cognitive',
+    element:<AddCogTimeTable/>
   },
   {
     path: 'timetable',

@@ -83,6 +83,7 @@ export default function QuetechBatches(propid) {
         }
       });
   };
+  console.log("batch",batch)
   return  <div>
   <Box width="100%" overflow="auto">
    <StyledTable>
@@ -91,6 +92,8 @@ export default function QuetechBatches(propid) {
          <TableCell align="left">Sl No</TableCell>
          <TableCell align="center">Name</TableCell>
          <TableCell align="center">Techie</TableCell>
+         <TableCell align="center">Project</TableCell>
+         <TableCell align="center">College</TableCell>
          <TableCell align="center">Status</TableCell>
          <TableCell align="right">Action</TableCell>
        </TableRow>
@@ -101,12 +104,16 @@ export default function QuetechBatches(propid) {
          ?.filter((va) => va?.d_id?._id === propid.propid)
          .map((item, index) => {
            const techNames = item.tech_id.map((tech) => tech.staff_name).join(', ');
+           const project_title = item.project_id.map((pro) => pro.project_title).join(', ');
+          
 
            return (
              <TableRow key={item._id}>
                <TableCell align="left">{index + 1}</TableCell>
                <TableCell align="center">{item.b_name}</TableCell>
                <TableCell align="center">{techNames}</TableCell>
+               <TableCell align="center">{project_title}</TableCell>
+               <TableCell align="center">{item.college_id.c_name}</TableCell>
                <TableCell align="center">{item.status}</TableCell>
                <TableCell align="right">
                  <IconButton>
@@ -122,9 +129,10 @@ export default function QuetechBatches(propid) {
    </StyledTable>
    <Link to="qtech_create">
      <Button fullWidth sx={{ marginTop: '10px' }} variant="outlined">
-       Create
+       Create Batch
      </Button>
    </Link>
+  
  </Box>
 </div>;
 }
