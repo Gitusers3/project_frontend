@@ -1,7 +1,9 @@
-import { Stack } from '@mui/material';
 import { Box, styled } from '@mui/material';
 import { Breadcrumb, SimpleCard } from 'app/components';
-import BatchForm from '../material-kit/forms/batchfrom/AddBatch';
+
+
+import CogSimpleTable from './CogSimpleTable';
+
 const Container = styled('div')(({ theme }) => ({
   margin: '30px',
   [theme.breakpoints.down('sm')]: { margin: '16px' },
@@ -11,20 +13,18 @@ const Container = styled('div')(({ theme }) => ({
   }
 }));
 
-const Register = () => {
+export default function Cognitive_TimeTable() {
   return (
     <Container>
       <Box className="breadcrumb">
-        <Breadcrumb routeSegments={[{ name: 'New Batch' }]} />
+        <Breadcrumb routeSegments={[{ name: 'Cognitive', path: '/batches' }, { name: 'Time Table' }]} />
       </Box>
 
-      <Stack spacing={3}>
-        <SimpleCard>
-          <BatchForm />
-        </SimpleCard>
-      </Stack>
-    </Container>
-  );
-};
+      <SimpleCard title="Time Table">
+        <CogSimpleTable/>
+      </SimpleCard>
 
-export default Register;
+    
+    </Container>
+  )
+}
