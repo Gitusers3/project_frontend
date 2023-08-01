@@ -16,6 +16,10 @@ import StaffRegister from './views/staffs/Register';
 import Fees from './views/fees_receipt/Fees';
 import QuetechBatches from './views/Batches/QuetechBatches';
 import PrintFeesReceipt from './views/material-kit/forms/PrintFeesReciept';
+import Ongoing from './views/report/ongoing/ongoing';
+import Completed from './views/report/completed/completed';
+import Discontinued from './views/report/discontinued/discontinued';
+import OngoingByCollege from './views/material-kit/tables/reports/ongoing/OngoingStudentsByCollege';
 // session pages
 const AppForm = Loadable(lazy(() => import('../app/views/material-kit/forms/AppForm')));
 
@@ -70,6 +74,10 @@ const routes = [
   { path: '/batches/create', element: <CreateBatch /> },
   { path: '/batches/qtech_create', element: <QuetechBatches /> },
   { path: '/timetable', element: <Timetable /> },
+  { path: '/report/ongoing', element: <Ongoing /> },
+  { path: '/report/ongoing/viewByCollege/:id', element: <OngoingByCollege /> },
+  { path: '/report/completed', element: <Completed /> },
+  { path: '/report/discontinued', element: <Discontinued /> },
   { path: '/session/404', element: <NotFound /> },
   { path: '/session/signin', element: <JwtLogin /> },
   { path: '/session/signin', element: <JwtLogin /> },

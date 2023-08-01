@@ -84,7 +84,6 @@ const SimpleForm = () => {
     return () => ValidatorForm.removeValidationRule('isPasswordMatch');
   }, [state.password]);
 
-
   // profile picture uploading to state
   const [selectedFile, setSelectedFile] = useState(null);
   const UploadPic = (event) => {
@@ -140,8 +139,7 @@ const SimpleForm = () => {
       });
   }, []);
 
-
-  console.log("intern",intern)
+  console.log('intern', intern);
 
   const handleSelectChange = (event) => {
     setSelectedCourse(event.target.value);
@@ -279,7 +277,6 @@ const SimpleForm = () => {
         alert(err);
       });
   };
-  
 
   // console.log(selectedcollege + ' selected college');
 

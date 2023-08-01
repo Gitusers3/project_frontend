@@ -11,9 +11,13 @@ const Staffs = Loadable(lazy(() => import('../../views/staffs/Staffs')));
 const Fees = Loadable(lazy(() => import('../../views/fees_receipt/Fees')));
 const Batches = Loadable(lazy(() => import('../../views/Batches/batches')));
 const CreateBatch = Loadable(lazy(() => import('../../views/Batches/CreateBatch')));
-const QuetechBatch=Loadable(lazy(()=>import('../../views/Batches/QuetechBatches')));
+const QuetechBatch = Loadable(lazy(() => import('../../views/Batches/QuetechBatches')));
 const Timetable = Loadable(lazy(() => import('../../views/timetable/timetable')));
 const Print = Loadable(lazy(() => import('../../views/material-kit/forms/PrintFeesReciept')));
+const Ongoing = Loadable(lazy(() => import('../report/ongoing/ongoing')));
+const OngoingByCollege = Loadable(lazy(() => import('../../views/material-kit/tables/reports/ongoing/OngoingStudentsByCollege')));
+const Completed = Loadable(lazy(() => import('../report/completed/completed')));
+const Discontinued = Loadable(lazy(() => import('../report/discontinued/discontinued')));
 const AppTable = Loadable(lazy(() => import('./tables/AppTable')));
 const AppForm = Loadable(lazy(() => import('./forms/AppForm')));
 const AppButton = Loadable(lazy(() => import('./buttons/AppButton')));
@@ -64,8 +68,8 @@ const materialRoutes = [{
     element: < CreateBatch / >
   },
   {
-    path:'batches/qtech_create',
-    element:<QuetechBatch/>
+    path: 'batches/qtech_create',
+    element: < QuetechBatch / >
   },
    {
     path:'batches/time_table/cognitive',
@@ -78,6 +82,22 @@ const materialRoutes = [{
   {
     path: 'timetable',
     element: < Timetable / >
+  },
+  {
+    path: 'report/ongoing',
+    element: < Ongoing / >
+  },
+  {
+    path: 'report/ongoing/viewByCollege/:id',
+    element: < OngoingByCollege / >
+  },
+  {
+    path: 'report/completed',
+    element: < Completed / >
+  },
+  {
+    path: 'report/discontinued',
+    element: < Discontinued / >
   },
   {
     path: '/material/form',
