@@ -18,7 +18,7 @@ import SendIcon from '@mui/icons-material/Send';
 import Stack from '@mui/material/Stack';
 import InputLabel from '@mui/material/InputLabel';
 import Paper from '@mui/material/Paper';
-import MdbTable from './ongoingstudents';
+import OngoingStudents from './ongoingstudents';
 import axios from 'axios';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
@@ -69,8 +69,19 @@ const PaginationTable = (propss) => {
     // alert(fdate);
     // alert(tdate);
   };
+
+  useEffect(() => {
+    const storedResult = localStorage.getItem('OngoingGetResult');
+    if (storedResult !== null) {
+      setResult(storedResult === 'true');
+    }
+  }, []);
   const getResult = () => {
-    setResult((prevState) => !prevState);
+    setResult((prevState) => {
+      const updatedResult = !prevState;
+      localStorage.setItem('OngoingGetResult', updatedResult.toString());
+      return updatedResult;
+    });
   };
   console.log(result);
 
@@ -89,9 +100,7 @@ const PaginationTable = (propss) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-  const handleSelectChangeofCollege = (event) => {
-    setSelectedCollege(event.target.value);
-  };
+
   useEffect(() => {
     // Make the API request
     axios
@@ -105,6 +114,18 @@ const PaginationTable = (propss) => {
       });
     // alert(selectedDivision);
   }, [selectedCollege]);
+
+  useEffect(() => {
+    const storedCollege = localStorage.getItem('OngoingCollege');
+    if (storedCollege) {
+      setSelectedCollege(storedCollege);
+    }
+  }, []);
+  const handleSelectChangeofCollege = (event) => {
+    const selectedValue = event.target.value;
+    setSelectedCollege(selectedValue);
+    localStorage.setItem('OngoingCollege', selectedValue);
+  };
   return (
     <div>
       <Box width="100%" overflow="auto">
@@ -197,7 +218,7 @@ const PaginationTable = (propss) => {
             />
           </>
         ) : (
-          <MdbTable fromDate={fdate} toDate={tdate} divprop={propss} clg={selectedCollege} />
+          <OngoingStudents fromDate={fdate} toDate={tdate} divprop={propss} clg={selectedCollege} />
         )}
       </Box>
     </div>

@@ -110,7 +110,7 @@ const DatatablePage = (divprop) => {
     })
     .filter((va) => {
       // Second filter - filter based on student status (assuming all_status is a property in the 'va' object)
-      return va?.all_status === 'Ongoing';
+      return va?.all_status === 'Completed';
     })
     .map((item, index) => {
       console.log(item._id);

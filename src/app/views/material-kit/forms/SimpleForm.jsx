@@ -279,7 +279,23 @@ const SimpleForm = () => {
   };
 
   // console.log(selectedcollege + ' selected college');
-
+  const [projects, setProjects] = useState({});
+  const [selectedproject, setSelectedProject] = useState('');
+  const [isChecked, setIsChecked] = useState(false);
+  const handleCheckboxChange = (event) => {
+    setIsChecked(event.target.checked);
+    console.log(event.target.checked);
+  };
+  //  useEffect(() => {
+  //     axios
+  //       .get('http://localhost:4000/api/college/view')
+  //       .then((res) => {
+  //         setDisc(res.data);
+  //       })
+  //       .catch((err) => {
+  //         console.log(err);
+  //       });
+  //   }, []);
   return (
     <div>
       <ValidatorForm onSubmit={handleSubmit}>
@@ -604,67 +620,95 @@ const SimpleForm = () => {
               <h4 sx={{ fontWeight: 'bolder' }} className="text-center">
                 <b>Project Details</b>
               </h4>
-              <FormControlLabel control={<Checkbox />} label="Existing Project" />
-              <TextField
-                type="text"
-                name="project_title"
-                id="standard-basic"
-                onChange={handleChange}
-                label="Project Title"
+              <FormControlLabel
+                checked={isChecked}
+                onChange={handleCheckboxChange}
+                control={<Checkbox />}
+                label="Existing Project"
               />
+              {isChecked === true ? (
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">Choose Division</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    name="division_id"
+                    label="Choose Division"
+                    value={selectedDivision}
+                    onChange={handleSelectChangeofDivision}
+                  >
+                    {divsn.map((division) => (
+                      <MenuItem key={division._id} value={division._id}>
+                        {division.d_name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              ) : (
+                <div>
+                  <TextField
+                    type="text"
+                    name="project_title"
+                    id="standard-basic"
+                    onChange={handleChange}
+                    label="Project Title"
+                  />
+
+                  <TextField
+                    type="text"
+                    name="username"
+                    id="standard-basic"
+                    onChange={handleChange}
+                    label="Project Company"
+                  />
+                  <TextField
+                    type="text"
+                    name="project_client_name"
+                    id="standard-basic"
+                    onChange={handleChange}
+                    label="Project Client Name"
+                  />
+                  <TextField
+                    type="text"
+                    name="project_client_contact"
+                    id="standard-basic"
+                    onChange={handleChange}
+                    label="Project Client Contact number"
+                  />
+                  <TextField
+                    type="text"
+                    name="project_client_email"
+                    id="standard-basic"
+                    onChange={handleChange}
+                    label="Project Client Email ID"
+                  />
+
+                  <TextField
+                    sx={{ mb: 4 }}
+                    type="text"
+                    name="project_description"
+                    label="Project Decription"
+                    onChange={handleChange}
+                  />
+                  <TextField
+                    sx={{ mb: 4 }}
+                    type="text"
+                    name="front_end_pro_lang"
+                    label="Frontend Programming Language"
+                    onChange={handleChange}
+                  />
+                  <TextField
+                    sx={{ mb: 4 }}
+                    type="text"
+                    name="backend_pro_lang"
+                    label="Backend Programming Language"
+                    onChange={handleChange}
+                  />
+                </div>
+              )}
 
               <TextField
-                type="text"
-                name="username"
-                id="standard-basic"
-                onChange={handleChange}
-                label="Project Company"
-              />
-              <TextField
-                type="text"
-                name="project_client_name"
-                id="standard-basic"
-                onChange={handleChange}
-                label="Project Client Name"
-              />
-              <TextField
-                type="text"
-                name="project_client_contact"
-                id="standard-basic"
-                onChange={handleChange}
-                label="Project Client Contact number"
-              />
-              <TextField
-                type="text"
-                name="project_client_email"
-                id="standard-basic"
-                onChange={handleChange}
-                label="Project Client Email ID"
-              />
-
-              <TextField
-                sx={{ mb: 4 }}
-                type="text"
-                name="project_description"
-                label="Project Decription"
-                onChange={handleChange}
-              />
-              <TextField
-                sx={{ mb: 4 }}
-                type="text"
-                name="front_end_pro_lang"
-                label="Frontend Programming Language"
-                onChange={handleChange}
-              />
-              <TextField
-                sx={{ mb: 4 }}
-                type="text"
-                name="backend_pro_lang"
-                label="Backend Programming Language"
-                onChange={handleChange}
-              />
-              <TextField
-                sx={{ mb: 4 }}
+                sx={{ mb: 4, mt: '10px' }}
                 type="text"
                 name="total_fees"
                 label="Fees"
@@ -905,7 +949,13 @@ const SimpleForm = () => {
 
         {/* internship details for codeLab */}
 
-        <Button fullWidth color="primary" variant="contained" type="submit">
+        <Button
+          fullWidth
+          color="primary"
+          variant="contained"
+          type="submit"
+          sx={{ marginTop: '10px' }}
+        >
           {/* <Icon>send</Icon> */}
           <Span sx={{ pl: 1, textTransform: 'capitalize' }}>Submit</Span>
         </Button>
