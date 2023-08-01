@@ -27,7 +27,14 @@ export default function LabTabs() {
   const handleChange = (event, newValue) => {
     // alert(newValue);
     setValue(newValue);
+    localStorage.setItem('DiscontinuedTabs', newValue);
   };
+  useEffect(() => {
+    const storedValue = localStorage.getItem('DiscontinuedTabs');
+    if (storedValue) {
+      setValue(storedValue);
+    }
+  }, []);
   const allDataTab = {
     label: 'All',
     value: 'all',

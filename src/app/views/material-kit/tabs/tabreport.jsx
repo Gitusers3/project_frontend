@@ -24,10 +24,23 @@ export default function LabTabs() {
         console.log(err);
       });
   }, []);
+  useEffect(() => {
+    const storedValue = localStorage.getItem('OngoingTabs');
+    if (storedValue) {
+      setValue(storedValue);
+    }
+  }, []);
   const handleChange = (event, newValue) => {
     // alert(newValue);
     setValue(newValue);
+    localStorage.setItem('OngoingTabs', newValue);
   };
+  // Remove the item from localStorage when the component unmounts
+  // useEffect(() => {
+  //   return () => {
+  //     localStorage.removeItem('selectedTabValue');
+  //   };
+  // }, []);
   const allDataTab = {
     label: 'All',
     value: 'all',
