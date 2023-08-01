@@ -64,6 +64,26 @@ export const navigations = [{
 
   },
   {
+    name: 'Student Reports',
+    icon: 'storage',
+    children: [{
+        name: 'Ongoing',
+        iconText: 'SI',
+        path: '/report/ongoing'
+      },
+      {
+        name: 'Completed',
+        iconText: 'SU',
+        path: '/report/completed'
+      },
+      {
+        name: 'Discontinued',
+        iconText: 'FP',
+        path: '/report/discontinued'
+      }
+    ]
+  },
+  {
     name: 'Session/Auth',
     icon: 'security',
     children: [{
