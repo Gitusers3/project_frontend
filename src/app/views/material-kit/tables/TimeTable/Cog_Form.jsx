@@ -58,7 +58,11 @@ function Cog_Form() {
     const [type, setType] = useState('');
 
     const [batch,setBatch]=useState([])
-    const [selectedbatch,setSelectedbatch]=useState('')    
+    const [selectedbatch,setSelectedbatch]=useState('')  
+    const [day,setDay]=useState('')  
+    const [session1,setSesion1]=useState('')  
+    const [session2,setSesion2]=useState('')  
+    const [timetable,setTimetable]=useState({})
 
   
     const handleType = (e) => {
@@ -67,13 +71,19 @@ function Cog_Form() {
   
   
   
-  const handleChange = (event) => {
-    event.persist();
-    setSelectedbatch(event.target.value)
+  const handleChange = (e) => {
+    e.preventDefault();
+    setTimetable({
+        ...timetable,
+        [e.target.name]:e.target.value
+    })
     
    
   
   };
+
+
+
   
   
     useEffect(() => {
@@ -90,11 +100,13 @@ function Cog_Form() {
     }, []);
     console.log('batch',batch)
     const filterBatch=batch.filter((item)=>{
-        return item.d_id?._id=="64b63271e4c71dfecf988dd8"
+        return item.d_id?.d_name==="Cognitive Solution"
 
     })
 
     console.log("filterBatch",filterBatch)
+    console.log("filterBatch name",filterBatch)
+   
    
 
 
@@ -102,16 +114,17 @@ function Cog_Form() {
 
     const handleSubmit = (event) => {
       event.preventDefault();
+
    
   
   
   
   
-      axios.post('http://localhost:4000/api/staff/insert',{}).then((res)=>{
+      url.post('cstimetable/insert',timetable).then((res)=>{
           console.log(res.data)
-          alert("Staff Details added Successfully")
+          alert(" Time Tables Details added Successfully")
     
-      nav("/staffs")
+    //   nav("/staffs")
           
     
     
@@ -119,9 +132,7 @@ function Cog_Form() {
           alert(err)
     
         })
-        .catch((err) => {
-          alert(err);
-        });
+     
     };
   
 
@@ -143,10 +154,10 @@ function Cog_Form() {
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              name="employee_type"
+              name="dayofweek"
               label="Choose Day"
-              value={type}
-              onChange={handleType}
+             
+              onChange={handleChange}
             >
               <MenuItem value="Monday">Monday</MenuItem>
               <MenuItem value="Tuesday">Tuesday</MenuItem>
@@ -156,24 +167,24 @@ function Cog_Form() {
               <MenuItem value="Saturday">Saturday</MenuItem>
             </Select>
           </FormControl>
-
+        
           <FormControl fullWidth style={{ marginBottom: '20px' }}>
-          <InputLabel id="demo-simple-select-label">Choose Batch</InputLabel>  
+          <InputLabel id="demo-simple-select-label">Session 1</InputLabel>  
+         
           <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              name="employee_type"
+              name="first_session"
               label="Session 1"
-            //   value={selectedbatch}
-            //   onChange={handleChange}
+           
+              onChange={handleChange}
             >
 
-                {filterBatch.map((item)=>{
-                     <MenuItem value="male">{item.status}</MenuItem>
-
-
-                })}
-               
+{filterBatch.map((item) =>{ return (
+      <MenuItem key={item._id} value={item.b_name}>
+        {item.b_name}
+      </MenuItem>
+    ) })}
             
                   
            
@@ -185,34 +196,41 @@ function Cog_Form() {
 
        
         </Grid>
+        
 
-        {/* <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
-          <TextField type="text" name="blood_group" label="Bood Group" onChange={handleChange} />
-          <FormControl fullWidth style={{ marginBottom: '20px' }}>
-            <InputLabel id="demo-simple-select-label">Gender </InputLabel>
-            <Select
+        <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
+
+       
+
+         
+          <FormControl fullWidth style={{ marginBottom: '10px',marginTop:'70px' }}>
+            <InputLabel id="demo-simple-select-label">Session 2 </InputLabel>
+           
+          <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              name="gender"
-              label="Choose Division"
-              onChange={handleGender}
-              value={gender}
+              name="second_session"
+              label="Session 2"
+          
+              onChange={handleChange}
             >
-              <MenuItem value="male">Male</MenuItem>
-              <MenuItem value="female">Female</MenuItem>
+
+{filterBatch.map((item) =>{ return (
+      <MenuItem key={item._id} value={item.b_name}>
+        {item.b_name}
+      </MenuItem>
+    ) })}
+            
+                  
+           
+             
             </Select>
           </FormControl>
       
         
-          <TextField
-            type="text"
-            name="adhar_no"
-            // onChange={handleChange}
-            label="Adhar Number"
-          />
-
         
-        </Grid> */}
+        
+        </Grid>
       </Grid>
 
       {/* project details for queuetech */}
