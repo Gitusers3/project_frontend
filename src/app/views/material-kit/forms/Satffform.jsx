@@ -76,15 +76,12 @@ const Staffform = () => {
     setDesignation(e.target.value);
   };
 
-const handleChange = (event) => {
-  event.persist();
-  setStaff({
+  const handleChange = (event) => {
+    setStaff({
       ...staff,
-      [event.target.name]:event.target.value
-  })
-
-};
-
+      [event.target.name]: event.target.value
+    });
+  };
 
   useEffect(() => {
     url
@@ -108,31 +105,15 @@ const handleChange = (event) => {
   }, [state.password]);
 
   const handleSubmit = (event) => {
-    event.preventDefault();
-    setStaffdetails({
-   
-      
-        employee_type:type,
-        employee_category:category,
-        gname:gender,
-        role_id:roleid,
-        designation:designation
-    })
-
-
-
-
-    axios.post('http://localhost:4000/api/staff/insert',{staffdetails,staff}).then((res)=>{
-        console.log(res.data)
-        alert("Staff Details added Successfully")
-  
-    nav("/staffs")
-        
-  
-  
-      }).catch((err)=>{
-        alert(err)
-  
+    axios
+      .post('http://localhost:4000/api/staff/insert', staff)
+      .then((res) => {
+        console.log(res.data);
+        alert('Staff Details added Successfully');
+        // nav('/staffs');
+      })
+      .catch((err) => {
+        alert(err);
       })
       .catch((err) => {
         alert(err);
@@ -141,7 +122,6 @@ const handleChange = (event) => {
 
   console.log('sdfr', staffdetails);
   console.log('staff', staff);
-
 
   const handleDateChange = (date) => setState({ ...state, date });
 
@@ -205,8 +185,7 @@ const handleChange = (event) => {
                 id="demo-simple-select"
                 name="employee_type"
                 label="Choose Employee type"
-                value={type}
-                onChange={handleType}
+                onChange={handleChange}
               >
                 <MenuItem value="Full Time">Full Time</MenuItem>
                 <MenuItem value="Full Time">Part Time</MenuItem>
@@ -219,8 +198,7 @@ const handleChange = (event) => {
                 id="demo-simple-select"
                 name="employee_category"
                 label="Choose Division"
-                onChange={handleCategory}
-                value={category}
+                onChange={handleChange}
               >
                 <MenuItem value="Permanent">Permanent</MenuItem>
                 <MenuItem value="Temporry">Temporary</MenuItem>
@@ -234,10 +212,7 @@ const handleChange = (event) => {
                 id="demo-simple-select"
                 label="Employee Role"
                 name="role_id"
-                value={roleid}
-                onChange={(e) => {
-                  setRoleid(e.target.value);
-                }}
+                onChange={handleChange}
               >
                 {role.map((item) => {
                   return <MenuItem value={item._id}>{item.role}</MenuItem>;
@@ -290,9 +265,8 @@ const handleChange = (event) => {
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 name="designation"
-                label="Choose Employee designation"
-                value={designation}
-                onChange={handledesignation}
+                label="Employee designation"
+                onChange={handleChange}
               >
                 <MenuItem value="Administartor">Administartor</MenuItem>
                 <MenuItem value="HR">HR </MenuItem>

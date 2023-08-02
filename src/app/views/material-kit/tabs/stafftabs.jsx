@@ -12,7 +12,7 @@ import StudentCq from '../tables/StudentCq';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 export default function LabTabs() {
-  const [value, setValue] = useState('IT Operation');
+  const [value, setValue] = useState('all');
   const [dv, setDv] = useState('all');
   const [divsn1, setDivsn1] = useState(['IT Operation']);
   const handleChange = (event, newValue) => {

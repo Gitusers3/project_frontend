@@ -86,11 +86,11 @@ const SimpleForm = () => {
   }, [state.password]);
 
   // profile picture uploading to state
-  const [selectedFile, setSelectedFile] = useState(null);
+  let file = new FormData();
   const UploadPic = (event) => {
-    const file = event.target.files[0];
-    setSelectedFile(file);
-    console.log(selectedFile);
+    const image = event.target.files[0];
+    file.append('name', image);
+    console.log(image);
   };
 
   const handleDateChange = (date) => setState({ ...state, date });
@@ -252,10 +252,6 @@ const SimpleForm = () => {
 
   // profile picture uploading to state
 
-  useEffect(() => {
-    console.log(selectedFile); // This will log the updated value of selectedFile
-  }, [selectedFile]);
-
   // console.log(selectedcollege + ' selected college');
   const [project, setProject] = useState([]);
   const [selectedProject, setSelectedProject] = useState('');
@@ -285,7 +281,6 @@ const SimpleForm = () => {
 
     setStudent({
       ...student,
-      image: selectedFile,
       all_status: status,
       division_id: selectedDivision,
       course_id: selectedCourse,
@@ -295,9 +290,12 @@ const SimpleForm = () => {
     });
   };
   const handleSubmit = (event) => {
+    for (let x in student) {
+      file.append(x, student[x]);
+    }
     event.preventDefault();
     axios
-      .post('http://localhost:4000/api/student/insert', { student, ug, sslc, puc })
+      .post('http://localhost:4000/api/student/insert', { file })
       .then((res) => {
         console.log(res.data);
         // alert('Student Details added Successfully');
@@ -326,24 +324,24 @@ const SimpleForm = () => {
       /* Read more about handling dismissals below */
       if (result.dismiss === Swal.DismissReason.timer) {
         console.log('Student Inserted successfully');
-        nav('/student/students');
+        // nav('/student/students');
       }
     });
   };
   return (
     <div>
-      <ValidatorForm onSubmit={handleSubmit}>
+      <ValidatorForm onSubmit={handleSubmit} enctype="multipart/form-data">
         <h2 className="text-center">Personal Details</h2>
         <Grid container spacing={6}>
           <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
             <TextField
               type="text"
-              name="reg"
+              name="our_reg_no"
               id="standard-basic"
               onChange={handleChange}
               label="Register Number (for Office)"
             />
-            <TextField type="date" name="firstName" label="" onChange={handleChange} />
+            <TextField type="date" name="date_of_admission" label="" onChange={handleChange} />
             <FormControl fullWidth>
               <InputLabel id="demo-simple-select-label">Choose Division</InputLabel>
               <Select
@@ -395,7 +393,7 @@ const SimpleForm = () => {
             <TextField
               sx={{ mb: 4 }}
               type="text"
-              name="creditCard"
+              name="t_address"
               label="Address"
               onChange={handleChange}
             />
