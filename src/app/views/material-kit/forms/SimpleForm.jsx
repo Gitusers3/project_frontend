@@ -37,6 +37,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogActions from '@mui/material/DialogActions';
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import { Subject } from '@mui/icons-material';
+import Swal from 'sweetalert2';
 
 const filter = createFilterOptions();
 // const mock = new MockAdapter(axios);
@@ -49,11 +50,10 @@ const TextField = styled(TextValidator)(() => ({
 const SimpleForm = () => {
   const nav = useNavigate();
   const [state, setState] = useState({ date: new Date() });
-  const [student, setStudent] = useState({ date: new Date() ,status:"ongoing"});
+  const [student, setStudent] = useState({ date: new Date(), status: 'ongoing' });
   const [ug, setUg] = useState({});
   const [puc, setPuc] = useState({});
   const [sslc, setSslc] = useState({});
-
 
   const handleUg = (e) => {
     setUg({ ...ug, [e.target.name]: e.target.value });
@@ -200,6 +200,7 @@ const SimpleForm = () => {
   const [value, setValue] = useState(null);
   const [open, toggleOpen] = useState(false);
   const [count, setCount] = useState(1);
+  const [status, setStatus] = useState('Ongoing');
 
   const handleClose = () => {
     setDialogValue({
@@ -245,7 +246,7 @@ const SimpleForm = () => {
         alert(err);
         console.log('Error frontend:', err);
       });
-
+    setCount((prevCount) => prevCount + 1);
     handleClose();
   };
 
@@ -254,34 +255,6 @@ const SimpleForm = () => {
   useEffect(() => {
     console.log(selectedFile); // This will log the updated value of selectedFile
   }, [selectedFile]);
-
-  const handleChange = (event) => {
-    event.persist();
-
-    setStudent({
-      ...student,
-      image: selectedFile,
-      division_id: selectedDivision,
-      course_id: selectedCourse,
-      college_id: selectedcollege,
-      [event.target.name]: event.target.value
-    });
-  };
-
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    axios
-      .post('http://localhost:4000/api/student/insert', { student, ug, sslc, puc })
-      .then((res) => {
-        console.log(res.data);
-        // alert('Student Details added Successfully');
-        // nav('/student/students');
-      })
-      .catch((err) => {
-        alert(err);
-      });
-  };
 
   // console.log(selectedcollege + ' selected college');
   const [project, setProject] = useState([]);
@@ -307,6 +280,56 @@ const SimpleForm = () => {
   };
   const filteredProjects = project.filter((project) => project.college_id === selectedcollege);
 
+  const handleChange = (event) => {
+    event.persist();
+
+    setStudent({
+      ...student,
+      image: selectedFile,
+      all_status: status,
+      division_id: selectedDivision,
+      course_id: selectedCourse,
+      college_id: selectedcollege,
+      project_id: selectedProject,
+      [event.target.name]: event.target.value
+    });
+  };
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    axios
+      .post('http://localhost:4000/api/student/insert', { student, ug, sslc, puc })
+      .then((res) => {
+        console.log(res.data);
+        // alert('Student Details added Successfully');
+        // nav('/student/students');
+      })
+      .catch((err) => {
+        alert(err);
+      });
+    let timerInterval;
+    Swal.fire({
+      title: 'Student Details inserted Successfully',
+      html: 'You are redirecting to student table in <b></b> milliseconds.',
+      timer: 2000,
+      timerProgressBar: true,
+      didOpen: () => {
+        Swal.showLoading();
+        const b = Swal.getHtmlContainer().querySelector('b');
+        timerInterval = setInterval(() => {
+          b.textContent = Swal.getTimerLeft();
+        }, 100);
+      },
+      willClose: () => {
+        clearInterval(timerInterval);
+      }
+    }).then((result) => {
+      /* Read more about handling dismissals below */
+      if (result.dismiss === Swal.DismissReason.timer) {
+        console.log('Student Inserted successfully');
+        nav('/student/students');
+      }
+    });
+  };
   return (
     <div>
       <ValidatorForm onSubmit={handleSubmit}>
@@ -373,7 +396,7 @@ const SimpleForm = () => {
               sx={{ mb: 4 }}
               type="text"
               name="creditCard"
-              label="t_address"
+              label="Address"
               onChange={handleChange}
             />
             <TextField
