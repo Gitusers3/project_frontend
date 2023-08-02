@@ -77,7 +77,7 @@ const Staffform = () => {
   };
 
 const handleChange = (event) => {
-  event.persist();
+  event.preventDefault();
   setStaff({
       ...staff,
       [event.target.name]:event.target.value
@@ -107,22 +107,15 @@ const handleChange = (event) => {
     return () => ValidatorForm.removeValidationRule('isPasswordMatch');
   }, [state.password]);
 
+  console.log("designation",designation)
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    setStaffdetails({
    
-      
-        employee_type:type,
-        employee_category:category,
-        gname:gender,
-        role_id:roleid,
-        designation:designation
-    })
 
 
 
-
-    axios.post('http://localhost:4000/api/staff/insert',{staffdetails,staff}).then((res)=>{
+    axios.post('http://localhost:4000/api/staff/insert',staff).then((res)=>{
         console.log(res.data)
         alert("Staff Details added Successfully")
   
@@ -205,8 +198,8 @@ const handleChange = (event) => {
                 id="demo-simple-select"
                 name="employee_type"
                 label="Choose Employee type"
-                value={type}
-                onChange={handleType}
+                // value={type}
+                onChange={handleChange}
               >
                 <MenuItem value="Full Time">Full Time</MenuItem>
                 <MenuItem value="Full Time">Part Time</MenuItem>
@@ -219,8 +212,8 @@ const handleChange = (event) => {
                 id="demo-simple-select"
                 name="employee_category"
                 label="Choose Division"
-                onChange={handleCategory}
-                value={category}
+                onChange={handleChange}
+             
               >
                 <MenuItem value="Permanent">Permanent</MenuItem>
                 <MenuItem value="Temporry">Temporary</MenuItem>
@@ -234,10 +227,7 @@ const handleChange = (event) => {
                 id="demo-simple-select"
                 label="Employee Role"
                 name="role_id"
-                value={roleid}
-                onChange={(e) => {
-                  setRoleid(e.target.value);
-                }}
+                onChange={handleChange}
               >
                 {role.map((item) => {
                   return <MenuItem value={item._id}>{item.role}</MenuItem>;
@@ -291,13 +281,13 @@ const handleChange = (event) => {
                 id="demo-simple-select"
                 name="designation"
                 label="Choose Employee designation"
-                value={designation}
-                onChange={handledesignation}
+               
+                onChange={handleChange}
               >
                 <MenuItem value="Administartor">Administartor</MenuItem>
                 <MenuItem value="HR">HR </MenuItem>
                 <MenuItem value="Software Developer">Software Developer </MenuItem>
-                <MenuItem value="Marketing Executive ">Marketing Executive </MenuItem>
+                <MenuItem value="Marketing Executive">Marketing Executive </MenuItem>
                 <MenuItem value="Accountant">Accountant </MenuItem>
               </Select>
             </FormControl>
@@ -369,8 +359,8 @@ const handleChange = (event) => {
                 id="demo-simple-select"
                 name="gender"
                 label="Choose Division"
-                onChange={handleGender}
-                value={gender}
+                onChange={handleChange}
+            
               >
                 <MenuItem value="male">Male</MenuItem>
                 <MenuItem value="female">Female</MenuItem>

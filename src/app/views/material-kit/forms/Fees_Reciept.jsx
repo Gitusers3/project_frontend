@@ -186,7 +186,7 @@ export default function Fees_Reciept({ Fid, count, setCentredModal }) {
         </div>
         <div className="w-100">
           <p style={{ fontSize: '15px', fontWeight: 'bolder' }}>
-            : {student} ({fees.std_id.our_reg_no})
+            : {student}
           </p>
         </div>
         <div className="w-100 text-start">

@@ -125,9 +125,9 @@ export default function CodelabBatches(propid) {
           Create
         </Button>
       </Link>
-      <Link to="">
+      <Link to="time_table/codelab">
      <Button fullWidth sx={{ marginTop: '10px' }} variant="outlined">
-       Create TimeTable
+        TimeTable
      </Button>
    </Link>
     </Box>

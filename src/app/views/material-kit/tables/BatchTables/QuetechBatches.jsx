@@ -132,6 +132,11 @@ export default function QuetechBatches(propid) {
        Create Batch
      </Button>
    </Link>
+   <Link to="time_table/qtech">
+     <Button fullWidth sx={{ marginTop: '10px' }} variant="outlined">
+       Time Table
+     </Button>
+   </Link>
   
  </Box>
 </div>;
