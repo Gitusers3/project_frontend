@@ -198,6 +198,7 @@ const SimpleForm = () => {
   const [selectedcollege, setSelectedCollege] = useState('');
   const [value, setValue] = useState(null);
   const [open, toggleOpen] = useState(false);
+  const [count, setCount] = useState(1);
 
   const handleClose = () => {
     setDialogValue({
@@ -206,7 +207,6 @@ const SimpleForm = () => {
     });
     toggleOpen(false);
   };
-
   const [dialogValue, setDialogValue] = useState({
     college: '',
     address: ''
@@ -221,7 +221,10 @@ const SimpleForm = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [count]);
+
+  console.log(selectedcollege + ' college');
+
   const [college, setCollege] = useState('');
   const [address, setAddress] = useState('');
   const handleSubmitDialog = (event) => {
@@ -279,23 +282,29 @@ const SimpleForm = () => {
   };
 
   // console.log(selectedcollege + ' selected college');
-  const [projects, setProjects] = useState({});
-  const [selectedproject, setSelectedProject] = useState('');
+  const [project, setProject] = useState([]);
+  const [selectedProject, setSelectedProject] = useState('');
   const [isChecked, setIsChecked] = useState(false);
   const handleCheckboxChange = (event) => {
     setIsChecked(event.target.checked);
     console.log(event.target.checked);
   };
-  //  useEffect(() => {
-  //     axios
-  //       .get('http://localhost:4000/api/college/view')
-  //       .then((res) => {
-  //         setDisc(res.data);
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //       });
-  //   }, []);
+  useEffect(() => {
+    axios
+      .get('http://localhost:4000/api/student/view_project')
+      .then((res) => {
+        setProject(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  const handleSelectChangeofProject = (event) => {
+    setSelectedProject(event.target.value);
+  };
+  const filteredProjects = project.filter((project) => project.college_id === selectedcollege);
+
   return (
     <div>
       <ValidatorForm onSubmit={handleSubmit}>
@@ -475,6 +484,8 @@ const SimpleForm = () => {
                     });
                   } else {
                     setValue(newValue);
+                    // Set the selected college to selectedcollege state here
+                    setSelectedCollege(newValue ? newValue._id : '');
                   }
                 }}
                 filterOptions={(options, params) => {
@@ -505,7 +516,6 @@ const SimpleForm = () => {
                 clearOnBlur
                 handleHomeEndKeys
                 renderOption={(props, option) => {
-                  setSelectedCollege(option._id);
                   return (
                     <>
                       <li {...props}>
@@ -628,18 +638,18 @@ const SimpleForm = () => {
               />
               {isChecked === true ? (
                 <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label">Choose Division</InputLabel>
+                  <InputLabel id="demo-simple-select-label">Choose Project</InputLabel>
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    name="division_id"
-                    label="Choose Division"
-                    value={selectedDivision}
-                    onChange={handleSelectChangeofDivision}
+                    name="project_id"
+                    label="Choose Project"
+                    value={selectedProject}
+                    onChange={handleSelectChangeofProject}
                   >
-                    {divsn.map((division) => (
-                      <MenuItem key={division._id} value={division._id}>
-                        {division.d_name}
+                    {filteredProjects.map((prjct) => (
+                      <MenuItem key={prjct._id} value={prjct._id}>
+                        {prjct.project_title}
                       </MenuItem>
                     ))}
                   </Select>
