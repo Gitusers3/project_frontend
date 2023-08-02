@@ -49,10 +49,11 @@ const TextField = styled(TextValidator)(() => ({
 const SimpleForm = () => {
   const nav = useNavigate();
   const [state, setState] = useState({ date: new Date() });
-  const [student, setStudent] = useState({ date: new Date() });
+  const [student, setStudent] = useState({ date: new Date() ,status:"ongoing"});
   const [ug, setUg] = useState({});
   const [puc, setPuc] = useState({});
   const [sslc, setSslc] = useState({});
+
 
   const handleUg = (e) => {
     setUg({ ...ug, [e.target.name]: e.target.value });
@@ -266,6 +267,7 @@ const SimpleForm = () => {
       [event.target.name]: event.target.value
     });
   };
+
 
   const handleSubmit = (event) => {
     event.preventDefault();
