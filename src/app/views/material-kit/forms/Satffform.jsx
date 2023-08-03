@@ -104,6 +104,8 @@ const Staffform = () => {
     return () => ValidatorForm.removeValidationRule('isPasswordMatch');
   }, [state.password]);
 
+  console.log("designation",designation)
+
   const handleSubmit = (event) => {
     axios
       .post('http://localhost:4000/api/staff/insert', staff)
@@ -271,7 +273,7 @@ const Staffform = () => {
                 <MenuItem value="Administartor">Administartor</MenuItem>
                 <MenuItem value="HR">HR </MenuItem>
                 <MenuItem value="Software Developer">Software Developer </MenuItem>
-                <MenuItem value="Marketing Executive ">Marketing Executive </MenuItem>
+                <MenuItem value="Marketing Executive">Marketing Executive </MenuItem>
                 <MenuItem value="Accountant">Accountant </MenuItem>
               </Select>
             </FormControl>
@@ -343,8 +345,8 @@ const Staffform = () => {
                 id="demo-simple-select"
                 name="gender"
                 label="Choose Division"
-                onChange={handleGender}
-                value={gender}
+                onChange={handleChange}
+            
               >
                 <MenuItem value="male">Male</MenuItem>
                 <MenuItem value="female">Female</MenuItem>

@@ -43,7 +43,8 @@ import Swal from "sweetalert2";
 
 export default function CogSimpleTable() {
   const [timetable,setTimetable]=useState([])
-  const [display,setDisplay]=useState([])
+  
+
 useEffect(()=>{
     url.get("cstimetable/view").then((res)=>{
         console.log("res",res.data)
@@ -56,20 +57,25 @@ useEffect(()=>{
 
 
 },[])
-timetable.sort((a, b) => {
-  // Convert dayofweek strings to lowercase to make the sorting case-insensitive
-  const dayA = a.dayofweek.toLowerCase();
-  const dayB = b.dayofweek.toLowerCase();
+const daysInWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+const sortTime=[]
 
-  // Compare the days
-  if (dayA < dayB) {
-    return -1;
-  } else if (dayA > dayB) {
-    return 1;
-  } else {
-    return 0;
+
+for (let i = 0; i < daysInWeek.length; i++) {
+  for (let j = 0; j < timetable.length; j++) {
+    if (timetable[j].dayofweek === daysInWeek[i]) {
+      sortTime.push(timetable[j]);
+      break;
+    }
   }
-});
+}
+
+console.log("sort", sortTime);
+
+
+
+
+
 
 const deleteTimeTable = (id) => {
   const swalWithBootstrapButtons = Swal.mixin({
@@ -98,7 +104,7 @@ const deleteTimeTable = (id) => {
             let newDisplay = timetable.filter((item) => {
               return item._id !== id;
             });
-            setDisplay(newDisplay);
+            setTimetable(newDisplay);
           })
           .catch((err) => {
             console.log(err);
@@ -121,6 +127,7 @@ const deleteTimeTable = (id) => {
           <TableCell align="left">Session 1[9:30-1:30]</TableCell>
        
           <TableCell align="center">Session 2[2:30-5:30]</TableCell>
+          
       
           
           
@@ -130,7 +137,7 @@ const deleteTimeTable = (id) => {
 
       <TableBody>
    
-        {timetable.map((item, index) => (
+        {sortTime.map((item, index) => (
           <TableRow key={index}>
            
             <TableCell align="left">{item.dayofweek}</TableCell>
