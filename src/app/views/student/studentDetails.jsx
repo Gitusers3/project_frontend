@@ -15,6 +15,9 @@ import TableRow from '@mui/material/TableRow';
 import SimpleForm from '../material-kit/forms/SimpleForm';
 import StepperForm from '../material-kit/forms/StepperForm';
 import Sidenav from '../../components/Sidenav';
+import Badge from '@mui/material/Badge';
+
+import CameraIcon from '@mui/icons-material/CameraAlt';
 import Axios from 'axios';
 import url from '../../../global';
 import { useParams } from 'react-router-dom';
@@ -29,6 +32,7 @@ export default function StudentsAll({ studentD, setStudent, setNewProfile }) {
     textAlign: 'center',
     color: theme.palette.text.secondary
   }));
+
   const [on, setOn] = useState(true);
   const [uon, setUOn] = useState(true);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -168,6 +172,7 @@ export default function StudentsAll({ studentD, setStudent, setNewProfile }) {
                 </Tooltip>
               )}
             </div>
+
             <div>
               <div>
                 {studentD?.image ? (
