@@ -76,8 +76,8 @@ export default function AdditionalDetails({
   const filteredTechie = techie.filter((t) => t.designation === 'Software Developer');
   console.log('fil', filteredTechie);
   console.log('tech', techie);
-  console.log('pro', studentD);
-  const projectD = studentD;
+  console.log('pro', studentD?.project_id);
+  const projectD = studentD?.project_id;
 
   const handleProject = (e) => {
     setStudent({ ...projectD, [e.target.name]: e.target.value });
@@ -165,66 +165,63 @@ export default function AdditionalDetails({
           </div>
           <h6 className="text-start text-black fw-bolder">Project</h6>
         </Item>
-
-        {project_details?.map((item) => {
-          return (
-            <>
-              <div style={{ marginTop: '2px' }}>
-                <TableContainer component={Paper}>
-                  <Table aria-label="simple table">
-                    <TableBody>
-                      <TableRow sx={{ margin: '5px' }}>
-                        <TableCell
-                          className="text-black"
-                          component="th"
-                          scope="row"
-                          sx={{ padding: '16px' }}
-                        >
-                          Project Title
-                        </TableCell>
-                        <TableCell className="text-black" align="start" sx={{ padding: '10px' }}>
-                          <TextField
-                            id="standard-basic"
-                            value={item?.project_title}
-                            variant="standard"
-                            disabled={pon}
-                            name="project_title"
-                            onChange={handleProject}
-                          />
-                        </TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </div>
-              <div style={{ marginTop: '2px' }}>
-                <TableContainer component={Paper}>
-                  <Table aria-label="simple table">
-                    <TableBody>
-                      <TableRow sx={{ margin: '5px' }}>
-                        <TableCell
-                          className="text-black"
-                          component="th"
-                          scope="row"
-                          sx={{ padding: '16px' }}
-                        >
-                          Project Company
-                        </TableCell>
-                        <TableCell className="text-black" align="start" sx={{ padding: '16px' }}>
-                          <TextField
-                            id="standard-basic"
-                            value={item?.project_title}
-                            variant="standard"
-                            disabled={pon}
-                          />
-                        </TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </div>
-              <div style={{ marginTop: '2px' }}>
-                {/* <TableContainer component={Paper}>
+        <>
+          <div style={{ marginTop: '2px' }}>
+            <TableContainer component={Paper}>
+              <Table aria-label="simple table">
+                <TableBody>
+                  <TableRow sx={{ margin: '5px' }}>
+                    <TableCell
+                      className="text-black"
+                      component="th"
+                      scope="row"
+                      sx={{ padding: '16px' }}
+                    >
+                      Project Title
+                    </TableCell>
+                    <TableCell className="text-black" align="start" sx={{ padding: '10px' }}>
+                      <TextField
+                        id="standard-basic"
+                        value={projectD?.project_title}
+                        variant="standard"
+                        disabled={pon}
+                        name="project_title"
+                        onChange={handleProject}
+                      />
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </div>
+          <div style={{ marginTop: '2px' }}>
+            <TableContainer component={Paper}>
+              <Table aria-label="simple table">
+                <TableBody>
+                  <TableRow sx={{ margin: '5px' }}>
+                    <TableCell
+                      className="text-black"
+                      component="th"
+                      scope="row"
+                      sx={{ padding: '16px' }}
+                    >
+                      Project Company
+                    </TableCell>
+                    <TableCell className="text-black" align="start" sx={{ padding: '16px' }}>
+                      <TextField
+                        id="standard-basic"
+                        value={projectD?.project_title}
+                        variant="standard"
+                        disabled={pon}
+                      />
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </div>
+          <div style={{ marginTop: '2px' }}>
+            {/* <TableContainer component={Paper}>
             <Table aria-label="simple table">
               <TableBody>
                 <TableRow sx={{ margin: '5px' }}>
@@ -237,147 +234,144 @@ export default function AdditionalDetails({
                     Client Name
                   </TableCell>
                   <TableCell className="text-black" align="start" sx={{ padding: '16px' }}>
-                    <TextField id="standard-basic" value={item?.client_name}  variant="standard" disabled={pon} />
+                    <TextField id="standard-basic" value={projectD?.client_name}  variant="standard" disabled={pon} />
                   </TableCell>
                 </TableRow>
               </TableBody>
             </Table>
           </TableContainer> */}
-              </div>
-              <div style={{ marginTop: '2px' }}>
-                <TableContainer component={Paper}>
-                  <Table aria-label="simple table">
-                    <TableBody>
-                      <TableRow sx={{ margin: '5px' }}>
-                        <TableCell
-                          className="text-black"
-                          component="th"
-                          scope="row"
-                          sx={{ padding: '16px' }}
-                        >
-                          Client Contact Number
-                        </TableCell>
-                        <TableCell className="text-black" align="start" sx={{ padding: '16px' }}>
-                          <TextField
-                            id="standard-basic"
-                            value={item?.project_client_contact}
-                            variant="standard"
-                            disabled={pon}
-                          />
-                        </TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </div>
-              <div style={{ marginTop: '2px' }}>
-                <TableContainer component={Paper}>
-                  <Table aria-label="simple table">
-                    <TableBody>
-                      <TableRow sx={{ margin: '5px' }}>
-                        <TableCell
-                          className="text-black"
-                          component="th"
-                          scope="row"
-                          sx={{ padding: '16px' }}
-                        >
-                          Client Email ID
-                        </TableCell>
-                        <TableCell className="text-black" align="start" sx={{ padding: '16px' }}>
-                          <TextField
-                            id="standard-basic"
-                            value={item?.project_client_email}
-                            variant="standard"
-                            disabled={pon}
-                          />
-                        </TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </div>
-              <div style={{ marginTop: '2px' }}>
-                <TableContainer component={Paper}>
-                  <Table aria-label="simple table">
-                    <TableBody>
-                      <TableRow sx={{ margin: '5px' }}>
-                        <TableCell
-                          className="fw-bolder"
-                          component="th"
-                          scope="row"
-                          sx={{ padding: '16px' }}
-                        >
-                          Frontend Language
-                        </TableCell>
-                        <TableCell className="fw-bolder" align="start" sx={{ padding: '16px' }}>
-                          <TextField
-                            id="standard-basic"
-                            value={item?.front_end_pro_lang}
-                            variant="standard"
-                            disabled={pon}
-                          />
-                        </TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </div>
-              <div style={{ marginTop: '2px' }}>
-                <TableContainer component={Paper}>
-                  <Table aria-label="simple table">
-                    <TableBody>
-                      <TableRow sx={{ margin: '5px' }}>
-                        <TableCell
-                          className="fw-bolder"
-                          component="th"
-                          scope="row"
-                          sx={{ padding: '16px' }}
-                        >
-                          Backend Language
-                        </TableCell>
-                        <TableCell className="fw-bolder" align="start" sx={{ padding: '16px' }}>
-                          <TextField
-                            id="standard-basic"
-                            value={item?.backend_pro_lang}
-                            variant="standard"
-                            disabled={pon}
-                          />
-                        </TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </div>
-              <div style={{ marginTop: '2px' }}>
-                <TableContainer component={Paper}>
-                  <Table aria-label="simple table">
-                    <TableBody>
-                      <TableRow sx={{ margin: '5px' }}>
-                        <TableCell
-                          className="fw-bolder"
-                          component="th"
-                          scope="row"
-                          sx={{ padding: '16px' }}
-                        >
-                          Project Description
-                        </TableCell>
-                        <TableCell className="fw-bolder" align="start" sx={{ padding: '16px' }}>
-                          <TextField
-                            id="standard-basic"
-                            value={item?.project_description}
-                            variant="standard"
-                            disabled={pon}
-                          />
-                        </TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </div>
-            </>
-          );
-        })}
-
+          </div>
+          <div style={{ marginTop: '2px' }}>
+            <TableContainer component={Paper}>
+              <Table aria-label="simple table">
+                <TableBody>
+                  <TableRow sx={{ margin: '5px' }}>
+                    <TableCell
+                      className="text-black"
+                      component="th"
+                      scope="row"
+                      sx={{ padding: '16px' }}
+                    >
+                      Client Contact Number
+                    </TableCell>
+                    <TableCell className="text-black" align="start" sx={{ padding: '16px' }}>
+                      <TextField
+                        id="standard-basic"
+                        value={projectD?.project_client_contact}
+                        variant="standard"
+                        disabled={pon}
+                      />
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </div>
+          <div style={{ marginTop: '2px' }}>
+            <TableContainer component={Paper}>
+              <Table aria-label="simple table">
+                <TableBody>
+                  <TableRow sx={{ margin: '5px' }}>
+                    <TableCell
+                      className="text-black"
+                      component="th"
+                      scope="row"
+                      sx={{ padding: '16px' }}
+                    >
+                      Client Email ID
+                    </TableCell>
+                    <TableCell className="text-black" align="start" sx={{ padding: '16px' }}>
+                      <TextField
+                        id="standard-basic"
+                        value={projectD?.project_client_email}
+                        variant="standard"
+                        disabled={pon}
+                      />
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </div>
+          <div style={{ marginTop: '2px' }}>
+            <TableContainer component={Paper}>
+              <Table aria-label="simple table">
+                <TableBody>
+                  <TableRow sx={{ margin: '5px' }}>
+                    <TableCell
+                      className="fw-bolder"
+                      component="th"
+                      scope="row"
+                      sx={{ padding: '16px' }}
+                    >
+                      Frontend Language
+                    </TableCell>
+                    <TableCell className="fw-bolder" align="start" sx={{ padding: '16px' }}>
+                      <TextField
+                        id="standard-basic"
+                        value={projectD?.front_end_pro_lang}
+                        variant="standard"
+                        disabled={pon}
+                      />
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </div>
+          <div style={{ marginTop: '2px' }}>
+            <TableContainer component={Paper}>
+              <Table aria-label="simple table">
+                <TableBody>
+                  <TableRow sx={{ margin: '5px' }}>
+                    <TableCell
+                      className="fw-bolder"
+                      component="th"
+                      scope="row"
+                      sx={{ padding: '16px' }}
+                    >
+                      Backend Language
+                    </TableCell>
+                    <TableCell className="fw-bolder" align="start" sx={{ padding: '16px' }}>
+                      <TextField
+                        id="standard-basic"
+                        value={projectD?.backend_pro_lang}
+                        variant="standard"
+                        disabled={pon}
+                      />
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </div>
+          <div style={{ marginTop: '2px' }}>
+            <TableContainer component={Paper}>
+              <Table aria-label="simple table">
+                <TableBody>
+                  <TableRow sx={{ margin: '5px' }}>
+                    <TableCell
+                      className="fw-bolder"
+                      component="th"
+                      scope="row"
+                      sx={{ padding: '16px' }}
+                    >
+                      Project Description
+                    </TableCell>
+                    <TableCell className="fw-bolder" align="start" sx={{ padding: '16px' }}>
+                      <TextField
+                        id="standard-basic"
+                        value={projectD?.project_description}
+                        variant="standard"
+                        disabled={pon}
+                      />
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </div>
+        </>
         <div style={{ marginTop: '2px' }}>
           <TableContainer component={Paper}>
             <Table aria-label="simple table">
@@ -396,7 +390,6 @@ export default function AdditionalDetails({
             </Table>
           </TableContainer>
         </div>
-
         <div style={{ marginTop: '5px' }}>
           <TableContainer component={Paper}>
             <Table aria-label="simple table">
@@ -511,7 +504,6 @@ export default function AdditionalDetails({
             </Table>
           </TableContainer>
         </div>
-
         <div style={{ marginTop: '5px' }}>
           <TableContainer component={Paper}>
             <Table aria-label="simple table">
@@ -623,7 +615,6 @@ export default function AdditionalDetails({
             </Table>
           </TableContainer>
         </div>
-
         <div style={{ marginTop: '5px' }}>
           <TableContainer component={Paper}>
             <Table aria-label="simple table">
