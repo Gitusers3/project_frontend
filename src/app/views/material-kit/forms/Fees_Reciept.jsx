@@ -185,9 +185,7 @@ export default function Fees_Reciept({ Fid, count, setCentredModal }) {
           <p style={{ fontSize: '15px', fontWeight: 'bolder' }}>Received From</p>
         </div>
         <div className="w-100">
-          <p style={{ fontSize: '15px', fontWeight: 'bolder' }}>
-            : {student}
-          </p>
+          <p style={{ fontSize: '15px', fontWeight: 'bolder' }}>: {student}</p>
         </div>
         <div className="w-100 text-start">
           <p style={{ fontSize: '15px' }}> </p>

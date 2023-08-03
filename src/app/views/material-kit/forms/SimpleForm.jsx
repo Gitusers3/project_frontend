@@ -37,6 +37,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogActions from '@mui/material/DialogActions';
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import { Subject } from '@mui/icons-material';
+import Swal from 'sweetalert2';
 
 const filter = createFilterOptions();
 // const mock = new MockAdapter(axios);
@@ -49,11 +50,10 @@ const TextField = styled(TextValidator)(() => ({
 const SimpleForm = () => {
   const nav = useNavigate();
   const [state, setState] = useState({ date: new Date() });
-  const [student, setStudent] = useState({ date: new Date() ,status:"ongoing"});
+  const [student, setStudent] = useState({ date: new Date(), status: 'ongoing' });
   const [ug, setUg] = useState({});
   const [puc, setPuc] = useState({});
   const [sslc, setSslc] = useState({});
-
 
   const handleUg = (e) => {
     setUg({ ...ug, [e.target.name]: e.target.value });
@@ -86,11 +86,11 @@ const SimpleForm = () => {
   }, [state.password]);
 
   // profile picture uploading to state
-  const [selectedFile, setSelectedFile] = useState(null);
+  let file = new FormData();
   const UploadPic = (event) => {
-    const file = event.target.files[0];
-    setSelectedFile(file);
-    console.log(selectedFile);
+    const image = event.target.files[0];
+    file.append('name', image);
+    console.log(image);
   };
 
   const handleDateChange = (date) => setState({ ...state, date });
@@ -199,6 +199,8 @@ const SimpleForm = () => {
   const [selectedcollege, setSelectedCollege] = useState('');
   const [value, setValue] = useState(null);
   const [open, toggleOpen] = useState(false);
+  const [count, setCount] = useState(1);
+  const [status, setStatus] = useState('Ongoing');
 
   const handleClose = () => {
     setDialogValue({
@@ -207,7 +209,6 @@ const SimpleForm = () => {
     });
     toggleOpen(false);
   };
-
   const [dialogValue, setDialogValue] = useState({
     college: '',
     address: ''
@@ -222,7 +223,10 @@ const SimpleForm = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [count]);
+
+  console.log(selectedcollege + ' college');
+
   const [college, setCollege] = useState('');
   const [address, setAddress] = useState('');
   const handleSubmitDialog = (event) => {
@@ -242,34 +246,56 @@ const SimpleForm = () => {
         alert(err);
         console.log('Error frontend:', err);
       });
-
+    setCount((prevCount) => prevCount + 1);
     handleClose();
   };
 
   // profile picture uploading to state
 
+  // console.log(selectedcollege + ' selected college');
+  const [project, setProject] = useState([]);
+  const [selectedProject, setSelectedProject] = useState('');
+  const [isChecked, setIsChecked] = useState(false);
+  const handleCheckboxChange = (event) => {
+    setIsChecked(event.target.checked);
+    console.log(event.target.checked);
+  };
   useEffect(() => {
-    console.log(selectedFile); // This will log the updated value of selectedFile
-  }, [selectedFile]);
+    axios
+      .get('http://localhost:4000/api/student/view_project')
+      .then((res) => {
+        setProject(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  const handleSelectChangeofProject = (event) => {
+    setSelectedProject(event.target.value);
+  };
+  const filteredProjects = project.filter((project) => project.college_id === selectedcollege);
 
   const handleChange = (event) => {
     event.persist();
 
     setStudent({
       ...student,
-      image: selectedFile,
+      all_status: status,
       division_id: selectedDivision,
       course_id: selectedCourse,
       college_id: selectedcollege,
+      project_id: selectedProject,
       [event.target.name]: event.target.value
     });
   };
-
-
   const handleSubmit = (event) => {
+    for (let x in student) {
+      file.append(x, student[x]);
+    }
     event.preventDefault();
     axios
-      .post('http://localhost:4000/api/student/insert', { student, ug, sslc, puc })
+      .post('http://localhost:4000/api/student/insert', { file })
       .then((res) => {
         console.log(res.data);
         // alert('Student Details added Successfully');
@@ -278,40 +304,44 @@ const SimpleForm = () => {
       .catch((err) => {
         alert(err);
       });
+    let timerInterval;
+    Swal.fire({
+      title: 'Student Details inserted Successfully',
+      html: 'You are redirecting to student table in <b></b> milliseconds.',
+      timer: 2000,
+      timerProgressBar: true,
+      didOpen: () => {
+        Swal.showLoading();
+        const b = Swal.getHtmlContainer().querySelector('b');
+        timerInterval = setInterval(() => {
+          b.textContent = Swal.getTimerLeft();
+        }, 100);
+      },
+      willClose: () => {
+        clearInterval(timerInterval);
+      }
+    }).then((result) => {
+      /* Read more about handling dismissals below */
+      if (result.dismiss === Swal.DismissReason.timer) {
+        console.log('Student Inserted successfully');
+        // nav('/student/students');
+      }
+    });
   };
-
-  // console.log(selectedcollege + ' selected college');
-  const [projects, setProjects] = useState({});
-  const [selectedproject, setSelectedProject] = useState('');
-  const [isChecked, setIsChecked] = useState(false);
-  const handleCheckboxChange = (event) => {
-    setIsChecked(event.target.checked);
-    console.log(event.target.checked);
-  };
-  //  useEffect(() => {
-  //     axios
-  //       .get('http://localhost:4000/api/college/view')
-  //       .then((res) => {
-  //         setDisc(res.data);
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //       });
-  //   }, []);
   return (
     <div>
-      <ValidatorForm onSubmit={handleSubmit}>
+      <ValidatorForm onSubmit={handleSubmit} enctype="multipart/form-data">
         <h2 className="text-center">Personal Details</h2>
         <Grid container spacing={6}>
           <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
             <TextField
               type="text"
-              name="reg"
+              name="our_reg_no"
               id="standard-basic"
               onChange={handleChange}
               label="Register Number (for Office)"
             />
-            <TextField type="date" name="firstName" label="" onChange={handleChange} />
+            <TextField type="date" name="date_of_admission" label="" onChange={handleChange} />
             <FormControl fullWidth>
               <InputLabel id="demo-simple-select-label">Choose Division</InputLabel>
               <Select
@@ -363,8 +393,8 @@ const SimpleForm = () => {
             <TextField
               sx={{ mb: 4 }}
               type="text"
-              name="creditCard"
-              label="t_address"
+              name="t_address"
+              label="Address"
               onChange={handleChange}
             />
             <TextField
@@ -477,6 +507,8 @@ const SimpleForm = () => {
                     });
                   } else {
                     setValue(newValue);
+                    // Set the selected college to selectedcollege state here
+                    setSelectedCollege(newValue ? newValue._id : '');
                   }
                 }}
                 filterOptions={(options, params) => {
@@ -507,7 +539,6 @@ const SimpleForm = () => {
                 clearOnBlur
                 handleHomeEndKeys
                 renderOption={(props, option) => {
-                  setSelectedCollege(option._id);
                   return (
                     <>
                       <li {...props}>
@@ -630,18 +661,18 @@ const SimpleForm = () => {
               />
               {isChecked === true ? (
                 <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label">Choose Division</InputLabel>
+                  <InputLabel id="demo-simple-select-label">Choose Project</InputLabel>
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    name="division_id"
-                    label="Choose Division"
-                    value={selectedDivision}
-                    onChange={handleSelectChangeofDivision}
+                    name="project_id"
+                    label="Choose Project"
+                    value={selectedProject}
+                    onChange={handleSelectChangeofProject}
                   >
-                    {divsn.map((division) => (
-                      <MenuItem key={division._id} value={division._id}>
-                        {division.d_name}
+                    {filteredProjects.map((prjct) => (
+                      <MenuItem key={prjct._id} value={prjct._id}>
+                        {prjct.project_title}
                       </MenuItem>
                     ))}
                   </Select>

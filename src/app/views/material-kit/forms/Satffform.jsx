@@ -76,15 +76,12 @@ const Staffform = () => {
     setDesignation(e.target.value);
   };
 
-const handleChange = (event) => {
-  event.preventDefault();
-  setStaff({
+  const handleChange = (event) => {
+    setStaff({
       ...staff,
-      [event.target.name]:event.target.value
-  })
-
-};
-
+      [event.target.name]: event.target.value
+    });
+  };
 
   useEffect(() => {
     url
@@ -110,22 +107,15 @@ const handleChange = (event) => {
   console.log("designation",designation)
 
   const handleSubmit = (event) => {
-    event.preventDefault();
-   
-
-
-
-    axios.post('http://localhost:4000/api/staff/insert',staff).then((res)=>{
-        console.log(res.data)
-        alert("Staff Details added Successfully")
-  
-    nav("/staffs")
-        
-  
-  
-      }).catch((err)=>{
-        alert(err)
-  
+    axios
+      .post('http://localhost:4000/api/staff/insert', staff)
+      .then((res) => {
+        console.log(res.data);
+        alert('Staff Details added Successfully');
+        // nav('/staffs');
+      })
+      .catch((err) => {
+        alert(err);
       })
       .catch((err) => {
         alert(err);
@@ -134,7 +124,6 @@ const handleChange = (event) => {
 
   console.log('sdfr', staffdetails);
   console.log('staff', staff);
-
 
   const handleDateChange = (date) => setState({ ...state, date });
 
@@ -198,7 +187,6 @@ const handleChange = (event) => {
                 id="demo-simple-select"
                 name="employee_type"
                 label="Choose Employee type"
-                // value={type}
                 onChange={handleChange}
               >
                 <MenuItem value="Full Time">Full Time</MenuItem>
@@ -213,7 +201,6 @@ const handleChange = (event) => {
                 name="employee_category"
                 label="Choose Division"
                 onChange={handleChange}
-             
               >
                 <MenuItem value="Permanent">Permanent</MenuItem>
                 <MenuItem value="Temporry">Temporary</MenuItem>
@@ -280,8 +267,7 @@ const handleChange = (event) => {
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 name="designation"
-                label="Choose Employee designation"
-               
+                label="Employee designation"
                 onChange={handleChange}
               >
                 <MenuItem value="Administartor">Administartor</MenuItem>

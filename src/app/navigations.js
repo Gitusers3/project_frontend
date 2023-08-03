@@ -41,7 +41,7 @@ export const navigations = [{
 
   {
     name: 'Staffs',
-    icon: 'Staff',
+    icon: 'person_pin',
     path: '/staffs'
 
   },
@@ -55,12 +55,6 @@ export const navigations = [{
     name: 'Batches',
     icon: 'table',
     path: '/batches'
-
-  },
-  {
-    name: 'Timetable',
-    icon: 'picture_in_picture_alt',
-    path: '/timetable'
 
   },
   {
@@ -82,6 +76,10 @@ export const navigations = [{
         path: '/report/discontinued'
       }
     ]
+  },
+  {
+    label: 'Components',
+    type: 'label'
   },
   {
     name: 'Session/Auth',
@@ -107,10 +105,6 @@ export const navigations = [{
         path: '/session/404'
       }
     ]
-  },
-  {
-    label: 'Components',
-    type: 'label'
   },
   {
     name: 'Components',

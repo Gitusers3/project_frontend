@@ -45,29 +45,24 @@ export default function Viewone() {
   const [studentfees, setStudentfees] = useState({});
   const [totalfeespaid, setTotalfeespaid] = useState(0);
   const [newprofile, setNewProfile] = useState(true);
-  const [project_details,setProject_details]=useState([])
-  const [academicDetails,setAcademic_details]=useState()
-  const [internshipDetails,setInternshipDetails]=useState([])
+  const [project_details, setProject_details] = useState([]);
+  const [academicDetails, setAcademic_details] = useState();
+  const [internshipDetails, setInternshipDetails] = useState([]);
   useEffect(() => {
     URL.get(`student/view/${param.id}`)
       .then((res) => {
         // console.log(res?.data?.s1?.student_name);
         console.log(res?.data + 'response');
         let a = res.data.s1;
-        let i=res.data.p1;
-        let ac=res.data.academics;
+        let i = res.data.p1;
+        let ac = res.data.academics;
 
-        console.log("res",res.data)
-       
-
-        
+        console.log('res', res.data);
         setStudent(a);
-        let pro=res.data.s1.project_id
-        setProject_details([pro])
-        setAcademic_details(ac)
-        setInternshipDetails([i])
-
-
+        let pro = res.data.s1.project_id;
+        setProject_details([pro]);
+        setAcademic_details(ac);
+        setInternshipDetails([i]);
 
         // alert(a);
       })
@@ -75,10 +70,9 @@ export default function Viewone() {
         console.log(err);
       });
   }, [newprofile]);
-  console.log("pro",project_details)
-  console.log("st",student)
-  console.log("ac",academicDetails)
-
+  console.log('pro', project_details);
+  console.log('st', student);
+  console.log('ac', academicDetails);
 
   useEffect(() => {
     Axios.get(`http://localhost:4000/api/fees/view_student_fees/${param.id}`)
@@ -111,7 +105,13 @@ export default function Viewone() {
             <StudentsAll studentD={student} setNewProfile={setNewProfile} setStudent={setStudent} />
           </Grid>
           <Grid item xs={4}>
-            <AdditionalDetails studentD={student} setStudent={setStudent} project_details={project_details} academicDetails={academicDetails} internshipDetails={internshipDetails} />
+            <AdditionalDetails
+              studentD={student}
+              setStudent={setStudent}
+              project_details={project_details}
+              academicDetails={academicDetails}
+              internshipDetails={internshipDetails}
+            />
           </Grid>
           <Grid item xs={4}>
             <FeesDetails studentD={student} setStudent={setStudent} paidFees={totalfeespaid} />
