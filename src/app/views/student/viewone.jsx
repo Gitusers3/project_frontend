@@ -42,6 +42,8 @@ export default function Viewone() {
   let param = useParams();
   console.log('Id : ' + param.id);
   const [student, setStudent] = useState({});
+  const [currentCollege, setCurrentCollege] = useState({});
+  const [currentCourse, setCurrentCourse] = useState({});
   const [studentfees, setStudentfees] = useState({});
   const [totalfeespaid, setTotalfeespaid] = useState(0);
   const [newprofile, setNewProfile] = useState(true);
@@ -60,7 +62,11 @@ export default function Viewone() {
         console.log('res', res.data);
         setStudent(a);
         let pro = res.data.s1.project_id;
-        setProject_details([pro]);
+        let curcol = res.data.s1.college_id;
+        let curCrs = res.data.s1.course_id;
+        setCurrentCollege(curcol);
+        setCurrentCourse(curCrs);
+        setProject_details(pro);
         setAcademic_details(ac);
         setInternshipDetails([i]);
 
@@ -107,7 +113,12 @@ export default function Viewone() {
           <Grid item xs={4}>
             <AdditionalDetails
               studentD={student}
+              currentCollege={currentCollege}
+              currentCourse={currentCourse}
+              setCurrentCollege={setCurrentCollege}
+              setCurrentCourse={setCurrentCourse}
               setStudent={setStudent}
+              setProject_details={setProject_details}
               project_details={project_details}
               academicDetails={academicDetails}
               internshipDetails={internshipDetails}
