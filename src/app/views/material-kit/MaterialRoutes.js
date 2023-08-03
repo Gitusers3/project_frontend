@@ -35,6 +35,10 @@ const AppExpansionPanel = Loadable(lazy(() => import('./expansion-panel/AppExpan
 const Cognitive_TimeTable=Loadable(lazy(()=>import('./tables/TimeTable/Cognitive_TimeTable')))
 const AddCogTimeTable=Loadable(lazy(()=>import('./tables/TimeTable/AddCogTimeTable.jsx')))
 
+const CodeLab_Timetable=Loadable(lazy(()=>import('./tables/TimeTable/Codelab_Timetable')))
+const AddCodeTimeTable=Loadable(lazy(()=>import('./tables/TimeTable/AddCodeTimetable')))
+const Qtech_Timetable=Loadable(lazy(()=>import('./tables/TimeTable/Qtech_Timetable')))
+const AddQTimeTable=Loadable(lazy(()=>import('./tables/TimeTable/AddQTimeTable')))
 const materialRoutes = [{
     path: '/material/table',
     element: < AppTable / >
@@ -79,6 +83,19 @@ const materialRoutes = [{
     path:'time_table/cognitive',
     element:<AddCogTimeTable/>
   },
+
+  {path:'batches/time_table/codelab',
+  element:<CodeLab_Timetable/>},
+
+  {path:'time_table/codelab',
+   element:<AddCodeTimeTable/>},
+
+  {
+    path:'batches/time_table/qtech',
+    element:<Qtech_Timetable/>
+  },
+    {path:'time_table/qtech',
+   element:<AddQTimeTable/>},
   {
     path: 'timetable',
     element: < Timetable / >
