@@ -31,7 +31,8 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const DatatablePage = (divprop) => {
   const [display, setDisplay] = useState([]);
-  console.log(divprop);
+  console.log(divprop?.fromDate);
+  console.log(divprop?.toDate);
   useEffect(() => {
     URL.get('student/view')
       .then((res) => {
@@ -99,10 +100,22 @@ const DatatablePage = (divprop) => {
         }
       });
   };
+  let fromDate = divprop?.fromDate ? new Date(divprop.fromDate) : null;
+  let toDate = divprop?.toDate ? new Date(divprop.toDate) : null;
 
   const datta = display
     ?.filter((va) => {
-      return divprop?.divprop?.props ? va?.division_id?.d_name === divprop?.divprop?.props : true;
+      const divisionFilter = divprop.divprop.props
+        ? va?.division_id?.d_name === divprop.divprop.props
+        : true;
+
+      if (fromDate && toDate) {
+        let admissionDate = new Date(va?.date_of_admission);
+        let fromDateFilter = admissionDate >= fromDate;
+        let toDateFilter = admissionDate <= toDate;
+        return divisionFilter && fromDateFilter && toDateFilter;
+      }
+      return divisionFilter;
     })
     .map((item, index) => {
       console.log(item._id);

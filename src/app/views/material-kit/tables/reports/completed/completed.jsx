@@ -50,24 +50,37 @@ const Completed = (propss) => {
   console.log(propss.props + 'props');
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [fdate, setFdate] = useState('');
-  const [tdate, setTdate] = useState('');
   const [college, setCollege] = useState([]);
   const [selectedCollege, setSelectedCollege] = useState('');
   const [result, setResult] = useState(true);
+  const [fdateTemp, setFdateTemp] = useState(''); // Temporary state for from date
+  const [tdateTemp, setTdateTemp] = useState(''); // Temporary state for to date
+  const [fdate, setFdate] = useState(''); // Final state for from date
+  const [tdate, setTdate] = useState(''); // Final state for to date
+  const [filter, setFilter] = useState(false);
+
   const Submit = (e) => {
     e.preventDefault();
-    // alert(fdate);
-    // alert(tdate);
+    setFilter(true);
+    // Update the final state variables when the form is submitted
+    setFdate(fdateTemp);
+    setTdate(tdateTemp);
   };
 
   const handleFromDateChange = (e) => {
-    setFdate(e.target.value);
+    setFdateTemp(e.target.value);
   };
 
   const handleToDateChange = (e) => {
-    setTdate(e.target.value);
+    setTdateTemp(e.target.value);
   };
+
+  const handleChangefilter2 = () => {
+    setFilter(false);
+    setTdate('');
+    setFdate('');
+  };
+
   const handleChangePage = (_, newPage) => {
     setPage(newPage);
   };
@@ -127,7 +140,7 @@ const Completed = (propss) => {
                 type="date"
                 id="from-date"
                 fullWidth
-                value={fdate}
+                value={fdateTemp} // Use temporary state here
                 onChange={handleFromDateChange}
               />
             </Grid>
@@ -138,7 +151,7 @@ const Completed = (propss) => {
                 type="date"
                 id="to-date"
                 fullWidth
-                value={tdate}
+                value={tdateTemp} // Use temporary state here
                 onChange={handleToDateChange}
               />
             </Grid>
@@ -149,7 +162,23 @@ const Completed = (propss) => {
                 variant="contained"
                 fullWidth
                 endIcon={<SendIcon />}
-              ></Button>
+              >
+                Submit
+              </Button>
+              {filter === true ? (
+                <>
+                  <Button
+                    type="reset"
+                    sx={{ padding: '15px', marginTop: '20px' }}
+                    variant="contained"
+                    fullWidth
+                    className="btn btn-danger"
+                    onClick={handleChangefilter2}
+                  >
+                    Clear
+                  </Button>
+                </>
+              ) : null}
             </Grid>
           </Grid>
           {div && (
