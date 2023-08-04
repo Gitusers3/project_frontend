@@ -60,10 +60,11 @@ function Qtech_Form() {
     const [session2,setSession2]=useState([])
     const [session3,setSession3]=useState([])
     const [session4,setSession4]=useState([])
+    const [selectedtechie,setSlectedtechie]=useState("")
     const [time,setTime]=useState({})
     useEffect(()=>{
         url.get("staff/view").then((res)=>{
-            console.log("techie",res.data)
+            
             const tech=res.data.filter((item)=>{
                 return item.designation==="Software Developer"
             })
@@ -79,7 +80,7 @@ function Qtech_Form() {
 
     },[])
 
-    console.log("t",techie)
+
 
   
     const handleType = (e) => {
@@ -92,6 +93,7 @@ function Qtech_Form() {
     e.preventDefault();
     setTimetable({
         ...timetable,
+        techie_id:selectedtechie,
         [e.target.name]:e.target.value
     })
     
@@ -105,6 +107,11 @@ function Qtech_Form() {
    
   
   };
+  const handletechie=(e)=>{
+    setSlectedtechie(e.target.value)
+
+  }
+  
 
   const handleSession2 = (e) => {
     e.preventDefault();
@@ -123,46 +130,45 @@ function Qtech_Form() {
   const handleSession4 = (e) => {
     e.preventDefault();
    setSession4(e.target.value)
-   setTime({
-    ...timetable,
-    first_session:session1,
-    second_session:session2,
-    third_session:session3,
-    four_session:session4
-
-
-  })
+  
     
    
   
   };
 
-  console.log("timetable",timetable)
 
 
 
   
   
     useEffect(() => {
+      if(selectedtechie){
       url
-        .get('batch/view')
+        .get(`batch/viewbatchtechie/${selectedtechie}`)
         .then((res) => {
           console.log("res",res.data);
-          setBatch(res.data)
+          const filteredbatch=res.data.filter((item)=>{
+            return item.d_id?.d_name==="QueueTech Solution"
+      
+          })
+          console.log('filbatch',filteredbatch)
+         
+         
+         
+          setBatch(filteredbatch)
          
         })
         .catch((err) => {
           alert(err);
         });
-    }, [techie]);
-    console.log('batch',batch)
-    const filterBatch=batch.filter((item)=>{
-        return item.d_id?.d_name==="CodeLab Systems" && item.tech_id?._id===techie._id
+      }
+    }, [selectedtechie]);
+   
+   
 
-    })
-
-    console.log("filterBatch",filterBatch)
-    console.log("filterBatch name",filterBatch)
+ 
+  
+    
    
    
 
@@ -171,6 +177,15 @@ function Qtech_Form() {
 
     const handleSubmit = (event) => {
       event.preventDefault();
+      setTime({
+        ...timetable,
+        first_session:session1,
+        second_session:session2,
+        third_session:session3,
+        four_session:session4
+    
+    
+      })
      
 
    
@@ -182,7 +197,7 @@ function Qtech_Form() {
           console.log(res.data)
           alert(" Time Tables Details added Successfully")
     
-    //   nav("/staffs")
+      nav("/staffs")
           
     
     
@@ -213,8 +228,9 @@ function Qtech_Form() {
               id="demo-simple-select"
               name="tech_id"
               label="Choose Techie"
+              value={selectedtechie}
              
-              onChange={handleChange}
+              onChange={handletechie}
             >
                 {techie.map((item)=>(
                         <MenuItem value={item._id}>{item.staff_name}</MenuItem>
@@ -239,7 +255,7 @@ function Qtech_Form() {
               onChange={handleSession1}
             >
 
-{filterBatch.map((item) =>{ return (
+{batch.map((item) =>{ return (
       <MenuItem key={item._id} value={item._id}>
         {item.b_name}
       </MenuItem>
@@ -266,7 +282,7 @@ function Qtech_Form() {
                onChange={handleSession3}
              >
  
- {filterBatch.map((item) =>{ return (
+ {batch.map((item) =>{ return (
        <MenuItem key={item._id} value={item._id}>
          {item.b_name}
        </MenuItem>
@@ -322,7 +338,7 @@ function Qtech_Form() {
         value={session2} // Set the selected values to the state variable
         onChange={handleSession2}
       >
-        {filterBatch.map((item) => (
+        {batch.map((item) => (
           <MenuItem key={item._id} value={item._id}>
             {item.b_name}
           </MenuItem>
@@ -338,13 +354,13 @@ function Qtech_Form() {
               id="demo-simple-select"
               name="four_session"
               label="Session 4"
-              value={session4}
               multiple
+              value={session4}
           
               onChange={handleSession4}
             >
 
-{filterBatch.map((item) =>{ return (
+{batch.map((item) =>{ return (
       <MenuItem key={item._id} value={item._id}>
         {item.b_name}
       </MenuItem>
