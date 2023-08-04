@@ -49,10 +49,22 @@ const DatatablePage = (divprop, clg) => {
   const [centredModal, setCentredModal] = useState(false);
   const [sid, setSid] = useState();
 
+  let fromDate = divprop?.fromDate ? new Date(divprop.fromDate) : null;
+  let toDate = divprop?.toDate ? new Date(divprop.toDate) : null;
+
   const datta = display
     ?.filter((va) => {
-      // First filter - filter based on division name (assuming division_id is a property in the 'va' object)
-      return divprop?.divprop?.props ? va?.division_id?.d_name === divprop?.divprop?.props : true;
+      const divisionFilter = divprop?.divprop?.props
+        ? va?.division_id?.d_name === divprop?.divprop?.props
+        : true;
+
+      if (fromDate && toDate) {
+        let admissionDate = new Date(va?.date_of_admission);
+        let fromDateFilter = admissionDate >= fromDate;
+        let toDateFilter = admissionDate <= toDate;
+        return divisionFilter && fromDateFilter && toDateFilter;
+      }
+      return divisionFilter;
     })
     ?.filter((va) => {
       // Third filter - filter based on college ID (assuming college_id is a property in the 'va' object)
@@ -75,23 +87,13 @@ const DatatablePage = (divprop, clg) => {
         fees: item.fees,
         actions: (
           <div>
-            {ViewCollege ? (
-              <Grid container spacing={3}>
-                <Grid item xs={4}>
-                  <Link to={`viewByCollege/${item.college_id?._id}`}>
-                    <ListAltIcon />
-                  </Link>
-                </Grid>
+            <Grid container spacing={3}>
+              <Grid item xs={4}>
+                <Link to={`/student/students/view/${item._id}`}>
+                  <RemoveRedEyeIcon />
+                </Link>
               </Grid>
-            ) : (
-              <Grid container spacing={3}>
-                <Grid item xs={4}>
-                  <Link to={`/student/students/view/${item._id}`}>
-                    <RemoveRedEyeIcon />
-                  </Link>
-                </Grid>
-              </Grid>
-            )}
+            </Grid>
           </div>
         )
       };

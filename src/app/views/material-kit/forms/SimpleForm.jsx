@@ -50,7 +50,7 @@ const TextField = styled(TextValidator)(() => ({
 const SimpleForm = () => {
   const nav = useNavigate();
   const [state, setState] = useState({ date: new Date() });
-  const [student, setStudent] = useState({ date: new Date(), status: 'ongoing' });
+  const [student, setStudent] = useState({ date: new Date(), status: 'Ongoing' });
   const [ug, setUg] = useState({});
   const [puc, setPuc] = useState({});
   const [sslc, setSslc] = useState({});
@@ -275,6 +275,13 @@ const SimpleForm = () => {
     setSelectedProject(event.target.value);
   };
   const filteredProjects = project.filter((project) => project.college_id === selectedcollege);
+  const [selectedimage, setSelectedImage] = useState(null);
+
+  const handleFileChange = (event) => {
+    setSelectedImage(event.target.files[0]);
+  };
+  console.log(selectedimage);
+  console.log(student.student_name);
 
   const handleChange = (event) => {
     event.persist();
@@ -290,12 +297,13 @@ const SimpleForm = () => {
     });
   };
   const handleSubmit = (event) => {
+    const Data = new FormData();
+    Data.append('image', selectedimage);
     for (let x in student) {
-      file.append(x, student[x]);
+      Data.append(x, student[x]);
     }
-    event.preventDefault();
     axios
-      .post('http://localhost:4000/api/student/insert', { file })
+      .post('http://localhost:4000/api/student/insert', Data)
       .then((res) => {
         console.log(res.data);
         // alert('Student Details added Successfully');
@@ -380,7 +388,13 @@ const SimpleForm = () => {
             <InputLabel sx={{ marginTop: '8px' }} id="demo-simple-select-label">
               Student Image
             </InputLabel>
-            <TextField sx={{ mb: 4 }} type="file" name="image" label="" onChange={UploadPic} />
+            <TextField
+              sx={{ mb: 4 }}
+              type="file"
+              name="image"
+              label=""
+              onChange={handleFileChange}
+            />
             <TextField
               sx={{ mb: 4 }}
               type="text"

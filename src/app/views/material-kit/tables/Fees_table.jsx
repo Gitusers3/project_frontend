@@ -39,7 +39,7 @@ const Item = styled(Paper)(({ theme }) => ({
 export default function Fees_table(divprop) {
   const [display, setDisplay] = useState([]);
 
-  console.log('divprop', divprop);
+  console.log('divprop in fees', divprop);
   useEffect(() => {
     URL.get('fees/view_fees')
       .then((res) => {
@@ -112,11 +112,23 @@ export default function Fees_table(divprop) {
   const handlePrint = () => {
     window.print();
   };
+  let fromDate = divprop?.fromDate ? new Date(divprop.fromDate) : null;
+  let toDate = divprop?.toDate ? new Date(divprop.toDate) : null;
+
   const datta = display
     ?.filter((va) => {
-      return divprop?.divprop?.props ? va?.div_id?.d_name === divprop?.divprop?.props : true;
-    })
+      const divisionFilter = divprop?.divprop?.props
+        ? va?.div_id?.d_name === divprop?.divprop?.props
+        : true;
 
+      if (fromDate && toDate) {
+        let fdate = new Date(va?.f_date);
+        let fromDateFilter = fdate >= fromDate;
+        let toDateFilter = fdate <= toDate;
+        return divisionFilter && fromDateFilter && toDateFilter;
+      }
+      return divisionFilter;
+    })
     ?.map((item, index) => {
       console.log(item._id);
       return {

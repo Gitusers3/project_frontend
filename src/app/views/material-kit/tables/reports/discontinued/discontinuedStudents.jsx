@@ -46,9 +46,22 @@ const DatatablePage = (divprop) => {
   const [centredModal, setCentredModal] = useState(false);
   const [sid, setSid] = useState();
 
+  let fromDate = divprop?.fromDate ? new Date(divprop.fromDate) : null;
+  let toDate = divprop?.toDate ? new Date(divprop.toDate) : null;
+
   const datta = display
     ?.filter((va) => {
-      return divprop?.divprop?.props ? va?.division_id?.d_name === divprop?.divprop?.props : true;
+      const divisionFilter = divprop?.divprop?.props
+        ? va?.division_id?.d_name === divprop?.divprop?.props
+        : true;
+
+      if (fromDate && toDate) {
+        let admissionDate = new Date(va?.date_of_admission);
+        let fromDateFilter = admissionDate >= fromDate;
+        let toDateFilter = admissionDate <= toDate;
+        return divisionFilter && fromDateFilter && toDateFilter;
+      }
+      return divisionFilter;
     })
     .filter((va) => {
       // Second filter - filter based on student status (assuming status is a property in the 'va' object)
