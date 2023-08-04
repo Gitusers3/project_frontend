@@ -31,14 +31,20 @@ import Swal from "sweetalert2";
   
 
 
-function QtechSimpletable() {
+function QtechSimpletable(props) {
+  console.log("ttt",props.techie)
     const [timetable,setTimetable]=useState([])
   
 
     useEffect(()=>{
-        url.get("cltimetable/view").then((res)=>{
+        url.get("techtimetable/view").then((res)=>{
             console.log("res",res.data)
-            setTimetable(res.data)
+            const fiteredTime=res.data.filter((item)=>{
+              return item.tech_id?._id===props.techie
+
+            })
+            console.log("filteredTime",fiteredTime)
+            setTimetable(fiteredTime)
     
         }).catch((err)=>{
             alert(err)
@@ -47,6 +53,7 @@ function QtechSimpletable() {
     
     
     },[])
+    console.log("t",timetable)
     const daysInWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const sortTime=[]
     
@@ -127,7 +134,7 @@ function QtechSimpletable() {
 
       <TableBody>
    
-        {sortTime.map((item, index) => (
+        {/* {sortTime.map((item, index) => (
           <TableRow key={index}>
            
             <TableCell align="left">{item.dayofweek}</TableCell>
@@ -145,7 +152,7 @@ function QtechSimpletable() {
             </TableCell>
           </TableRow>
           
-        ))}
+        ))} */}
       </TableBody>
     </StyledTable>
     <Link to="../../time_table/codelab">

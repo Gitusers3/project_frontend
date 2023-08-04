@@ -9,6 +9,8 @@ import Tooltip from '@mui/material/Tooltip';
 
 import QtechSimpletable from './QtechSimpletable';
 import { Link } from 'react-router-dom';
+import { useState,useEffect } from 'react';
+import url from 'global';
 
 const Container = styled('div')(({ theme }) => ({
   margin: '30px',
@@ -20,6 +22,27 @@ const Container = styled('div')(({ theme }) => ({
 }));
 
 function Qtech_Timetable() {
+  const [techie,setTechie]=useState([])
+
+  useEffect(()=>{
+    url.get('staff/view').then((res)=>{
+      console.log("staff",res.data)
+      const staff=res.data.filter((item)=>{
+        return item.designation==="Software Developer"
+
+      })
+      setTechie(staff)
+
+    }).catch((err)=>{
+      alert(err)
+
+    })
+
+  },[])
+
+  
+  
+  
   return (
     <Container>
     <Box className="breadcrumb">
@@ -33,10 +56,19 @@ function Qtech_Timetable() {
 </IconButton>
 </Link>
     </Tooltip>
-
-<SimpleCard title="Time Table">
-<QtechSimpletable/>
+{techie.map((item)=>{
+  return(
+    <SimpleCard title={`Time Table: ${item.staff_name}`} >
+<QtechSimpletable techie={item._id}/>
 </SimpleCard>
+
+  )
+})}
+
+
+
+
+
 </Grid>
 
  
