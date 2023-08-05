@@ -4,6 +4,7 @@ import {IconButton} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import Tooltip from '@mui/material/Tooltip';
+import SimpleDialogDemo from './SimpleDialog';
 
 
 
@@ -23,6 +24,8 @@ const Container = styled('div')(({ theme }) => ({
 
 function Qtech_Timetable() {
   const [techie,setTechie]=useState([])
+  const [techid,setTechid]=useState("")
+  const [selctedTechie,setSelectedtecchi]=useState("")
 
   useEffect(()=>{
     url.get('staff/view').then((res)=>{
@@ -38,7 +41,15 @@ function Qtech_Timetable() {
 
     })
 
-  },[])
+
+
+
+  },[selctedTechie])
+
+ const handleSelectedTechie=(data)=>{
+  setSelectedtecchi(data)
+
+ }
 
   
   
@@ -56,14 +67,38 @@ function Qtech_Timetable() {
 </IconButton>
 </Link>
     </Tooltip>
-{techie.map((item)=>{
+    <div style={{marginBottom:"20px"}}>
+    <SimpleCard>
+          <SimpleDialogDemo  sendData={handleSelectedTechie}/>
+        
+          
+        </SimpleCard>
+        </div>
+     
+        {selctedTechie==="" || typeof selctedTechie==="undefined"?(techie.map((item)=>{
   return(
+    <div style={{marginBottom:"20px"}}>
     <SimpleCard title={`Time Table: ${item.staff_name}`} >
-<QtechSimpletable techie={item._id}/>
+<QtechSimpletable techie={item._id} />
 </SimpleCard>
+</div>
 
   )
-})}
+})):( <SimpleCard  >
+<QtechSimpletable techie={selctedTechie} />
+</SimpleCard>)}
+       
+     
+{/* {techie.map((item)=>{
+  return(
+    <div style={{marginBottom:"20px"}}>
+    <SimpleCard title={`Time Table: ${item.staff_name}`} >
+<QtechSimpletable techie={item._id} />
+</SimpleCard>
+</div>
+
+  )
+})} */}
 
 
 

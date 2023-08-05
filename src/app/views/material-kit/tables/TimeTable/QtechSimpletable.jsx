@@ -52,7 +52,7 @@ function QtechSimpletable(props) {
         })
     
     
-    },[])
+    },[props.techie])
     console.log("t",timetable)
     const daysInWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const sortTime=[]
@@ -95,7 +95,7 @@ function QtechSimpletable(props) {
         })
         .then((result) => {
           if (result.isConfirmed) {
-            url.delete(`cltimetable/delete/${id}`)
+            url.delete(`techtimetable/delete/${id}`)
               .then((res) => {
                 console.log(res);
                 let newDisplay = timetable.filter((item) => {
@@ -116,7 +116,7 @@ function QtechSimpletable(props) {
         });
     };
   return (
-    <Box width="100%" overflow="auto">
+    <Box width="100%" overflow="auto" >
     <StyledTable>
       <TableHead>
         <TableRow>
@@ -124,7 +124,8 @@ function QtechSimpletable(props) {
           <TableCell align="left">Session 1[9:30-11:30]</TableCell>
        
           <TableCell align="center">Session 2[11:30-1:30]</TableCell>
-          <TableCell align="center">Session 3[2:30-5:30]</TableCell>
+          <TableCell align="center">Session 3[2:30-4:30]</TableCell>
+          <TableCell align="center">Session 4[4:00-5:30]</TableCell>
       
           
           
@@ -134,13 +135,40 @@ function QtechSimpletable(props) {
 
       <TableBody>
    
-        {/* {sortTime.map((item, index) => (
+        {sortTime.map((item, index) => (
           <TableRow key={index}>
            
             <TableCell align="left">{item.dayofweek}</TableCell>
-            <TableCell align="left">{item.first_session}</TableCell>
-            <TableCell align="center">{item.second_session}</TableCell>
-            <TableCell align="center">{item.third_session}</TableCell>
+            <TableCell align="left">{item.first_session.map((i)=>{
+              return(
+                <>
+                <p>{i.b_name}</p>
+                </>
+              )
+            })}</TableCell>
+            <TableCell align="center">{item.second_session.map((v)=>{
+              return(
+                <>
+                <p>{v.b_name}</p>
+                </>
+              )
+            })}</TableCell>
+            <TableCell align="center">{item.third_session.map((e)=>{
+              return(
+                <>
+                <p>{e.b_name}</p>
+                </>
+              )
+
+            })}</TableCell>
+             <TableCell align="center">{item.four_session.map((t)=>{
+              return(
+                <>
+                <p>{t.b_name}</p>
+                </>
+              )
+
+            })}</TableCell>
        
             <TableCell align="right">
               <IconButton onClick={()=>deleteTimeTable(item._id)} >
@@ -152,14 +180,10 @@ function QtechSimpletable(props) {
             </TableCell>
           </TableRow>
           
-        ))} */}
+        ))}
       </TableBody>
     </StyledTable>
-    <Link to="../../time_table/codelab">
-     <Button fullWidth sx={{ marginTop: '10px' }} variant="outlined">
-       Create TimeTable
-     </Button>
-   </Link>
+    
   </Box>
   )
 }
