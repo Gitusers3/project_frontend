@@ -86,6 +86,12 @@ function Qtech_Form() {
     const handleType = (e) => {
       setType(e.target.value);
     };
+
+    const handletechie=(e)=>{
+      setSlectedtechie(e.target.value)
+  
+    }
+ 
   
   
   
@@ -93,13 +99,14 @@ function Qtech_Form() {
     e.preventDefault();
     setTimetable({
         ...timetable,
-        techie_id:selectedtechie,
+        
         [e.target.name]:e.target.value
     })
     
    
   
   };
+  console.log("timetable",timetable)
   const handleSession1 = (e) => {
     e.preventDefault();
    setSession1(e.target.value)
@@ -107,10 +114,7 @@ function Qtech_Form() {
    
   
   };
-  const handletechie=(e)=>{
-    setSlectedtechie(e.target.value)
-
-  }
+ 
   
 
   const handleSession2 = (e) => {
@@ -179,6 +183,7 @@ function Qtech_Form() {
       event.preventDefault();
       setTime({
         ...timetable,
+        tech_id:selectedtechie,
         first_session:session1,
         second_session:session2,
         third_session:session3,
@@ -197,7 +202,7 @@ function Qtech_Form() {
           console.log(res.data)
           alert(" Time Tables Details added Successfully")
     
-      nav("/staffs")
+      // nav("/staffs")
           
     
     
