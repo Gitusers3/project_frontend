@@ -22,8 +22,22 @@ const TextField = styled(TextValidator)(() => ({
   marginBottom: '16px'
 }));
 
+function getNextReceiptNumber(currentReceiptNumber) {
+  const prefix = currentReceiptNumber.slice(0, 5);
+  const number = parseInt(currentReceiptNumber.slice(5));
+  return `${prefix}${number + 1}`;
+}
+
 const SimpleForm = ({ Sid, count, setCentredModal }) => {
   console.log('Student ID from prop : ' + Sid);
+
+  const [rec_num, setRec_num] = useState('DTQFR100');
+
+  useEffect(() => {
+    const nextReceiptNumber = getNextReceiptNumber(rec_num);
+    setRec_num(nextReceiptNumber);
+  }, []); // Run the effect whenever receiptNumber changes
+
   const [state, setState] = useState({ date: new Date() });
   const [one, setOne] = useState('');
   const [divid, setDivid] = useState('');
@@ -68,8 +82,7 @@ const SimpleForm = ({ Sid, count, setCentredModal }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
   };
-  var randVal = 1000 + Math.random() * (9999 - 1000);
-  const rec_num = Math.round(randVal);
+
   const formSubmit = (event) => {
     setAlldata({
       rec_num: rec_num,
