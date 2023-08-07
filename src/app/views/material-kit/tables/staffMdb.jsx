@@ -8,7 +8,7 @@ import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import { styled } from '@mui/material/styles';
 import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
-import Fform from '../forms/Feesform';
+import Profile from '../../staffs/template';
 import Swal from 'sweetalert2';
 import {
   MDBBtn,
@@ -45,15 +45,15 @@ const DatatablePage = (prop) => {
   }, []);
   console.log(display);
   const [centredModal, setCentredModal] = useState(false);
-  const [sid, setSid] = useState();
+  const [staffId, setStaffId] = useState();
 
   const [deleteID, setDeleteID] = useState('');
   const [count, setCount] = useState(1);
 
-  const toggleShow = (sid) => {
+  const toggleShow = (staffId) => {
     setCentredModal(!centredModal);
     setCount((prevCount) => prevCount + 1);
-    return setSid(sid);
+    return setStaffId(staffId);
   };
   const toggleClose = () => {
     setCentredModal(!centredModal);
@@ -117,9 +117,7 @@ const DatatablePage = (prop) => {
             <Grid container spacing={3}>
               <Grid item xs={4}>
                 <Item>
-                  <Link to={`view/${item._id}`}>
-                    <RemoveRedEyeIcon />
-                  </Link>
+                  <RemoveRedEyeIcon onClick={() => toggleShow(item._id)} />
                 </Item>
               </Grid>
               {/* <Grid item xs={4}>
@@ -187,11 +185,11 @@ const DatatablePage = (prop) => {
         <MDBModalDialog centered>
           <MDBModalContent>
             <MDBModalHeader>
-              <MDBModalTitle>Make reciepts</MDBModalTitle>
+              <MDBModalTitle>Staff Profile</MDBModalTitle>
               <MDBBtn className="btn-close" color="none" onClick={() => toggleClose()}></MDBBtn>
             </MDBModalHeader>
             <MDBModalBody>
-              <Fform Sid={sid} count={count} />
+              <Profile Staffid={staffId} count={count} setCentredModal={setCentredModal} />
             </MDBModalBody>
             {/* <MDBModalFooter>
               <MDBBtn color="secondary" onClick={toggleShow}>
