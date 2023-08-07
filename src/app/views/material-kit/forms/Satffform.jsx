@@ -104,18 +104,25 @@ const Staffform = () => {
     return () => ValidatorForm.removeValidationRule('isPasswordMatch');
   }, [state.password]);
 
-  console.log("designation",designation)
+  console.log('designation', designation);
+  const [selectedimage, setSelectedImage] = useState(null);
+  const handleFileChange = (event) => {
+    setSelectedImage(event.target.files[0]);
+  };
+  console.log(selectedimage);
 
   const handleSubmit = (event) => {
+    const Data = new FormData();
+    Data.append('image', selectedimage);
+    for (let x in staff) {
+      Data.append(x, staff[x]);
+    }
     axios
-      .post('http://localhost:4000/api/staff/insert', staff)
+      .post('http://localhost:4000/api/staff/insert', Data)
       .then((res) => {
         console.log(res.data);
         alert('Staff Details added Successfully');
         // nav('/staffs');
-      })
-      .catch((err) => {
-        alert(err);
       })
       .catch((err) => {
         alert(err);
@@ -158,7 +165,7 @@ const Staffform = () => {
 
   return (
     <div>
-      <ValidatorForm onSubmit={handleSubmit} onError={() => null}>
+      <ValidatorForm onSubmit={handleSubmit} onError={() => null} enctype="multipart/form-data">
         <h2 className="text-center">Staff Details</h2>
         <Grid container spacing={6}>
           <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
@@ -176,6 +183,8 @@ const Staffform = () => {
               onChange={handleChange}
               label="Employee Name "
             />
+            <small>Profile Picture</small>
+            <TextField type="file" name="profile" id="standard-basic" onChange={handleFileChange} />
 
             <InputLabel id="demo-simple-select-label">Date Of Joining </InputLabel>
             <TextField type="date" name="doj" label="" onChange={handleChange} />
@@ -346,7 +355,6 @@ const Staffform = () => {
                 name="gender"
                 label="Choose Division"
                 onChange={handleChange}
-            
               >
                 <MenuItem value="male">Male</MenuItem>
                 <MenuItem value="female">Female</MenuItem>
