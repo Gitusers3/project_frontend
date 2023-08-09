@@ -182,7 +182,7 @@ const DatatablePage = (prop) => {
     <>
       <MDBDataTable striped data={data} />
       <MDBModal tabIndex="-1" show={centredModal} setShow={setCentredModal}>
-        <MDBModalDialog centered>
+        <MDBModalDialog size="lg" centered>
           <MDBModalContent>
             <MDBModalHeader>
               <MDBModalTitle>Staff Profile</MDBModalTitle>

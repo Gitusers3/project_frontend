@@ -18,6 +18,7 @@ import { useParams } from 'react-router-dom';
 import ContentCutIcon from '@mui/icons-material/ContentCut';
 import PrintIcon from '@mui/icons-material/Print';
 import './css/print.css';
+import { MDBTable, MDBTableHead, MDBTableBody } from 'mdb-react-ui-kit';
 const Container = styled('div')(({ theme }) => ({
   margin: '30px',
   [theme.breakpoints.down('sm')]: { margin: '16px' },
@@ -149,7 +150,7 @@ export default function Fees_Reciept() {
           </button>
         </Grid>
 
-        <div className="printable-content d-block w-100" ref={printRef}>
+        <div className="printable-content d-block w-100 p-3" ref={printRef}>
           <Grid container rowSpacing={3} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
             <Grid item xs={12}>
               <div>
@@ -188,11 +189,69 @@ export default function Fees_Reciept() {
                   <hr />
 
                   <div className="table-responsive">
-                    <table className="table  table-borderless">
+                    <MDBTable borderless>
+                      <MDBTableHead>
+                        <tr>
+                          <td scope="col" className="text-start">
+                            Receipt No :{' '}
+                            <span style={{ borderBottom: '1px dashed ' }}>{fees?.rec_num}</span>
+                          </td>
+                          <td scope="col" className="text-start"></td>
+                          <td scope="col" className="text-end">
+                            Date :{' '}
+                            <span style={{ borderBottom: '1px dashed ' }}>
+                              <Moment format="DD-MM-YYYY">{fees?.f_date}</Moment>
+                            </span>
+                          </td>
+                        </tr>
+                      </MDBTableHead>
+                    </MDBTable>
+                    <hr />
+                    <MDBTable borderless className="mt-5">
+                      <MDBTableBody>
+                        <tr>
+                          <td>
+                            <span className="fw-bolder text-muted">Received From :</span> {student}
+                          </td>
+                          <td></td>
+                          <td className="text-end">
+                            <span className="fw-bolder text-muted">Received For :</span> Academic
+                            Internship ({fees?.fees_type})
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <span className="fw-bolder text-muted">College/Work Place :</span>{' '}
+                            {collegeName}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <span className="fw-bolder text-muted">Payment Type :</span>{' '}
+                            {fees?.pay_type}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <span className="fw-bolder text-muted">Amount :</span> ₹ {fees?.amount}
+                            /-
+                          </td>
+                          <td></td>
+                          <td className="text-center">
+                            <span className="fw-bold text-muted">
+                              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SIGNATURE
+                            </span>
+                          </td>
+                        </tr>
+                      </MDBTableBody>
+                    </MDBTable>
+                    {/* <table className="table  table-borderless">
                       <thead>
                         <tr>
                           <th className="text-center fw-bolder ">
-                            <b>Receipt No</b>
+                            <b></b>
                           </th>
                           <th className="text-center fw-bolder w-50"></th>
                           <th className="text-center fw-bolder ">
@@ -205,140 +264,24 @@ export default function Fees_Reciept() {
                           <th
                             className="text-center fw-bolder"
                             style={{ border: '2px solid black', padding: '15px' }}
-                          >
-                            {fees?.rec_num}
-                          </th>
+                          ></th>
                           <th className="text-center fw-bolder w-50"></th>
                           <th
                             className="text-center fw-bolder"
                             style={{ border: '2px solid black', padding: '15px' }}
-                          >
-                            <Moment format="DD-MM-YYYY">{fees?.f_date}</Moment>
-                          </th>
+                          ></th>
                         </tr>
                       </tbody>
-                    </table>
+                    </table> */}
                   </div>
-                  <Box sx={{ flexGrow: 1 }}>
-                    <Grid container spacing={2} columns={16}>
-                      <Grid item xs={8}>
-                        <div className="d-flex">
-                          <div className="w-100">
-                            <p style={{ fontSize: '15px', fontWeight: 'bolder' }}>Received From</p>
-                          </div>
-                          <div className="w-100">
-                            <p style={{ fontSize: '15px', fontWeight: 'bolder' }}>: {student}</p>
-                            {/* ({fees?.std_id?.our_reg_no}) */}
-                          </div>
-                          <div className="w-100 text-start">
-                            <p style={{ fontSize: '15px' }}> </p>
-                          </div>
-                        </div>
-                      </Grid>
-                      <Grid item xs={8}>
-                        <div className="d-flex">
-                          <div className="w-50">
-                            <p style={{ fontSize: '15px', fontWeight: 'bolder' }}>Received For</p>
-                          </div>
-                          <div className="w-100">
-                            <p style={{ fontSize: '15px', fontWeight: 'bolder' }}>
-                              : Academic Internship
-                            </p>
-                          </div>
-                        </div>
-                      </Grid>
-                    </Grid>
-                  </Box>
-                  <Box sx={{ flexGrow: 1 }}>
-                    <Grid container spacing={2} columns={16}>
-                      <Grid item xs={8}>
-                        <div className="d-flex">
-                          <div className="w-75">
-                            <p style={{ fontSize: '15px', fontWeight: 'bolder' }}>
-                              College/Work Place
-                            </p>
-                          </div>
-                          <div className="w-100">
-                            <p style={{ fontSize: '15px', fontWeight: 'bolder' }}>
-                              : {collegeName}
-                            </p>
-                          </div>
-                        </div>
-                      </Grid>
-                      <Grid item xs={8}>
-                        <div className="d-flex w-100">
-                          <div className="w-50">
-                            <p style={{ fontSize: '15px', fontWeight: 'bolder' }}>Paid For</p>
-                          </div>
-                          <div className="w-100">
-                            <p style={{ fontSize: '15px', fontWeight: 'bolder' }}>
-                              : {fees?.fees_type}
-                            </p>
-                          </div>
-                          <div className="w-100 text-start">
-                            <p style={{ fontSize: '15px' }}> </p>
-                          </div>
-                        </div>
-                      </Grid>
-                    </Grid>
-                  </Box>
-                  <Box sx={{ flexGrow: 1 }}>
-                    <Grid container spacing={2} columns={24}>
-                      <Grid item xs={10}>
-                        <div className="d-flex">
-                          <div className="w-100">
-                            <p style={{ fontSize: '15px', fontWeight: 'bolder' }}>Payment Type</p>
-                          </div>
-                          <div className="w-100">
-                            <p style={{ fontSize: '15px', fontWeight: 'bolder' }}>
-                              : {fees?.pay_type}
-                            </p>
-                          </div>
-                        </div>
-                      </Grid>
-                      <Grid item xs={8}>
-                        <div className="w-100 text-center">
-                          <p style={{ fontSize: '15px', fontWeight: 'bolder' }}>Amount</p>
-                        </div>
-                        <div
-                          className="w-100 d-flex justify-content-center"
-                          style={{
-                            border: '2px solid black',
-                            alignItems: 'center',
-                            alignContent: 'center'
-                          }}
-                        >
-                          <p
-                            className="text-center"
-                            style={{ fontSize: '15px', fontWeight: 'bolder' }}
-                          >
-                            {' '}
-                            {fees?.amount}/-
-                          </p>
-                        </div>
-                      </Grid>
-                      <Grid item xs={6}>
-                        <div className="w-100 text-center">
-                          <p style={{ fontSize: '15px', fontWeight: 'bolder' }}></p>
-                        </div>
-                        <div className="w-100 d-flex justify-content-center">
-                          <p
-                            className="text-center"
-                            style={{ fontSize: '15px', fontWeight: 'bolder' }}
-                          >
-                            {' '}
-                            SIGNATURE
-                          </p>
-                        </div>
-                      </Grid>
-                    </Grid>
-                  </Box>
+                  {/*  */}
                 </SimpleCard>
               </div>
             </Grid>
             <br />
+            <br />
             <Grid item xs={12}>
-              <div>
+              <div style={{ marginTop: '20px' }}>
                 <div className="d-flex">
                   <div className="flex-grow-2">
                     <hr className="border-dashed " style={{ border: '2px dashed black' }} />
@@ -355,7 +298,7 @@ export default function Fees_Reciept() {
             </Grid>
             <br />
             <Grid item xs={12}>
-              <div style={{ marginTop: '10px' }}>
+              <div style={{ marginTop: '2px' }}>
                 <SimpleCard>
                   <div className="d-flex" style={{ gap: '300px', height: '20px' }}>
                     <div className="w-100">
@@ -391,11 +334,69 @@ export default function Fees_Reciept() {
                   <hr />
 
                   <div className="table-responsive">
-                    <table className="table  table-borderless">
+                    <MDBTable borderless>
+                      <MDBTableHead>
+                        <tr>
+                          <td scope="col" className="text-start">
+                            Receipt No :{' '}
+                            <span style={{ borderBottom: '1px dashed ' }}>{fees?.rec_num}</span>
+                          </td>
+                          <td scope="col" className="text-start"></td>
+                          <td scope="col" className="text-end">
+                            Date :{' '}
+                            <span style={{ borderBottom: '1px dashed ' }}>
+                              <Moment format="DD-MM-YYYY">{fees?.f_date}</Moment>
+                            </span>
+                          </td>
+                        </tr>
+                      </MDBTableHead>
+                    </MDBTable>
+                    <hr />
+                    <MDBTable borderless className="mt-5">
+                      <MDBTableBody>
+                        <tr>
+                          <td>
+                            <span className="fw-bolder text-muted">Received From :</span> {student}
+                          </td>
+                          <td></td>
+                          <td className="text-end">
+                            <span className="fw-bolder text-muted">Received For :</span> Academic
+                            Internship ({fees?.fees_type})
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <span className="fw-bolder text-muted">College/Work Place :</span>{' '}
+                            {collegeName}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <span className="fw-bolder text-muted">Payment Type :</span>{' '}
+                            {fees?.pay_type}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <span className="fw-bolder text-muted">Amount :</span> ₹ {fees?.amount}
+                            /-
+                          </td>
+                          <td></td>
+                          <td className="text-center">
+                            <span className="fw-bold text-muted">
+                              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SIGNATURE
+                            </span>
+                          </td>
+                        </tr>
+                      </MDBTableBody>
+                    </MDBTable>
+                    {/* <table className="table  table-borderless">
                       <thead>
                         <tr>
                           <th className="text-center fw-bolder ">
-                            <b>Receipt No</b>
+                            <b></b>
                           </th>
                           <th className="text-center fw-bolder w-50"></th>
                           <th className="text-center fw-bolder ">
@@ -408,134 +409,16 @@ export default function Fees_Reciept() {
                           <th
                             className="text-center fw-bolder"
                             style={{ border: '2px solid black', padding: '15px' }}
-                          >
-                            {fees?.rec_num}
-                          </th>
+                          ></th>
                           <th className="text-center fw-bolder w-50"></th>
                           <th
                             className="text-center fw-bolder"
                             style={{ border: '2px solid black', padding: '15px' }}
-                          >
-                            <Moment format="DD-MM-YYYY">{fees?.f_date}</Moment>
-                          </th>
+                          ></th>
                         </tr>
                       </tbody>
-                    </table>
+                    </table> */}
                   </div>
-                  <Box sx={{ flexGrow: 1 }}>
-                    <Grid container spacing={2} columns={16}>
-                      <Grid item xs={8}>
-                        <div className="d-flex">
-                          <div className="w-100">
-                            <p style={{ fontSize: '15px', fontWeight: 'bolder' }}>Received From</p>
-                          </div>
-                          <div className="w-100">
-                            <p style={{ fontSize: '15px', fontWeight: 'bolder' }}>: {student}</p>
-                            {/* ({fees?.std_id?.our_reg_no}) */}
-                          </div>
-                          <div className="w-100 text-start">
-                            <p style={{ fontSize: '15px' }}> </p>
-                          </div>
-                        </div>
-                      </Grid>
-                      <Grid item xs={8}>
-                        <div className="d-flex">
-                          <div className="w-50">
-                            <p style={{ fontSize: '15px', fontWeight: 'bolder' }}>Received For</p>
-                          </div>
-                          <div className="w-100">
-                            <p style={{ fontSize: '15px', fontWeight: 'bolder' }}>
-                              : Academic Internship
-                            </p>
-                          </div>
-                        </div>
-                      </Grid>
-                    </Grid>
-                  </Box>
-                  <Box sx={{ flexGrow: 1 }}>
-                    <Grid container spacing={2} columns={16}>
-                      <Grid item xs={8}>
-                        <div className="d-flex">
-                          <div className="w-75">
-                            <p style={{ fontSize: '15px', fontWeight: 'bolder' }}>
-                              College/Work Place
-                            </p>
-                          </div>
-                          <div className="w-100">
-                            <p style={{ fontSize: '15px', fontWeight: 'bolder' }}>
-                              : {collegeName}
-                            </p>
-                          </div>
-                        </div>
-                      </Grid>
-                      <Grid item xs={8}>
-                        <div className="d-flex w-100">
-                          <div className="w-50">
-                            <p style={{ fontSize: '15px', fontWeight: 'bolder' }}>Paid For</p>
-                          </div>
-                          <div className="w-100">
-                            <p style={{ fontSize: '15px', fontWeight: 'bolder' }}>
-                              : {fees?.fees_type}
-                            </p>
-                          </div>
-                          <div className="w-100 text-start">
-                            <p style={{ fontSize: '15px' }}> </p>
-                          </div>
-                        </div>
-                      </Grid>
-                    </Grid>
-                  </Box>
-                  <Box sx={{ flexGrow: 1 }}>
-                    <Grid container spacing={2} columns={24}>
-                      <Grid item xs={10}>
-                        <div className="d-flex">
-                          <div className="w-100">
-                            <p style={{ fontSize: '15px', fontWeight: 'bolder' }}>Payment Type</p>
-                          </div>
-                          <div className="w-100">
-                            <p style={{ fontSize: '15px', fontWeight: 'bolder' }}>
-                              : {fees?.pay_type}
-                            </p>
-                          </div>
-                        </div>
-                      </Grid>
-                      <Grid item xs={8}>
-                        <div className="w-100 text-center">
-                          <p style={{ fontSize: '15px', fontWeight: 'bolder' }}>Amount</p>
-                        </div>
-                        <div
-                          className="w-100 d-flex justify-content-center"
-                          style={{
-                            border: '2px solid black',
-                            alignItems: 'center',
-                            alignContent: 'center'
-                          }}
-                        >
-                          <p
-                            className="text-center"
-                            style={{ fontSize: '15px', fontWeight: 'bolder' }}
-                          >
-                            {' '}
-                            {fees?.amount}/-
-                          </p>
-                        </div>
-                      </Grid>
-                      <Grid item xs={6}>
-                        <div className="w-100 text-center">
-                          <p style={{ fontSize: '15px', fontWeight: 'bolder' }}></p>
-                        </div>
-                        <div className="w-100 d-flex justify-content-center">
-                          <p
-                            className="text-center"
-                            style={{ fontSize: '15px', fontWeight: 'bolder' }}
-                          >
-                            {' '}
-                            SIGNATURE
-                          </p>
-                        </div>
-                      </Grid>
-                    </Grid>
-                  </Box>
                 </SimpleCard>
               </div>
             </Grid>

@@ -95,36 +95,68 @@ export default function FeesDetails({ studentD, setStudent, paidFees }) {
         checkedB1: false,
         checkedD1: false
       });
+      setSts(name);
+      Axios.put(`http://localhost:4000/api/student/update/${param.id}`, {
+        sts: name
+      })
+        .then((res) => {
+          console.log(res);
+          if (res.status === 200) {
+            // Handle successful update if needed
+          }
+        })
+        .catch((err) => {
+          alert('Error!');
+          console.log(err);
+        });
     } else if (name === 'Completed') {
-      setState1({
-        checkedA1: false,
-        checkedB1: true,
-        checkedD1: false
-      });
+      if (studentD.pending_fees != 0) {
+        alert("You can't change status if his/her fees is pending");
+      } else {
+        setState1({
+          checkedA1: false,
+          checkedB1: true,
+          checkedD1: false
+        });
+        setSts(name);
+        Axios.put(`http://localhost:4000/api/student/update/${param.id}`, {
+          sts: name
+        })
+          .then((res) => {
+            console.log(res);
+            if (res.status === 200) {
+              // Handle successful update if needed
+            }
+          })
+          .catch((err) => {
+            alert('Error!');
+            console.log(err);
+          });
+      }
     } else if (name === 'Discontinued') {
       setState1({
         checkedA1: false,
         checkedB1: false,
         checkedD1: true
       });
+      setSts(name);
+      Axios.put(`http://localhost:4000/api/student/update/${param.id}`, {
+        sts: name
+      })
+        .then((res) => {
+          console.log(res);
+          if (res.status === 200) {
+            // Handle successful update if needed
+          }
+        })
+        .catch((err) => {
+          alert('Error!');
+          console.log(err);
+        });
     }
     console.log(name);
-    setSts(name);
 
     // Trigger the API call here based on the selected radio button
-    Axios.put(`http://localhost:4000/api/student/update/${param.id}`, {
-      sts: name
-    })
-      .then((res) => {
-        console.log(res);
-        if (res.status === 200) {
-          // Handle successful update if needed
-        }
-      })
-      .catch((err) => {
-        alert('Error!');
-        console.log(err);
-      });
   };
 
   useEffect(() => {
