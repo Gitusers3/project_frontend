@@ -85,7 +85,7 @@ const Staffform = () => {
     async function FetchData(){
       const token=await localStorage.getItem("accessToken")
       url
-      .get('http://localhost:4000/api/division/view_division',{headers:{"auth-token":token}})
+      .get('http://localhost:4000/api/division/view_division',{headers:{"authToken":token}})
       .then((res) => {
         console.log(res.data);
         setDivision(res.data);
@@ -109,8 +109,10 @@ const Staffform = () => {
 
   useEffect(() => {
     // Make the API request
-    axios
-      .get('http://localhost:4000/api/staff/view')
+    async function fetchdata(){
+      const token=await localStorage.getItem("accessToken")
+      axios
+      .get('http://localhost:4000/api/staff/view',{headers:{"authToken":token}})
       .then((res) => {
         console.log(res.data);
         setTechie(res.data);
@@ -118,6 +120,10 @@ const Staffform = () => {
       .catch((err) => {
         console.log(err);
       });
+
+    }
+    fetchdata()
+   
     // alert(selectedDivision);
   }, [selectedTechie]);
   console.log(selectedTechie + ' Techies');

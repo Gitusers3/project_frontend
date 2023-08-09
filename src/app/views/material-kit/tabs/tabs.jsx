@@ -22,9 +22,9 @@ export default function LabTabs() {
       const token=await localStorage.getItem("accessToken")
       console.log("token",token)
       axios
-        .get('http://localhost:4000/api/division/view_division',{headers:{"auth-token":token}})
+        .get('http://localhost:4000/api/division/view_division',{headers:{"authToken":token}})
         .then((res) => {
-          console.log(res.data);
+          console.log("res",res.data);
           setDivsn(res.data);
         })
         .catch((err) => {

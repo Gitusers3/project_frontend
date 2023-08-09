@@ -34,7 +34,7 @@ const DatatablePage = (divprop) => {
   useEffect(() => {
     async function fetchdata(){
       const token=await localStorage.getItem("accessToken")
-      URL.get('student/view',{headers:{"auth-token":token}})
+      URL.get('student/view',{headers:{"authToken":token}})
       .then((res) => {
         console.log(res);
         setDisplay(res.data.st);

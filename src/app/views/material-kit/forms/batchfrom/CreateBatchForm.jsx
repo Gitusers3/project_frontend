@@ -85,8 +85,10 @@ const Staffform = () => {
 
 
   useEffect(() => {
-    url
-      .get('http://localhost:4000/api/college/view')
+    async function fetchadata(){
+      const token=await localStorage.getItem("accessToken")
+      url
+      .get('http://localhost:4000/api/college/view',{headers:{"authToken":token}})
       .then((res) => {
         console.log(res.data);
         setCollege(res.data);
@@ -95,7 +97,7 @@ const Staffform = () => {
         alert(err);
       });
       url
-      .get('http://localhost:4000/api/student/view_project')
+      .get('http://localhost:4000/api/student/view_project',{headers:{"authToken":token}})
       .then((res) => {
         console.log("coll",res.data);
 
@@ -105,6 +107,11 @@ const Staffform = () => {
       .catch((err) => {
         alert(err);
       });
+
+
+    }
+    fetchadata()
+    
   }, [selectedCollege]);
 
  const filteredproject=project.filter((item)=>{
@@ -122,8 +129,10 @@ const Staffform = () => {
 
   useEffect(() => {
     // Make the API request
-    axios
-      .get('http://localhost:4000/api/staff/view')
+    async function fetchdata(){
+      const token=await localStorage.getItem("accessToken")
+      axios
+      .get('http://localhost:4000/api/staff/view',{headers:{"authToken":token}})
       .then((res) => {
         console.log(res.data);
         setTechie(res.data);
@@ -131,6 +140,10 @@ const Staffform = () => {
       .catch((err) => {
         console.log(err);
       });
+
+    }
+    fetchdata()
+  
     // alert(selectedDivision);
   }, [selectedTechie]);
   console.log(selectedTechie + ' Techies');

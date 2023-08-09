@@ -75,7 +75,7 @@ export default function AdditionalDetails({
     async function fetchdata(){
       const token=await localStorage.getItem("accessToken")
       axios
-      .get('http://localhost:4000/api/staff/view',{headers:{"auth-token":token}})
+      .get('http://localhost:4000/api/staff/view',{headers:{"authToken":token}})
       .then((res) => {
         console.log(res.data);
         setTechie(res.data);

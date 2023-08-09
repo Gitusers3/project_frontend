@@ -23,7 +23,7 @@ export default function Fees_tab() {
       async function FecthData(){
         const token=await localStorage.getItem("accessToken")
         axios
-        .get('http://localhost:4000/api/division/view_division',{headers:{"auth-token":token}})
+        .get('http://localhost:4000/api/division/view_division',{headers:{"authToken":token}})
         .then((res) => {
           console.log(res.data);
           setDivsn(res.data);

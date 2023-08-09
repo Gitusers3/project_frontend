@@ -28,18 +28,24 @@ function Qtech_Timetable() {
   const [selctedTechie,setSelectedtecchi]=useState("")
 
   useEffect(()=>{
-    url.get('staff/view').then((res)=>{
-      console.log("staff",res.data)
-      const staff=res.data.filter((item)=>{
-        return item.designation==="Software Developer"
-
+    async function fetchdata(){
+      const token=await localStorage.getItem("accessToken")
+      url.get('staff/view',{headers:{"authToken":token}}).then((res)=>{
+        console.log("staff",res.data)
+        const staff=res.data.filter((item)=>{
+          return item.designation==="Software Developer"
+  
+        })
+        setTechie(staff)
+  
+      }).catch((err)=>{
+        alert(err)
+  
       })
-      setTechie(staff)
 
-    }).catch((err)=>{
-      alert(err)
-
-    })
+    }
+    fetchdata()
+ 
 
 
 

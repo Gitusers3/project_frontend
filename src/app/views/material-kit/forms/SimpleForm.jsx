@@ -121,7 +121,7 @@ const SimpleForm = () => {
     async function FetchData(){
       const token=await localStorage.getItem("accessToken")
       axios
-      .get('http://localhost:4000/api/course/view',{headers:{"auth-token":token}})
+      .get('http://localhost:4000/api/course/view',{headers:{"authToken":token}})
       .then((res) => {
         console.log(res.data);
         setCourses(res.data);
@@ -139,7 +139,7 @@ const SimpleForm = () => {
     async function FetchData(){
       const token =await localStorage.getItem("accessToken")
       axios
-      .get('http://localhost:4000/api/intership/view_intership',{headers:{"auth-token":token}})
+      .get('http://localhost:4000/api/intership/view_intership',{headers:{"authToken":token}})
       .then((res) => {
         console.log(res.data);
         setIntern(res.data);
@@ -172,7 +172,7 @@ const SimpleForm = () => {
       const token=await localStorage.getItem("accessToken")
      
       axios
-      .get('http://localhost:4000/api/division/view_division',{headers:{"auth-token":token}})
+      .get('http://localhost:4000/api/division/view_division',{headers:{"authToken":token}})
       .then((res) => {
         console.log(res.data);
         setDivsn(res.data);
@@ -240,7 +240,7 @@ const SimpleForm = () => {
     async function FetchData(){
       const token=await localStorage.getItem("accessToken")
       axios
-      .get('http://localhost:4000/api/college/view',{headers:{"auth-token":token}})
+      .get('http://localhost:4000/api/college/view',{headers:{"authToken":token}})
       .then((res) => {
         setDisc(res.data);
       })
@@ -294,7 +294,7 @@ const SimpleForm = () => {
       const token=await localStorage.getItem("accessToken")
 
       axios
-      .get('http://localhost:4000/api/student/view_project',{headers:{"auth-token":token}})
+      .get('http://localhost:4000/api/student/view_project',{headers:{"authToken":token}})
       .then((res) => {
         setProject(res.data);
       })
@@ -969,9 +969,9 @@ const SimpleForm = () => {
                   name="intenship_id"
                   label="Choose Internship"
                   value={selectedInternship}
-                  onChange={handleSelectChange4}
+                  onChange={handleSelectInternship}
                 >
-                  {intern.map((intern) => (
+                  {intern?.map((intern) => (
                     <MenuItem key={intern._id} value={intern._id}>
                       {intern.intership_on}
                     </MenuItem>

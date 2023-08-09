@@ -35,12 +35,12 @@ const DatatablePage = (divprop) => {
   console.log(divprop?.fromDate);
   console.log(divprop?.toDate);
   useEffect(() => {
-    async function FetchData(){
+    async function fetchdata(){
       const token=await localStorage.getItem("accessToken")
       console.log("tok",token)
-      URL.get('student/view',{headers:{"auth-token":token}})
+      URL.get('student/view',{headers:{"authToken":token}})
       .then((res) => {
-        console.log(res);
+        console.log("re",res);
         setDisplay(res.data.st);
         console.log(display);
       })
@@ -50,9 +50,11 @@ const DatatablePage = (divprop) => {
 
 
     }
-    FetchData()
+    fetchdata()
    
-  }, [sid]);
+  }, []);
+
+
   console.log(display);
   const [centredModal, setCentredModal] = useState(false);
 
