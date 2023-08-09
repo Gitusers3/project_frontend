@@ -191,8 +191,9 @@ const SimpleForm = ({ Sid, count, setCentredModal }) => {
               name="fees_type"
               value={feesType}
               label="Choose fees type"
+              required
             >
-              <MenuItem value={'Partial'}>Partial</MenuItem>
+              <MenuItem value="Partial">Partial</MenuItem>
               <MenuItem value="Registration">Registration</MenuItem>
               <MenuItem value="Course Fees">Course Fees</MenuItem>
             </TextField>
