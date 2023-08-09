@@ -196,6 +196,8 @@ const SimpleForm = () => {
   }, [intern]);
 
   const [disc, setDisc] = useState([]);
+  const [collegeNameError, setCollegeNameError] = useState(null); // State to store validation error
+
   const [selectedcollege, setSelectedCollege] = useState('');
   const [value, setValue] = useState(null);
   const [open, toggleOpen] = useState(false);
@@ -226,13 +228,31 @@ const SimpleForm = () => {
   }, [count]);
 
   console.log(selectedcollege + ' college');
+  console.log(disc, 1111111);
 
   const [college, setCollege] = useState('');
   const [address, setAddress] = useState('');
   const handleSubmitDialog = (event) => {
     event.preventDefault();
-    let c_name = dialogValue.college;
-    let c_address = dialogValue.address;
+
+    const c_name = dialogValue.college;
+    const c_address = dialogValue.address;
+
+    // Check if either college name or address is empty
+    if (c_name.trim() === '' || c_address.trim() === '') {
+      setCollegeNameError('Both college name and address are required!');
+      return;
+    }
+
+    // Check if the college name is already in the list
+    if (disc.some((item) => item?.c_name === c_name)) {
+      setCollegeNameError('College name already exists!!!');
+      return; // Exit early if there's an error
+    }
+
+    // Reset the error state if validation passes
+    setCollegeNameError('');
+
     axios
       .post('http://localhost:4000/api/college/insert', { college: c_name, address: c_address })
       .then((res) => {
@@ -240,14 +260,14 @@ const SimpleForm = () => {
         if (res.data.success) {
           alert('Insertion Successful');
           console.log('Insertion Successful');
+          setCount((prevCount) => prevCount + 1);
+          handleClose();
         }
       })
       .catch((err) => {
         alert(err);
         console.log('Error frontend:', err);
       });
-    setCount((prevCount) => prevCount + 1);
-    handleClose();
   };
 
   // profile picture uploading to state
@@ -577,7 +597,6 @@ const SimpleForm = () => {
                     margin="dense"
                     id="name"
                     value={dialogValue.college}
-                    // onChange={(e) => setCollege(e.target.value)}
                     onChange={(event) =>
                       setDialogValue({
                         ...dialogValue,
@@ -587,7 +606,10 @@ const SimpleForm = () => {
                     label="College name"
                     type="text"
                     variant="standard"
+                    error={collegeNameError !== null} // Apply error state based on validation
+                    helperText={collegeNameError} // Display error message if it exists
                   />
+
                   <TextField
                     margin="dense"
                     id="address"
@@ -600,8 +622,13 @@ const SimpleForm = () => {
                     label="Address"
                     type="text"
                     variant="standard"
+                    error={dialogValue.address.trim() === ''} // Apply error state based on validation
+                    helperText={dialogValue.address.trim() === '' ? 'Address is required' : ''}
                   />
+
+                  {/* Add your submit button here */}
                 </DialogContent>
+
                 <DialogActions>
                   <Button onClick={handleClose}>Cancel</Button>
                   <Button onClick={handleSubmitDialog} type="submit">

@@ -10,6 +10,8 @@ import Paper from '@mui/material/Paper';
 import Input from '@mui/material/Input';
 import Box from '@mui/material/Box';
 import axios, { Axios } from 'axios';
+import Swal from 'sweetalert2';
+
 // import MockAdapter from 'axios-mock-adapter';
 import {
   Button,
@@ -37,7 +39,7 @@ import DialogActions from '@mui/material/DialogActions';
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import { Subject } from '@mui/icons-material';
 import { use } from 'echarts';
-import url from 'global';
+import url from '../../../../global';
 import { useNavigate } from 'react-router-dom';
 
 const filter = createFilterOptions();
@@ -76,7 +78,17 @@ const Staffform = () => {
     setDesignation(e.target.value);
   };
 
+  const [contactNumberError, setContactNumberError] = useState(null);
+
   const handleChange = (event) => {
+    const { name, value } = event.target;
+    if (name === 'contact_no1') {
+      if (value.length !== 10) {
+        setContactNumberError('Contact number must contain exactly 10 digits');
+      } else {
+        setContactNumberError(''); // Reset the error message if validation passes
+      }
+    }
     setStaff({
       ...staff,
       [event.target.name]: event.target.value
@@ -122,7 +134,29 @@ const Staffform = () => {
       .then((res) => {
         console.log(res.data);
         alert('Staff Details added Successfully');
-        // nav('/staffs');
+        let timerInterval;
+        Swal.fire({
+          title: 'Staff Details inserted Successfully',
+          html: 'You are redirecting to Staff table in <b></b> milliseconds.',
+          timer: 2000,
+          timerProgressBar: true,
+          didOpen: () => {
+            Swal.showLoading();
+            const b = Swal.getHtmlContainer().querySelector('b');
+            timerInterval = setInterval(() => {
+              b.textContent = Swal.getTimerLeft();
+            }, 100);
+          },
+          willClose: () => {
+            clearInterval(timerInterval);
+          }
+        }).then((result) => {
+          /* Read more about handling dismissals below */
+          if (result.dismiss === Swal.DismissReason.timer) {
+            console.log('Staff Inserted successfully');
+            nav('/staffs');
+          }
+        });
       })
       .catch((err) => {
         alert(err);
@@ -162,6 +196,30 @@ const Staffform = () => {
     college: '',
     address: ''
   });
+  const [staffs, setStaffs] = useState([]);
+  const [employee_code, setEmployee_code] = useState('EMPDQ101');
+
+  useEffect(() => {
+    url
+      .get('staff/view')
+      .then((res) => {
+        console.log('staffs', res.data);
+        setStaffs(res.data);
+        const lastRecord = res.data[res.data.length - 1];
+        const lastEmpcode = lastRecord ? lastRecord.employee_code : 'EMPDQ';
+        const newEmpCode = generateNextEmpCode(lastEmpcode);
+        setEmployee_code(newEmpCode);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []); // Run the effect once, when the component mounts
+
+  function generateNextEmpCode(lastEmpCode) {
+    const lastCounter = parseInt(lastEmpCode.match(/\d+/)[0]);
+    const newCounter = lastCounter + 1;
+    return `EMPDQ${newCounter}`;
+  }
 
   return (
     <div>
@@ -169,12 +227,15 @@ const Staffform = () => {
         <h2 className="text-center">Staff Details</h2>
         <Grid container spacing={6}>
           <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
+            <small>Employee code : {employee_code}</small>
             <TextField
               type="text"
               name="employee_code"
               id="standard-basic"
+              // placeholder={employee_code}
               onChange={handleChange}
               label="Employee Code"
+              required
             />
             <TextField
               type="text"
@@ -182,16 +243,22 @@ const Staffform = () => {
               id="standard-basic"
               onChange={handleChange}
               label="Employee Name "
+              required
             />
             <small>Profile Picture</small>
-            <TextField type="file" name="profile" id="standard-basic" onChange={handleFileChange} />
-
+            <TextField
+              required
+              type="file"
+              name="profile"
+              id="standard-basic"
+              onChange={handleFileChange}
+            />
             <InputLabel id="demo-simple-select-label">Date Of Joining </InputLabel>
-            <TextField type="date" name="doj" label="" onChange={handleChange} />
-
+            <TextField required type="date" name="doj" label="" onChange={handleChange} />
             <FormControl fullWidth style={{ marginBottom: '20px' }}>
-              <InputLabel id="demo-simple-select-label">Employee Type </InputLabel>
+              <InputLabel id="demo-simple-select-label">Choose Employee Type </InputLabel>
               <Select
+                required
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 name="employee_type"
@@ -205,6 +272,7 @@ const Staffform = () => {
             <FormControl fullWidth>
               <InputLabel id="demo-simple-select-label">Employee Category </InputLabel>
               <Select
+                required
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 name="employee_category"
@@ -215,10 +283,10 @@ const Staffform = () => {
                 <MenuItem value="Temporry">Temporary</MenuItem>
               </Select>
             </FormControl>
-
             <FormControl fullWidth sx={{ mt: 2 }}>
               <InputLabel id="demo-simple-select-label">Employee Role </InputLabel>
               <Select
+                required
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 label="Employee Role"
@@ -230,7 +298,6 @@ const Staffform = () => {
                 })}
               </Select>
             </FormControl>
-
             {/* <TextField
               type="text"
               name="username"
@@ -259,7 +326,6 @@ const Staffform = () => {
       
              
             /> */}
-
             {/* <TextField
               sx={{ mb: 4 }}
               type="text"
@@ -269,10 +335,10 @@ const Staffform = () => {
       
              
             /> */}
-
             <FormControl fullWidth style={{ marginTop: '20px', marginBottom: '20px' }}>
               <InputLabel id="demo-simple-select-label">Employee Designation </InputLabel>
               <Select
+                required
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 name="designation"
@@ -315,17 +381,20 @@ const Staffform = () => {
               label="Contact Address"
               onChange={handleChange}
             />
-
             <TextField
               sx={{ mb: 4 }}
               type="text"
               name="paddress"
               label="Address"
+              required
               onChange={handleChange}
             />
             <TextField
               type="number"
+              required
               name="contact_no1"
+              error={contactNumberError !== ''}
+              helperText={contactNumberError}
               label="Contact Nubmer1( whatsapp )"
               onChange={handleChange}
             />
@@ -333,6 +402,8 @@ const Staffform = () => {
               type="number"
               name="contact_no2"
               label="Contact Nubmer2"
+              error={contactNumberError !== ''}
+              helperText={contactNumberError}
               onChange={handleChange}
             />
             <TextField
@@ -340,6 +411,7 @@ const Staffform = () => {
               type="email"
               name="email"
               label="Email"
+              required
               onChange={handleChange}
             />
             <TextField sx={{ mb: 4 }} type="date" name="dob" label="DOB" onChange={handleChange} />
@@ -368,14 +440,16 @@ const Staffform = () => {
             />
             <TextField
               type="text"
+              required
               name="pan_no"
-              // onChange={handleChange}
+              onChange={handleChange}
               label="Pan Number"
             />
             <TextField
               type="text"
+              required
               name="adhar_no"
-              // onChange={handleChange}
+              onChange={handleChange}
               label="Adhar Number"
             />
 
