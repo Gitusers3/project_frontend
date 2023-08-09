@@ -34,7 +34,10 @@ const DatatablePage = (divprop) => {
   console.log(divprop?.fromDate);
   console.log(divprop?.toDate);
   useEffect(() => {
-    URL.get('student/view')
+    async function FetchData(){
+      const token=await localStorage.getItem("accessToken")
+      console.log("tok",token)
+      URL.get('student/view',{headers:{"auth-token":token}})
       .then((res) => {
         console.log(res);
         setDisplay(res.data.st);
@@ -43,6 +46,11 @@ const DatatablePage = (divprop) => {
       .catch((err) => {
         console.log(err);
       });
+
+
+    }
+    FetchData()
+   
   }, []);
   console.log(display);
   const [centredModal, setCentredModal] = useState(false);

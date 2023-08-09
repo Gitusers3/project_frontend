@@ -72,8 +72,10 @@ export default function AdditionalDetails({
   };
   useEffect(() => {
     // Make the API request
-    axios
-      .get('http://localhost:4000/api/staff/view')
+    async function fetchdata(){
+      const token=await localStorage.getItem("accessToken")
+      axios
+      .get('http://localhost:4000/api/staff/view',{headers:{"auth-token":token}})
       .then((res) => {
         console.log(res.data);
         setTechie(res.data);
@@ -81,6 +83,9 @@ export default function AdditionalDetails({
       .catch((err) => {
         console.log(err);
       });
+    }
+    fetchdata()
+   
     // alert(selectedDivision);
   }, [selectedTechie]);
 

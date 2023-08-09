@@ -82,8 +82,10 @@ const Staffform = () => {
   const [selectedTechie, setSelectedTechie] = useState([]);
 
   useEffect(() => {
-    url
-      .get('http://localhost:4000/api/division/view_division')
+    async function FetchData(){
+      const token=await localStorage.getItem("accessToken")
+      url
+      .get('http://localhost:4000/api/division/view_division',{headers:{"auth-token":token}})
       .then((res) => {
         console.log(res.data);
         setDivision(res.data);
@@ -91,6 +93,10 @@ const Staffform = () => {
       .catch((err) => {
         alert(err);
       });
+
+    }
+    FetchData()
+   
   }, [selectedDivision]);
   const filteredDivision = division.filter(
     (t) => t.d_name === 'Cognitive Solution' || t.d_name === 'CodeLab Systems'

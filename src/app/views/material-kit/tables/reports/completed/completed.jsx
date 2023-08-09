@@ -110,8 +110,10 @@ const Completed = (propss) => {
 
   useEffect(() => {
     // Make the API request
-    axios
-      .get('http://localhost:4000/api/college/view')
+    async function fetchdata(){
+      const token=await localStorage.getItem("accessToken")
+      axios
+      .get('http://localhost:4000/api/college/view',{headers:{"auth-token":token}})
       .then((res) => {
         console.log(res.data);
         setCollege(res.data);
@@ -119,6 +121,10 @@ const Completed = (propss) => {
       .catch((err) => {
         console.log(err);
       });
+
+    }
+    fetchdata()
+   
     // alert(selectedDivision);
   }, [selectedCollege]);
 

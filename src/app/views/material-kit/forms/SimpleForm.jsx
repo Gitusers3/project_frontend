@@ -117,8 +117,11 @@ const SimpleForm = () => {
 
   useEffect(() => {
     // Make the API request
-    axios
-      .get('http://localhost:4000/api/course/view')
+
+    async function FetchData(){
+      const token=await localStorage.getItem("accessToken")
+      axios
+      .get('http://localhost:4000/api/course/view',{headers:{"auth-token":token}})
       .then((res) => {
         console.log(res.data);
         setCourses(res.data);
@@ -126,11 +129,17 @@ const SimpleForm = () => {
       .catch((err) => {
         console.log(err);
       });
+
+    }
+    FetchData()
+   
   }, []);
   useEffect(() => {
     // Make the API request
-    axios
-      .get('http://localhost:4000/api/intership/view_intership')
+    async function FetchData(){
+      const token =await localStorage.getItem("accessToken")
+      axios
+      .get('http://localhost:4000/api/intership/view_intership',{headers:{"auth-token":token}})
       .then((res) => {
         console.log(res.data);
         setIntern(res.data);
@@ -138,6 +147,10 @@ const SimpleForm = () => {
       .catch((err) => {
         console.log(err);
       });
+
+    }
+    FetchData()
+   
   }, []);
 
   console.log('intern', intern);
@@ -154,8 +167,12 @@ const SimpleForm = () => {
 
   useEffect(() => {
     // Make the API request
-    axios
-      .get('http://localhost:4000/api/division/view_division')
+
+    async function FetchData(){
+      const token=await localStorage.getItem("accessToken")
+     
+      axios
+      .get('http://localhost:4000/api/division/view_division',{headers:{"auth-token":token}})
       .then((res) => {
         console.log(res.data);
         setDivsn(res.data);
@@ -163,6 +180,11 @@ const SimpleForm = () => {
       .catch((err) => {
         console.log(err);
       });
+
+
+    }
+    FetchData()
+   
     // alert(selectedDivision);
   }, [selectedDivision]);
 
@@ -215,14 +237,20 @@ const SimpleForm = () => {
   });
 
   useEffect(() => {
-    axios
-      .get('http://localhost:4000/api/college/view')
+    async function FetchData(){
+      const token=await localStorage.getItem("accessToken")
+      axios
+      .get('http://localhost:4000/api/college/view',{headers:{"auth-token":token}})
       .then((res) => {
         setDisc(res.data);
       })
       .catch((err) => {
         console.log(err);
       });
+
+    }
+    FetchData()
+  
   }, [count]);
 
   console.log(selectedcollege + ' college');
@@ -261,15 +289,24 @@ const SimpleForm = () => {
     console.log(event.target.checked);
   };
   useEffect(() => {
-    axios
-      .get('http://localhost:4000/api/student/view_project')
+
+    async function FetchData(){
+      const token=await localStorage.getItem("accessToken")
+
+      axios
+      .get('http://localhost:4000/api/student/view_project',{headers:{"auth-token":token}})
       .then((res) => {
         setProject(res.data);
       })
       .catch((err) => {
         console.log(err);
       });
+
+    }
+    FetchData()
+  
   }, []);
+  
 
   const handleSelectChangeofProject = (event) => {
     setSelectedProject(event.target.value);
