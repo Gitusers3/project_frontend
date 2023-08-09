@@ -13,6 +13,7 @@ import Batches from './views/Batches/batches';
 import CreateBatch from './views/Batches/CreateBatch';
 import Timetable from './views/timetable/timetable';
 import StaffRegister from './views/staffs/Register';
+import ViewStaff from './views/staffs/view';
 import Fees from './views/fees_receipt/Fees';
 import QuetechBatches from './views/Batches/QuetechBatches';
 import PrintFeesReceipt from './views/material-kit/forms/PrintFeesReciept';
@@ -66,6 +67,7 @@ const routes = [
   { path: '/student/students/view/:id', element: <Viewone /> },
   { path: '/staffs', element: <Staffs /> },
   { path: '/staffs/register', element: <StaffRegister /> },
+  { path: '/staffs/view/:id', element: <ViewStaff /> },
   { path: '/fees/view/:id', element: <PrintFeesReceipt /> },
   { path: '/fees', element: <Fees /> },
   { path: '/staffs/register', element: <StaffRegister /> },

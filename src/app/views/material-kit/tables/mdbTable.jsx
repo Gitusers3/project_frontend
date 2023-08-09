@@ -30,6 +30,7 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const DatatablePage = (divprop) => {
+  const [sid, setSid] = useState('');
   const [display, setDisplay] = useState([]);
   console.log(divprop?.fromDate);
   console.log(divprop?.toDate);
@@ -51,10 +52,9 @@ const DatatablePage = (divprop) => {
     }
     FetchData()
    
-  }, []);
+  }, [sid]);
   console.log(display);
   const [centredModal, setCentredModal] = useState(false);
-  const [sid, setSid] = useState();
 
   const [deleteID, setDeleteID] = useState('');
   const [count, setCount] = useState(1);
@@ -62,7 +62,7 @@ const DatatablePage = (divprop) => {
   const toggleShow = (sid) => {
     setCentredModal(!centredModal);
     setCount((prevCount) => prevCount + 1);
-    return setSid(sid);
+    setSid(sid);
   };
   const toggleClose = () => {
     setCentredModal(!centredModal);
