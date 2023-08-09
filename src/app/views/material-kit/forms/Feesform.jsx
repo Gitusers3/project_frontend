@@ -10,6 +10,8 @@ import {
   RadioGroup,
   styled
 } from '@mui/material';
+import URL from '../../../../global';
+
 import { useNavigate } from 'react-router-dom';
 import Axios from 'axios';
 import { Span } from 'app/components/Typography';
@@ -22,28 +24,40 @@ const TextField = styled(TextValidator)(() => ({
   marginBottom: '16px'
 }));
 
-function getNextReceiptNumber(currentReceiptNumber) {
-  const prefix = currentReceiptNumber.slice(0, 5);
-  const number = parseInt(currentReceiptNumber.slice(5));
-  return `${prefix}${number + 1}`;
-}
-
 const SimpleForm = ({ Sid, count, setCentredModal }) => {
   console.log('Student ID from prop : ' + Sid);
 
-  const [rec_num, setRec_num] = useState('DTQFR100');
+  const [display, setDisplay] = useState([]);
+  const [rec_num, setRec_num] = useState('DTQFR1');
 
   useEffect(() => {
-    const nextReceiptNumber = getNextReceiptNumber(rec_num);
-    setRec_num(nextReceiptNumber);
-  }, []); // Run the effect whenever receiptNumber changes
+    URL.get('fees/view_fees')
+      .then((res) => {
+        console.log('datafees', res.data);
+        setDisplay(res.data);
+        // Find the last record's rec_num and increment it
+        const lastRecord = res.data[res.data.length - 1];
+        const lastRecNum = lastRecord ? lastRecord.rec_num : 'DTQFR';
+        const newRecNum = generateNextRecNum(lastRecNum);
+        setRec_num(newRecNum);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [Sid]); // Run the effect once, when the component mounts
+
+  function generateNextRecNum(lastRecNum) {
+    const lastCounter = parseInt(lastRecNum.match(/\d+/)[0]);
+    const newCounter = lastCounter + 1;
+    return `DTQFR${newCounter}`;
+  }
 
   const [state, setState] = useState({ date: new Date() });
   const [one, setOne] = useState('');
   const [divid, setDivid] = useState('');
   const [totfees, setTotfees] = useState('');
   const [feesd, setFeesd] = useState('');
-  const [alldata, setAlldata] = useState({});
+  // const [alldata, setAlldata] = useState({});
   // const [centredModal, setCentredModal] = useState(false);
   // State to control the modal open/close
   const toggleClose = () => {
@@ -84,7 +98,7 @@ const SimpleForm = ({ Sid, count, setCentredModal }) => {
   };
 
   const formSubmit = (event) => {
-    setAlldata({
+    let alldata = {
       rec_num: rec_num,
       div_id: divid,
       std_id: Sid,
@@ -93,7 +107,7 @@ const SimpleForm = ({ Sid, count, setCentredModal }) => {
       status: 'paid',
       f_date: currentDate,
       ...feesd
-    });
+    };
 
     Axios.post('http://localhost:4000/api/fees/add_fees', alldata)
       .then((res) => {

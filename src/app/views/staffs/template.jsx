@@ -44,7 +44,7 @@ export default function ProfileStatistics({ count, Staffid, setCentredModal }) {
                 src={`${uploadUri}/${staff?.profile}`}
                 className="rounded-circle"
                 fluid
-                style={{ width: '100px' }}
+                style={{ width: '200px' }}
               />
             </>
           ) : (
@@ -53,7 +53,7 @@ export default function ProfileStatistics({ count, Staffid, setCentredModal }) {
                 src={imageUrl}
                 className="rounded-circle"
                 fluid
-                style={{ width: '100px' }}
+                style={{ width: '200px' }}
               />
             </>
           )}
@@ -92,12 +92,12 @@ export default function ProfileStatistics({ count, Staffid, setCentredModal }) {
           </Tooltip>
         </div>
         <div className="table-responsive">
-          <table className="table">
+          <table className="table table-bordered" cellPadding="5px" cellSpacing="5px">
             <tr>
               <th className="text-start">Email ID</th>
               <th className="text-start">{staff?.email}</th>
-              <th className="text-start">Aadhahr Number</th>
-              <th className="text-start">{staff?.adhar_no}</th>
+              <th className="text-start">Marital Status</th>
+              <th className="text-start">{staff?.marital_status}</th>
             </tr>
             <tr>
               <th className="text-start">Category</th>
@@ -112,10 +112,10 @@ export default function ProfileStatistics({ count, Staffid, setCentredModal }) {
               <th className="text-start">{staff?.taddress}</th>
             </tr>
             <tr>
+              <th className="text-start">Aadhahr Number</th>
+              <th className="text-start">{staff?.adhar_no}</th>
               <th className="text-start">PAN</th>
               <th className="text-start">{staff?.pan_no}</th>
-              <th className="text-start">Marital Status</th>
-              <th className="text-start">{staff?.marital_status}</th>
             </tr>
             <tr>
               <th className="text-start">Guardian</th>

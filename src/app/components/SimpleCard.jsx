@@ -2,7 +2,8 @@ import { Card, Box, styled } from '@mui/material';
 
 const CardRoot = styled(Card)({
   height: '100%',
-  padding: '20px 24px'
+  padding: '20px 24px',
+  boxShadow: 'none' // Add this line to remove the box shadow
 });
 
 const CardTitle = styled('div')(({ subtitle }) => ({

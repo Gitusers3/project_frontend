@@ -18,7 +18,7 @@ const isValidToken = (accessToken) => {
   // alert(accessToken)
   if (!accessToken) return false;
   const decodedToken = jwtDecode(accessToken);
-  console.log(decodedToken)
+  // console.log(decodedToken)
   const currentTime = Date.now() / 1000;
   return decodedToken.exp > currentTime;
 };
@@ -116,7 +116,7 @@ export const AuthProvider = ({
           authToken,
         }
       });
-      isValidToken(authToken)
+      // isValidToken(authToken)
       setSession(authToken)
 
     } catch (error) {
@@ -137,6 +137,7 @@ export const AuthProvider = ({
       console.log(error.config); // Config that was used to make the request
     }
   };
+
 
 
   const register = async (email, username, password) => {
@@ -166,19 +167,23 @@ export const AuthProvider = ({
     localStorage.clear();
     delete axios.defaults.headers.common.Authorization;
   };
-
+  // console.log(localStorage.getItem('accessToken'))
   useEffect(() => {
     (async () => {
       try {
         // console.log(state.user._id)
         const {
           data
-        } = await axios.get(`http://localhost:4000/api/admin/view/64b11afc051202540566061b`);
+        } = await axios.get(`http://localhost:4000/api/admin/view`, {
+          headers: {
+            'authToken': localStorage.getItem('accessToken')
+          }
+        });
         dispatch({
           type: 'INIT',
           payload: {
             isAuthenticated: true,
-            user: data.user
+            user: data
           }
         });
       } catch (err) {
