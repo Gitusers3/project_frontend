@@ -152,9 +152,9 @@ export default function Fees_Reciept() {
         </Grid>
 
         <div className="printable-content d-block w-100 p-3" ref={printRef}>
-          <Grid container rowSpacing={3} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+          <Grid container rowSpacing={2} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
             <Grid item xs={12}>
-              <div>
+              <div style={{ marginTop: '30px' }}>
                 <SimpleCard2>
                   <div className="d-flex" style={{ gap: '300px', height: '20px' }}>
                     <div className="w-100">
@@ -280,24 +280,24 @@ export default function Fees_Reciept() {
             <br />
             <br />
             <Grid item xs={12}>
-              <div style={{ marginTop: '25px' }}>
+              <div style={{ marginTop: '30px' }}>
                 <div className="d-flex">
                   <div className="flex-grow-2">
                     <hr className="border-dashed " style={{ border: '2px dashed black' }} />
                   </div>
-                  <div className="px-2">
+                  <div className="mt-0">
                     <ContentCutIcon />
                     {/* Change the 'size' prop to set the desired icon size */}
                   </div>
                   <div className="flex-grow-1 ">
-                    <hr className="border-bottom " style={{ border: '4px dashed black' }} />
+                    <hr className="border-bottom " style={{ border: '2px dashed black' }} />
                   </div>
                 </div>
               </div>
             </Grid>
             <br />
             <Grid item xs={12}>
-              <div style={{ marginTop: '2px' }}>
+              <div style={{ marginTop: '-10px' }}>
                 <SimpleCard2>
                   <div className="d-flex" style={{ gap: '300px', height: '20px' }}>
                     <div className="w-100">

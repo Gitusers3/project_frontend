@@ -30,24 +30,22 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const DatatablePage = (divprop) => {
   const [display, setDisplay] = useState([]);
-  console.log(divprop);
+  console.log(divprop.clg, 444444444);
   useEffect(() => {
-    async function fetchdata(){
-      const token=await localStorage.getItem("accessToken")
-      URL.get('student/view',{headers:{"authToken":token}})
-      .then((res) => {
-        console.log(res);
-        setDisplay(res.data.st);
-        console.log(display);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
+    async function fetchdata() {
+      const token = await localStorage.getItem('accessToken');
+      URL.get('student/view', { headers: { authToken: token } })
+        .then((res) => {
+          console.log(res);
+          setDisplay(res.data.st);
+          console.log(display);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
-    fetchdata()
-    
-  }, []);
+    fetchdata();
+  }, [divprop.clg]);
   console.log(display);
   const [centredModal, setCentredModal] = useState(false);
   const [sid, setSid] = useState();
@@ -69,8 +67,12 @@ const DatatablePage = (divprop) => {
       }
       return divisionFilter;
     })
+    ?.filter((va) => {
+      // Third filter - filter based on college ID (assuming college_id is a property in the 'va' object)
+      return divprop?.clg ? va?.college_id?.c_name === divprop?.clg : true; // If no college ID in prop, no need to filter
+    })
     .filter((va) => {
-      // Second filter - filter based on student status (assuming status is a property in the 'va' object)
+      // Second filter - filter based on student status (assuming all_status is a property in the 'va' object)
       return va?.all_status === 'Completed';
     })
     .map((item, index) => {
