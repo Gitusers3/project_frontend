@@ -94,12 +94,12 @@ const Completed = (propss) => {
     setSelectedCollege(selectedValue);
     localStorage.setItem('CompletedCollege', selectedValue);
   };
-  useEffect(() => {
-    const storedResult = localStorage.getItem('CompletedGetResult');
-    if (storedResult !== null) {
-      setResult(storedResult === 'true');
-    }
-  }, []);
+  // useEffect(() => {
+  //   const storedResult = localStorage.getItem('CompletedGetResult');
+  //   if (storedResult !== null) {
+  //     setResult(storedResult === 'true');
+  //   }
+  // }, []);
   const getResult = () => {
     setResult((prevState) => {
       const updatedResult = !prevState;
@@ -110,30 +110,29 @@ const Completed = (propss) => {
 
   useEffect(() => {
     // Make the API request
-    async function fetchdata(){
-      const token=await localStorage.getItem("accessToken")
+    async function FetchData() {
+      const token = await localStorage.getItem('accessToken');
       axios
-      .get('http://localhost:4000/api/college/view',{headers:{"authToken":token}})
-      .then((res) => {
-        console.log(res.data);
-        setCollege(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
+        .get('http://localhost:4000/api/college/view', { headers: { authToken: token } })
+        .then((res) => {
+          console.log(res.data);
+          setCollege(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
-    fetchdata()
-   
+    FetchData();
+
     // alert(selectedDivision);
   }, [selectedCollege]);
 
-  useEffect(() => {
-    const storedCollege = localStorage.getItem('CompletedCollege');
-    if (storedCollege) {
-      setSelectedCollege(storedCollege);
-    }
-  }, []);
+  // useEffect(() => {
+  //   const storedCollege = localStorage.getItem('CompletedCollege');
+  //   if (storedCollege) {
+  //     setSelectedCollege(storedCollege);
+  //   }
+  // }, []);
   return (
     <div>
       <Box width="100%" overflow="auto">
@@ -200,9 +199,7 @@ const Completed = (propss) => {
                     onChange={handleSelectChangeofCollege}
                     label="Choose College"
                   >
-                    <MenuItem hidden value="">
-                      Select a college
-                    </MenuItem>
+                    <MenuItem value="">All</MenuItem>
                     {college.map((clg) => (
                       <MenuItem key={clg._id} value={clg.c_name}>
                         {clg.c_name}
