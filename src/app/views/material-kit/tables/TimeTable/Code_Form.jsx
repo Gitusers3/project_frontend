@@ -157,6 +157,7 @@ function Code_Form() {
               label="Choose Day"
              
               onChange={handleChange}
+              required
             >
               <MenuItem value="Monday">Monday</MenuItem>
               <MenuItem value="Tuesday">Tuesday</MenuItem>
@@ -177,6 +178,7 @@ function Code_Form() {
               label="Session 2"
            
               onChange={handleChange}
+              required
             >
 
 {filterBatch.map((item) =>{ return (
@@ -210,6 +212,7 @@ function Code_Form() {
               label="Session 1"
            
               onChange={handleChange}
+              required
             >
 
 {filterBatch.map((item) =>{ return (
@@ -238,6 +241,7 @@ function Code_Form() {
               label="Session 3"
           
               onChange={handleChange}
+              required
             >
 
 {filterBatch.map((item) =>{ return (

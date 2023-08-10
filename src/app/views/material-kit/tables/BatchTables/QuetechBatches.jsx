@@ -128,12 +128,12 @@ export default function QuetechBatches(propid) {
      </TableBody>
    </StyledTable>
    <Link to="qtech_create">
-     <Button fullWidth sx={{ marginTop: '10px' }} variant="outlined">
-       Create Batch
+     <Button fullWidth sx={{ marginTop: '10px' }} variant="contained">
+       Add Batch
      </Button>
    </Link>
    <Link to="time_table/qtech">
-     <Button fullWidth sx={{ marginTop: '10px' }} variant="outlined">
+     <Button fullWidth sx={{ marginTop: '10px' }} variant="contained" color="success">
        Time Table
      </Button>
    </Link>

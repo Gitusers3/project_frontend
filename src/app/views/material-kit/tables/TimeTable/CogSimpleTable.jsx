@@ -158,7 +158,7 @@ const deleteTimeTable = (id) => {
       </TableBody>
     </StyledTable>
     <Link to="../../time_table/cognitive">
-     <Button fullWidth sx={{ marginTop: '10px' }} variant="outlined">
+     <Button fullWidth sx={{ marginTop: '10px' }} variant="contained">
        Create TimeTable
      </Button>
    </Link>

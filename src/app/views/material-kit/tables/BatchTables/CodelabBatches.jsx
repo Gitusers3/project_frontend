@@ -121,12 +121,12 @@ export default function CodelabBatches(propid) {
         </TableBody>
       </StyledTable>
       <Link to="create">
-        <Button fullWidth sx={{ marginTop: '10px' }} variant="outlined">
-          Create
+        <Button fullWidth sx={{ marginTop: '10px' }} variant="contained">
+          Add Batch
         </Button>
       </Link>
       <Link to="time_table/codelab">
-     <Button fullWidth sx={{ marginTop: '10px' }} variant="outlined">
+     <Button fullWidth sx={{ marginTop: '10px' }} variant="contained" color="success">
         TimeTable
      </Button>
    </Link>

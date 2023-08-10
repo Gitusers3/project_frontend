@@ -18,7 +18,16 @@ export default function LabTabs() {
   const handleChange = (event, newValue) => {
     // alert(newValue);
     setValue(newValue);
+    localStorage.setItem("staffTab",newValue)
   };
+  useEffect(()=>{
+    const newValue=localStorage.getItem("staffTab")
+    if(newValue){
+      setValue(newValue)
+    }
+
+  },[])
+
   const allDataTab = {
     label: 'All',
     value: 'all',

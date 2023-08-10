@@ -124,12 +124,12 @@ const SimpleTable = (propid) => {
         </TableBody>
       </StyledTable>
       <Link to="create">
-        <Button fullWidth sx={{ marginTop: '10px' }} variant="outlined">
-          Create
+        <Button fullWidth sx={{ marginTop: '10px' }} variant="contained">
+          Add Batch
         </Button>
       </Link>
       <Link to="time_table/cognitive">
-        <Button fullWidth sx={{ marginTop: '10px' }} variant="outlined">
+        <Button fullWidth sx={{ marginTop: '10px' }} color="success" variant="contained">
            TimeTable
         </Button>
       </Link>

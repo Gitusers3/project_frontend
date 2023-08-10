@@ -20,6 +20,10 @@ export default function Fees_tab() {
   
     useEffect(() => {
       // Make the API request
+      const newValue=localStorage.getItem("feesTab")
+      if(newValue){
+        setValue(newValue)
+      }
       async function FecthData(){
         const token=await localStorage.getItem("accessToken")
         axios
@@ -40,6 +44,7 @@ export default function Fees_tab() {
     const handleChange = (event, newValue) => {
       // alert(newValue);
       setValue(newValue);
+      localStorage.setItem("feesTab",newValue)
     };
     const allDataTab = {
       label: 'All',

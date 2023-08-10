@@ -187,6 +187,7 @@ const Staffform = () => {
               id="standard-basic"
               onChange={handleChange}
               label="Batch Name"
+              required
             />
             <FormControl fullWidth sx={{ mt: 2 }}>
               <InputLabel id="demo-simple-select-label">Choose Division</InputLabel>
@@ -196,6 +197,7 @@ const Staffform = () => {
                 label="Choose Division"
                 value={selectedDivision}
                 onChange={handleSelectChangeofDivision.bind(this)}
+                required
               >
                 {filteredDivision.map((t) => (
                   <MenuItem key={t._id} value={t._id}>
@@ -233,6 +235,7 @@ const Staffform = () => {
                 multiple
                 value={selectedTechie?.map((tech) => tech._id)} // Pass an array of IDs to the Select component
                 onChange={handleChange1}
+                required
                 input={<OutlinedInput id="select-multiple-chip" label="Choose Techie" />}
                 renderValue={(selected) => (
                   <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>

@@ -159,7 +159,7 @@ function CodeSimpletable() {
       </TableBody>
     </StyledTable>
     <Link to="../../time_table/codelab">
-     <Button fullWidth sx={{ marginTop: '10px' }} variant="outlined">
+     <Button fullWidth sx={{ marginTop: '10px' }} variant="contained">
        Create TimeTable
      </Button>
    </Link>

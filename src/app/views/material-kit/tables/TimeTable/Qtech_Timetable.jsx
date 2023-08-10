@@ -63,7 +63,7 @@ function Qtech_Timetable() {
   return (
     <Container>
     <Box className="breadcrumb">
-      <Breadcrumb routeSegments={[{ name: 'Cognitive', path: '/batches' }, { name: 'Time Table' }]} />
+      <Breadcrumb routeSegments={[{ name: 'Qtech', path: '/batches' }, { name: 'Time Table' }]} />
     </Box>
 <Grid >
     <Tooltip title="Add TimeTable">

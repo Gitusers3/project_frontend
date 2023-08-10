@@ -228,6 +228,7 @@ const Staffform = () => {
               id="standard-basic"
               onChange={handleChange}
               label="Batch Name"
+              required
             />
             <FormControl fullWidth sx={{ mt: 2 }}>
               <InputLabel id="demo-simple-select-label">Choose Collge</InputLabel>
@@ -237,6 +238,7 @@ const Staffform = () => {
                 label="Choose Division"
                 value={selectedCollege}
                 onChange={handleSelectChangeofCollege.bind(this)}
+                required
               >
                 {college.map((t) => (
                   <MenuItem key={t._id} value={t._id}>
@@ -283,6 +285,7 @@ const Staffform = () => {
                   </Box>
                 )}
                 MenuProps={MenuProps}
+                required
               >
                 {filteredTechie.map((name) => (
                   <MenuItem
@@ -318,6 +321,7 @@ const Staffform = () => {
                   </Box>
                 )}
                 MenuProps={MenuProps}
+                required
               >
                 {filteredproject.map((name) => (
                   <MenuItem
