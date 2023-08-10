@@ -30,19 +30,23 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const DatatablePage = (divprop) => {
   const [display, setDisplay] = useState([]);
-  console.log(divprop.clg);
+  console.log(divprop.clg, 22222);
   useEffect(() => {
-    URL.get('student/view')
-      .then((res) => {
-        console.log(res);
-        setDisplay(res.data.st);
-        console.log(display);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-  console.log(display);
+    async function FetchData() {
+      const token = await localStorage.getItem('accessToken');
+      URL.get('student/view', { headers: { authToken: token } })
+        .then((res) => {
+          console.log(res);
+          setDisplay(res.data.st);
+          // console.log(display);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+    FetchData();
+  }, [divprop.clg]);
+  console.log(display, 11111111);
   const [centredModal, setCentredModal] = useState(false);
   const [sid, setSid] = useState();
 

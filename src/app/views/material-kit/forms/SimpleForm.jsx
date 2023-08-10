@@ -118,39 +118,37 @@ const SimpleForm = () => {
   useEffect(() => {
     // Make the API request
 
-    async function FetchData(){
-      const token=await localStorage.getItem("accessToken")
+    async function FetchData() {
+      const token = await localStorage.getItem('accessToken');
       axios
-      .get('http://localhost:4000/api/course/view',{headers:{"authToken":token}})
-      .then((res) => {
-        console.log(res.data);
-        setCourses(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
+        .get('http://localhost:4000/api/course/view', { headers: { authToken: token } })
+        .then((res) => {
+          console.log(res.data);
+          setCourses(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
-    FetchData()
-   
+    FetchData();
   }, []);
   useEffect(() => {
     // Make the API request
-    async function FetchData(){
-      const token =await localStorage.getItem("accessToken")
+    async function FetchData() {
+      const token = await localStorage.getItem('accessToken');
       axios
-      .get('http://localhost:4000/api/intership/view_intership',{headers:{"authToken":token}})
-      .then((res) => {
-        console.log(res.data);
-        setIntern(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
+        .get('http://localhost:4000/api/intership/view_intership', {
+          headers: { authToken: token }
+        })
+        .then((res) => {
+          console.log(res.data);
+          setIntern(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
-    FetchData()
-   
+    FetchData();
   }, []);
 
   console.log('intern', intern);
@@ -168,23 +166,21 @@ const SimpleForm = () => {
   useEffect(() => {
     // Make the API request
 
-    async function FetchData(){
-      const token=await localStorage.getItem("accessToken")
-     
+    async function FetchData() {
+      const token = await localStorage.getItem('accessToken');
+
       axios
-      .get('http://localhost:4000/api/division/view_division',{headers:{"authToken":token}})
-      .then((res) => {
-        console.log(res.data);
-        setDivsn(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
-
+        .get('http://localhost:4000/api/division/view_division', { headers: { authToken: token } })
+        .then((res) => {
+          console.log(res.data);
+          setDivsn(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
-    FetchData()
-   
+    FetchData();
+
     // alert(selectedDivision);
   }, [selectedDivision]);
 
@@ -239,20 +235,18 @@ const SimpleForm = () => {
   });
 
   useEffect(() => {
-    async function FetchData(){
-      const token=await localStorage.getItem("accessToken")
+    async function FetchData() {
+      const token = await localStorage.getItem('accessToken');
       axios
-      .get('http://localhost:4000/api/college/view',{headers:{"authToken":token}})
-      .then((res) => {
-        setDisc(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
+        .get('http://localhost:4000/api/college/view', { headers: { authToken: token } })
+        .then((res) => {
+          setDisc(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
-    FetchData()
-  
+    FetchData();
   }, [count]);
 
   console.log(selectedcollege + ' college');
@@ -309,24 +303,20 @@ const SimpleForm = () => {
     console.log(event.target.checked);
   };
   useEffect(() => {
-
-    async function FetchData(){
-      const token=await localStorage.getItem("accessToken")
+    async function FetchData() {
+      const token = await localStorage.getItem('accessToken');
 
       axios
-      .get('http://localhost:4000/api/student/view_project',{headers:{"authToken":token}})
-      .then((res) => {
-        setProject(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
+        .get('http://localhost:4000/api/student/view_project', { headers: { authToken: token } })
+        .then((res) => {
+          setProject(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
-    FetchData()
-  
+    FetchData();
   }, []);
-  
 
   const handleSelectChangeofProject = (event) => {
     setSelectedProject(event.target.value);
@@ -339,9 +329,18 @@ const SimpleForm = () => {
   };
   console.log(selectedimage);
   console.log(student.student_name);
+  const [contactNumberError, setContactNumberError] = useState(null);
 
   const handleChange = (event) => {
     event.persist();
+    const { name, value } = event.target;
+    if (name === 'contact_no1') {
+      if (value.length !== 10) {
+        setContactNumberError('Contact number must contain exactly 10 digits');
+      } else {
+        setContactNumberError(''); // Reset the error message if validation passes
+      }
+    }
 
     setStudent({
       ...student,
@@ -358,6 +357,15 @@ const SimpleForm = () => {
     Data.append('image', selectedimage);
     for (let x in student) {
       Data.append(x, student[x]);
+    }
+    for (let y in ug) {
+      Data.append(y, ug[y]);
+    }
+    for (let z in puc) {
+      Data.append(z, puc[z]);
+    }
+    for (let k in sslc) {
+      Data.append(k, sslc[k]);
     }
     axios
       .post('http://localhost:4000/api/student/insert', Data)
@@ -401,15 +409,23 @@ const SimpleForm = () => {
           <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
             <TextField
               type="text"
+              required
               name="our_reg_no"
               id="standard-basic"
               onChange={handleChange}
               label="Register Number (for Office)"
             />
-            <TextField type="date" name="date_of_admission" label="" onChange={handleChange} />
+            <TextField
+              required
+              type="date"
+              name="date_of_admission"
+              label=""
+              onChange={handleChange}
+            />
             <FormControl fullWidth>
               <InputLabel id="demo-simple-select-label">Choose Division</InputLabel>
               <Select
+                required
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 name="division_id"
@@ -446,6 +462,7 @@ const SimpleForm = () => {
               Student Image
             </InputLabel>
             <TextField
+              required
               sx={{ mb: 4 }}
               type="file"
               name="image"
@@ -453,6 +470,7 @@ const SimpleForm = () => {
               onChange={handleFileChange}
             />
             <TextField
+              required
               sx={{ mb: 4 }}
               type="text"
               name="student_name"
@@ -462,6 +480,7 @@ const SimpleForm = () => {
 
             <InputLabel id="demo-simple-select-label">Temporary Address</InputLabel>
             <TextField
+              required
               sx={{ mb: 4 }}
               type="text"
               name="t_address"
@@ -469,6 +488,7 @@ const SimpleForm = () => {
               onChange={handleChange}
             />
             <TextField
+              required
               sx={{ mb: 4 }}
               type="number"
               name="t_pincode"
@@ -476,6 +496,7 @@ const SimpleForm = () => {
               onChange={handleChange}
             />
             <TextField
+              required
               sx={{ mb: 4 }}
               type="text"
               name="t_district"
@@ -483,6 +504,7 @@ const SimpleForm = () => {
               onChange={handleChange}
             />
             <TextField
+              required
               sx={{ mb: 4 }}
               type="text"
               name="t_state"
@@ -491,6 +513,7 @@ const SimpleForm = () => {
             />
             <InputLabel id="demo-simple-select-label">Permanent Address</InputLabel>
             <TextField
+              required
               sx={{ mb: 4 }}
               type="text"
               name="p_address"
@@ -498,6 +521,7 @@ const SimpleForm = () => {
               onChange={handleChange}
             />
             <TextField
+              required
               sx={{ mb: 4 }}
               type="number"
               name="p_pincode"
@@ -505,6 +529,7 @@ const SimpleForm = () => {
               onChange={handleChange}
             />
             <TextField
+              required
               sx={{ mb: 4 }}
               type="text"
               name="p_district"
@@ -512,6 +537,7 @@ const SimpleForm = () => {
               onChange={handleChange}
             />
             <TextField
+              required
               sx={{ mb: 4 }}
               type="text"
               name="p_state"
@@ -522,8 +548,11 @@ const SimpleForm = () => {
 
           <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
             <TextField
+              required
               type="number"
               name="contact_no1"
+              error={contactNumberError !== ''}
+              helperText={contactNumberError}
               label="Contact Nubmer1( whatsapp )"
               onChange={handleChange}
             />
@@ -533,14 +562,22 @@ const SimpleForm = () => {
               label="Contact Nubmer2"
               onChange={handleChange}
             />
-            <TextField name="email_id" type="email" label="Email ID" onChange={handleChange} />
+            <TextField
+              required
+              name="email_id"
+              type="email"
+              label="Email ID"
+              onChange={handleChange}
+            />
             <TextField
               type="text"
+              required
               name="parent_or_guardian_name"
               // onChange={handleChange}
               label="Parent/Guardian's Name"
             />
             <TextField
+              required
               type="text"
               name="relationship"
               // onChange={handleChange}
@@ -559,6 +596,7 @@ const SimpleForm = () => {
               </h4>
               <Autocomplete
                 fullWidth
+                required
                 value={value}
                 onChange={(event, newValue) => {
                   if (typeof newValue === 'string') {
@@ -689,6 +727,7 @@ const SimpleForm = () => {
                   id="demo-simple-select"
                   label="Choose Course"
                   value={selectedCourse}
+                  required
                   onChange={handleSelectChange}
                 >
                   {courses.map((course) => (
@@ -823,6 +862,7 @@ const SimpleForm = () => {
                 type="text"
                 name="total_fees"
                 label="Fees"
+                required
                 onChange={handleChange}
               />
             </Grid>
@@ -1048,6 +1088,7 @@ const SimpleForm = () => {
                 type="text"
                 name="total_fees"
                 label="Fees"
+                required
                 onChange={handleChange}
               />
             </Grid>

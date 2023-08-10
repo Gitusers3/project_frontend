@@ -1,9 +1,103 @@
 import React from 'react';
 import { useTheme } from '@mui/material';
 import ReactEcharts from 'echarts-for-react';
+import { useState, useEffect } from 'react';
+import Url from '../../../../global';
 
 const DoughnutChart = ({ height, color = [] }) => {
   const theme = useTheme();
+  const [divisions, setDivisions] = useState([]);
+  const [students, setStudents] = useState([]);
+  console.log(divisions);
+  console.log(students);
+  const divisionStudentCounts = students.reduce((counts, student) => {
+    const divisionId = student.division_id._id;
+
+    if (!counts[divisionId]) {
+      counts[divisionId] = 1; // Initialize count to 1 if divisionId is encountered for the first time
+    } else {
+      counts[divisionId]++; // Increment the count for existing divisionId
+    }
+
+    return counts;
+  }, {});
+  console.log(divisionStudentCounts);
+  useEffect(() => {
+    async function FetchData() {
+      const token = await localStorage.getItem('accessToken');
+      console.log('token', token);
+      Url.get('/division/view_division', { headers: { authToken: token } })
+        .then((res) => {
+          console.log('res', res.data);
+          setDivisions(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+    FetchData();
+    async function FetchData2() {
+      const token = await localStorage.getItem('accessToken');
+      console.log('token', token);
+      Url.get('student/view', { headers: { authToken: token } })
+        .then((res) => {
+          console.log('re', res);
+          setStudents(res.data.st);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+    FetchData2();
+  }, []);
+
+  // Calculate student counts for each division
+  function calculateDivisionStudentCounts(divisions, students) {
+    const divisionStudentCounts = {};
+
+    students.forEach((student) => {
+      const divisionId = student.division_id._id;
+
+      if (student.all_status === 'Ongoing') {
+        if (!divisionStudentCounts[divisionId]) {
+          divisionStudentCounts[divisionId] = 1;
+        } else {
+          divisionStudentCounts[divisionId]++;
+        }
+      }
+    });
+
+    return divisionStudentCounts;
+  }
+
+  const updatedCardList = divisions.map((division) => {
+    const studentCount = students.reduce((count, student) => {
+      if (student.division_id._id === division._id && student.all_status === 'Ongoing') {
+        return count + 1;
+      }
+      return count;
+    }, 0);
+
+    return {
+      name: divisions.d_name,
+      students: studentCount
+    };
+  });
+  const formattedChartData = divisions.map((division) => {
+    const studentCount = students.reduce((count, student) => {
+      if (student.division_id._id === division._id && student.all_status === 'Ongoing') {
+        return count + 1;
+      }
+      return count;
+    }, 0);
+
+    return {
+      value: studentCount,
+      name: division.d_name
+    };
+  });
+
+  // Now 'formattedChartData' has the structure you provided
 
   const option = {
     legend: {
@@ -67,7 +161,7 @@ const DoughnutChart = ({ height, color = [] }) => {
             show: true,
             textStyle: {
               fontSize: '14',
-              fontWeight: 'normal'
+              fontWeight: 'bolder'
               // color: "rgba(15, 21, 77, 1)"
             },
             formatter: '{b} \n{c} ({d}%)'
@@ -78,22 +172,12 @@ const DoughnutChart = ({ height, color = [] }) => {
             show: false
           }
         },
-        data: [
-          {
-            value: 65,
-            name: 'Google'
-          },
-          {
-            value: 20,
-            name: 'Facebook'
-          },
-          { value: 15, name: 'Others' }
-        ],
+        data: formattedChartData,
         itemStyle: {
           emphasis: {
             shadowBlur: 10,
             shadowOffsetX: 0,
-            shadowColor: 'rgba(0, 0, 0, 0.5)'
+            shadowColor: 'green'
           }
         }
       }

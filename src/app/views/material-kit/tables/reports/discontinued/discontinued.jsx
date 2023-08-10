@@ -104,30 +104,29 @@ const Discontinued = (propss) => {
 
   useEffect(() => {
     // Make the API request
-    async function fetchdata(){
-      const token=await localStorage.getItem("accessToken")
+    async function fetchdata() {
+      const token = await localStorage.getItem('accessToken');
       axios
-      .get('http://localhost:4000/api/college/view',{headers:{"authToken":token}})
-      .then((res) => {
-        console.log(res.data);
-        setCollege(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
+        .get('http://localhost:4000/api/college/view', { headers: { authToken: token } })
+        .then((res) => {
+          console.log(res.data);
+          setCollege(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
-    fetchdata()
-  
+    fetchdata();
+
     // alert(selectedDivision);
   }, [selectedCollege]);
 
-  useEffect(() => {
-    const storedCollege = localStorage.getItem('DiscontinuedCollege');
-    if (storedCollege) {
-      setSelectedCollege(storedCollege);
-    }
-  }, []);
+  // useEffect(() => {
+  //   const storedCollege = localStorage.getItem('DiscontinuedCollege');
+  //   if (storedCollege) {
+  //     setSelectedCollege(storedCollege);
+  //   }
+  // }, []);
   const handleSelectChangeofCollege = (event) => {
     const selectedValue = event.target.value;
     setSelectedCollege(selectedValue);
@@ -200,9 +199,7 @@ const Discontinued = (propss) => {
                     onChange={handleSelectChangeofCollege}
                     label="Choose College"
                   >
-                    <MenuItem hidden value="">
-                      Select a college
-                    </MenuItem>
+                    <MenuItem value="">All</MenuItem>
                     {college.map((clg) => (
                       <MenuItem key={clg._id} value={clg.c_name}>
                         {clg.c_name}
