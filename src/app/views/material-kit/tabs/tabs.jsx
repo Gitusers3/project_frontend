@@ -17,6 +17,12 @@ export default function LabTabs() {
 
   useEffect(() => {
     // Make the API request
+    const newValue=localStorage.getItem("studentTab")
+    if(newValue){
+      setValue(newValue);
+
+    }
+   
 
     async function FetchData(){
       const token=await localStorage.getItem("accessToken")
@@ -38,6 +44,7 @@ export default function LabTabs() {
   const handleChange = (event, newValue) => {
     // alert(newValue);
     setValue(newValue);
+    localStorage.setItem("studentTab",newValue)
   };
   const allDataTab = {
     label: 'All',

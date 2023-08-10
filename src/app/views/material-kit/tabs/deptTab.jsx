@@ -19,6 +19,10 @@ export default function LabTabs() {
 
   useEffect(() => {
     // Make the API request
+    const newvalue=localStorage.getItem("batchtab")
+    if(newvalue){
+      setValue(newvalue);
+    }
     async function FetchData(){
       const token=await localStorage.getItem("accessToken")
       axios
@@ -46,6 +50,7 @@ export default function LabTabs() {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    localStorage.setItem('batchtab',newValue)
   };
   return (
     <Box sx={{ width: '100%', typography: 'body1' }}>

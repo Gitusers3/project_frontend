@@ -20,7 +20,7 @@ function AddQTimeTable() {
   return (
     <Container>
     <Box className="breadcrumb">
-      <Breadcrumb routeSegments={[{ name: 'Time Table', path: '../../batches/time_table/cognitive' }, { name: 'Cognitive' }]} />
+      <Breadcrumb routeSegments={[{ name: 'Time Table', path: '../../batches/time_table/qtech' }, { name: 'Qtech' }]} />
     </Box>
 
     <Stack spacing={3}>

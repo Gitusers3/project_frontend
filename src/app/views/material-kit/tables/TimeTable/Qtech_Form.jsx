@@ -63,21 +63,28 @@ function Qtech_Form() {
     const [selectedtechie,setSlectedtechie]=useState("")
     const [time,setTime]=useState({})
     useEffect(()=>{
-        url.get("staff/view").then((res)=>{
+      async function fetchadata(){
+        const token=await localStorage.getItem("accessToken")
+        url.get("staff/view",{headers:{"authToken":token}}).then((res)=>{
             
-            const tech=res.data.filter((item)=>{
-                return item.designation==="Software Developer"
-            })
-            setTechie(tech)
-           
+          const tech=res.data.filter((item)=>{
+              return item.designation==="Software Developer"
+          })
+          setTechie(tech)
+         
 
 
 
-        }).catch((err)=>{
-            alert(err)
+      }).catch((err)=>{
+          alert(err)
 
-        })
+      })
 
+
+
+      }
+      fetchadata()
+       
     },[])
 
 
@@ -236,6 +243,7 @@ function Qtech_Form() {
               value={selectedtechie}
              
               onChange={handletechie}
+              required
             >
                 {techie.map((item)=>(
                         <MenuItem value={item._id}>{item.staff_name}</MenuItem>
@@ -258,6 +266,7 @@ function Qtech_Form() {
               multiple
            
               onChange={handleSession1}
+              required
             >
 
 {batch.map((item) =>{ return (
@@ -285,6 +294,7 @@ function Qtech_Form() {
                value={session3}
                multiple
                onChange={handleSession3}
+            
              >
  
  {batch.map((item) =>{ return (
@@ -318,6 +328,7 @@ function Qtech_Form() {
               label="Choose Day"
              
               onChange={handleChange}
+              required
             >
               <MenuItem value="Monday">Monday</MenuItem>
               <MenuItem value="Tuesday">Tuesday</MenuItem>

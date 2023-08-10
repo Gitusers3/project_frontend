@@ -158,6 +158,7 @@ function Cog_Form() {
               label="Choose Day"
              
               onChange={handleChange}
+              required
             >
               <MenuItem value="Monday">Monday</MenuItem>
               <MenuItem value="Tuesday">Tuesday</MenuItem>
@@ -178,6 +179,7 @@ function Cog_Form() {
               label="Session 1"
            
               onChange={handleChange}
+              required
             >
 
 {filterBatch.map((item) =>{ return (
@@ -213,6 +215,7 @@ function Cog_Form() {
               label="Session 2"
           
               onChange={handleChange}
+              required
             >
 
 {filterBatch.map((item) =>{ return (
