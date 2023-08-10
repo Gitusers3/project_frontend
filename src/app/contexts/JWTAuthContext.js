@@ -202,8 +202,8 @@ export const AuthProvider = ({
   // SHOW LOADER
   if (!state.isInitialised) return <MatxLoading / > ;
 
-  return ( <
-    AuthContext.Provider value = {
+  return ( 
+    <AuthContext.Provider value = {
       {
         ...state,
         method: 'JWT',

@@ -51,7 +51,7 @@ export default function Viewone() {
   const [academicDetails, setAcademic_details] = useState();
   const [internshipDetails, setInternshipDetails] = useState([]);
   useEffect(() => {
-    URL.get(`student/view/${param.id}`)
+    URL.get(`student/viewone/${param.id}`)
       .then((res) => {
         // console.log(res?.data?.s1?.student_name);
         console.log(res?.data + 'response');

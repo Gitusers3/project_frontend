@@ -115,8 +115,10 @@ const PaginationTable = (propss) => {
 
   useEffect(() => {
     // Make the API request
-    axios
-      .get('http://localhost:4000/api/college/view')
+    async function FetchData(){
+      const token=await localStorage.getItem("accessToken")
+      axios
+      .get('http://localhost:4000/api/college/view',{headers:{"authToken":token}})
       .then((res) => {
         console.log(res.data);
         setCollege(res.data);
@@ -124,6 +126,10 @@ const PaginationTable = (propss) => {
       .catch((err) => {
         console.log(err);
       });
+
+    }
+    FetchData()
+   
     // alert(selectedDivision);
   }, [selectedCollege]);
 

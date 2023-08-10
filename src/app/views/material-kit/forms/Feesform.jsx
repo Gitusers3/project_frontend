@@ -66,7 +66,7 @@ const SimpleForm = ({ Sid, count, setCentredModal }) => {
 
   const nav = useNavigate();
   useEffect(() => {
-    Axios.get(`http://localhost:4000/api/student/view/${Sid}`)
+    Axios.get(`http://localhost:4000/api/student/viewone/${Sid}`)
       .then((res) => {
         // console.log(res?.data?.s1?.student_name);
         // console.log(res?.data?.s1?.division_id?.d_name);

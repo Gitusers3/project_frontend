@@ -23,19 +23,26 @@ function SimpleDialog(props) {
 
     const [techie,setTechie]=useState([])
     useEffect(()=>{
-        url.get('staff/view').then((res)=>{
-            console.log("res",res.data)
-        
-          const staff=res.data.filter((item)=>{
-            return item.designation==="Software Developer"
-    
-          })
-          setTechie(staff)
-    
-        }).catch((err)=>{
-          alert(err)
-    
+      async function fetchadata(){
+        const token=await localStorage.getItem("accessToken")
+        console.log("tt",token)
+        url.get('staff/view',{headers:{"authToken":token}}).then((res)=>{
+          console.log("res",res.data)
+      
+        const staff=res.data.filter((item)=>{
+          return item.designation==="Software Developer"
+  
         })
+        setTechie(staff)
+  
+      }).catch((err)=>{
+        alert(err)
+  
+      })
+
+      }
+      fetchadata()
+       
     
       },[])
 

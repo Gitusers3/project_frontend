@@ -104,8 +104,10 @@ const Discontinued = (propss) => {
 
   useEffect(() => {
     // Make the API request
-    axios
-      .get('http://localhost:4000/api/college/view')
+    async function fetchdata(){
+      const token=await localStorage.getItem("accessToken")
+      axios
+      .get('http://localhost:4000/api/college/view',{headers:{"authToken":token}})
       .then((res) => {
         console.log(res.data);
         setCollege(res.data);
@@ -113,6 +115,10 @@ const Discontinued = (propss) => {
       .catch((err) => {
         console.log(err);
       });
+
+    }
+    fetchdata()
+  
     // alert(selectedDivision);
   }, [selectedCollege]);
 

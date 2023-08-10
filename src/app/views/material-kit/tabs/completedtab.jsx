@@ -14,8 +14,10 @@ export default function LabTabs() {
 
   useEffect(() => {
     // Make the API request
-    axios
-      .get('http://localhost:4000/api/division/view_division')
+    async function FetchData(){
+      const token=await localStorage.getItem("accessToken")
+      axios
+      .get('http://localhost:4000/api/division/view_division',{headers:{"authToken":token}})
       .then((res) => {
         console.log(res.data);
         setDivsn(res.data);
@@ -23,6 +25,8 @@ export default function LabTabs() {
       .catch((err) => {
         console.log(err);
       });
+    }
+   FetchData()
   }, []);
   const handleChange = (event, newValue) => {
     // alert(newValue);
