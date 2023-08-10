@@ -2,7 +2,8 @@ import { Card, Box, styled } from '@mui/material';
 
 const CardRoot = styled(Card)({
   height: '100%',
-  padding: '20px 24px'
+  padding: '20px 24px',
+  boxShadow: 'none !important'
 });
 
 const CardTitle = styled('div')(({ subtitle }) => ({
@@ -12,7 +13,7 @@ const CardTitle = styled('div')(({ subtitle }) => ({
   marginBottom: !subtitle && '16px'
 }));
 
-const SimpleCard = ({ children, title, subtitle }) => {
+const SimpleCard2 = ({ children, title, subtitle }) => {
   return (
     <CardRoot elevation={6}>
       <CardTitle subtitle={subtitle}>{title}</CardTitle>
@@ -22,4 +23,4 @@ const SimpleCard = ({ children, title, subtitle }) => {
   );
 };
 
-export default SimpleCard;
+export default SimpleCard2;

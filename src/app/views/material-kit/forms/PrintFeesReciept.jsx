@@ -5,7 +5,8 @@ import { Button, styled } from '@mui/material';
 import Cs from '../../../../images/CS.png';
 import CL from '../../../../images/CL.png';
 import QT from '../../../../images/Qt.png';
-import { Breadcrumb, SimpleCard } from 'app/components';
+import { Breadcrumb } from 'app/components';
+import SimpleCard2 from 'app/components/SimpleCard2';
 import Grid from '@mui/material/Grid';
 import { useNavigate } from 'react-router-dom';
 import { Span } from 'app/components/Typography';
@@ -154,7 +155,7 @@ export default function Fees_Reciept() {
           <Grid container rowSpacing={3} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
             <Grid item xs={12}>
               <div>
-                <SimpleCard>
+                <SimpleCard2>
                   <div className="d-flex" style={{ gap: '300px', height: '20px' }}>
                     <div className="w-100">
                       {one === 'Cognitive Solution' && (
@@ -211,34 +212,32 @@ export default function Fees_Reciept() {
                       <MDBTableBody>
                         <tr>
                           <td>
-                            <span className="fw-bolder text-muted">Received From :</span> {student}
+                            <span className="fw-bolder">Received From :</span> {student}
                           </td>
                           <td></td>
                           <td className="text-end">
-                            <span className="fw-bolder text-muted">Received For :</span> Academic
-                            Internship ({fees?.fees_type})
+                            <span className="fw-bolder">Received For :</span> Academic Internship (
+                            {fees?.fees_type})
                           </td>
                         </tr>
                         <tr>
                           <td>
-                            <span className="fw-bolder text-muted">College/Work Place :</span>{' '}
-                            {collegeName}
+                            <span className="fw-bolder">College/Work Place :</span> {collegeName}
                           </td>
                         </tr>
                         <tr>
                           <td>
-                            <span className="fw-bolder text-muted">Payment Type :</span>{' '}
-                            {fees?.pay_type}
+                            <span className="fw-bolder">Payment Type :</span> {fees?.pay_type}
                           </td>
                         </tr>
                         <tr>
                           <td>
-                            <span className="fw-bolder text-muted">Amount :</span> ₹ {fees?.amount}
+                            <span className="fw-bolder">Amount :</span> ₹ {fees?.amount}
                             /-
                           </td>
                           <td></td>
                           <td className="text-center">
-                            <span className="fw-bold text-muted">
+                            <span className="fw-bold">
                               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SIGNATURE
@@ -275,13 +274,13 @@ export default function Fees_Reciept() {
                     </table> */}
                   </div>
                   {/*  */}
-                </SimpleCard>
+                </SimpleCard2>
               </div>
             </Grid>
             <br />
             <br />
             <Grid item xs={12}>
-              <div style={{ marginTop: '20px' }}>
+              <div style={{ marginTop: '25px' }}>
                 <div className="d-flex">
                   <div className="flex-grow-2">
                     <hr className="border-dashed " style={{ border: '2px dashed black' }} />
@@ -299,7 +298,7 @@ export default function Fees_Reciept() {
             <br />
             <Grid item xs={12}>
               <div style={{ marginTop: '2px' }}>
-                <SimpleCard>
+                <SimpleCard2>
                   <div className="d-flex" style={{ gap: '300px', height: '20px' }}>
                     <div className="w-100">
                       {one === 'Cognitive Solution' && (
@@ -356,34 +355,32 @@ export default function Fees_Reciept() {
                       <MDBTableBody>
                         <tr>
                           <td>
-                            <span className="fw-bolder text-muted">Received From :</span> {student}
+                            <span className="fw-bolder">Received From :</span> {student}
                           </td>
                           <td></td>
                           <td className="text-end">
-                            <span className="fw-bolder text-muted">Received For :</span> Academic
-                            Internship ({fees?.fees_type})
+                            <span className="fw-bolder">Received For :</span> Academic Internship (
+                            {fees?.fees_type})
                           </td>
                         </tr>
                         <tr>
                           <td>
-                            <span className="fw-bolder text-muted">College/Work Place :</span>{' '}
-                            {collegeName}
+                            <span className="fw-bolder">College/Work Place :</span> {collegeName}
                           </td>
                         </tr>
                         <tr>
                           <td>
-                            <span className="fw-bolder text-muted">Payment Type :</span>{' '}
-                            {fees?.pay_type}
+                            <span className="fw-bolder">Payment Type :</span> {fees?.pay_type}
                           </td>
                         </tr>
                         <tr>
                           <td>
-                            <span className="fw-bolder text-muted">Amount :</span> ₹ {fees?.amount}
+                            <span className="fw-bolder">Amount :</span> ₹ {fees?.amount}
                             /-
                           </td>
                           <td></td>
                           <td className="text-center">
-                            <span className="fw-bold text-muted">
+                            <span className="fw-bold">
                               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SIGNATURE
@@ -419,7 +416,7 @@ export default function Fees_Reciept() {
                       </tbody>
                     </table> */}
                   </div>
-                </SimpleCard>
+                </SimpleCard2>
               </div>
             </Grid>
           </Grid>
