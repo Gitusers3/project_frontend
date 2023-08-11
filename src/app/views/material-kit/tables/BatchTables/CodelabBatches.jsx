@@ -16,6 +16,8 @@ import Swal from 'sweetalert2';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import { Link } from 'react-router-dom';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import { Tooltip } from '@mui/material';
 const StyledTable = styled(Table)(({ theme }) => ({
   whiteSpace: 'pre',
   '& thead': {
@@ -63,7 +65,8 @@ export default function CodelabBatches(propid) {
       })
       .then((result) => {
         if (result.isConfirmed) {
-          url.delete(`batch/delete/${id}`)
+          url
+            .delete(`batch/delete/${id}`)
             .then((res) => {
               console.log(res);
               let newDisplay = batch.filter((item) => {
@@ -83,53 +86,62 @@ export default function CodelabBatches(propid) {
         }
       });
   };
-  return <div>
-     <Box width="100%" overflow="auto">
-      <StyledTable>
-        <TableHead>
-          <TableRow>
-            <TableCell align="left">Sl No</TableCell>
-            <TableCell align="center">Name</TableCell>
-            <TableCell align="center">Techie</TableCell>
-            <TableCell align="center">Status</TableCell>
-            <TableCell align="right">Action</TableCell>
-          </TableRow>
-        </TableHead>
+  return (
+    <div>
+      <Box width="100%" overflow="auto">
+        <StyledTable>
+          <TableHead>
+            <TableRow>
+              <TableCell align="left">Sl No</TableCell>
+              <TableCell align="center">Name</TableCell>
+              <TableCell align="center">Techie</TableCell>
+              <TableCell align="center">Status</TableCell>
+              <TableCell align="center">Action</TableCell>
+            </TableRow>
+          </TableHead>
 
-        <TableBody>
-          {batch
-            ?.filter((va) => va?.d_id?._id === propid.propid)
-            .map((item, index) => {
-              const techNames = item.tech_id.map((tech) => tech.staff_name).join(', ');
+          <TableBody>
+            {batch
+              ?.filter((va) => va?.d_id?._id === propid.propid)
+              .map((item, index) => {
+                const techNames = item.tech_id.map((tech) => tech.staff_name).join(', ');
 
-              return (
-                <TableRow key={item._id}>
-                  <TableCell align="left">{index + 1}</TableCell>
-                  <TableCell align="center">{item.b_name}</TableCell>
-                  <TableCell align="center">{techNames}</TableCell>
-                  <TableCell align="center">{item.status}</TableCell>
-                  <TableCell align="right">
-                    <IconButton>
-                      <Icon onClick={() => DeleteBatch(item._id)} color="error">
-                        delete
-                      </Icon>
-                    </IconButton>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-        </TableBody>
-      </StyledTable>
-      <Link to="create">
-        <Button fullWidth sx={{ marginTop: '10px' }} variant="contained">
-          Add Batch
-        </Button>
-      </Link>
-      <Link to="time_table/codelab">
-     <Button fullWidth sx={{ marginTop: '10px' }} variant="contained" color="success">
-        TimeTable
-     </Button>
-   </Link>
-    </Box>
-  </div>;
+                return (
+                  <TableRow key={item._id}>
+                    <TableCell align="left">{index + 1}</TableCell>
+                    <TableCell align="center">{item.b_name}</TableCell>
+                    <TableCell align="center">{techNames}</TableCell>
+                    <TableCell align="center">{item.status}</TableCell>
+                    <TableCell align="center">
+                      <Link to={`viewStudents/${item._id}`}>
+                        <IconButton>
+                          <Tooltip arrow title="View Students">
+                            <VisibilityIcon color="primary" />
+                          </Tooltip>
+                        </IconButton>
+                      </Link>
+                      <IconButton>
+                        <Icon onClick={() => DeleteBatch(item._id)} color="error">
+                          delete
+                        </Icon>
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+          </TableBody>
+        </StyledTable>
+        <Link to="create">
+          <Button fullWidth sx={{ marginTop: '10px' }} variant="contained">
+            Add Batch
+          </Button>
+        </Link>
+        <Link to="time_table/codelab">
+          <Button fullWidth sx={{ marginTop: '10px' }} variant="contained" color="success">
+            TimeTable
+          </Button>
+        </Link>
+      </Box>
+    </div>
+  );
 }

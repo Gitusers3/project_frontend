@@ -19,25 +19,23 @@ export default function LabTabs() {
 
   useEffect(() => {
     // Make the API request
-    const newvalue=localStorage.getItem("batchtab")
-    if(newvalue){
+    const newvalue = localStorage.getItem('batchtab');
+    if (newvalue) {
       setValue(newvalue);
     }
-    async function FetchData(){
-      const token=await localStorage.getItem("accessToken")
+    async function FetchData() {
+      const token = await localStorage.getItem('accessToken');
       axios
-      .get('http://localhost:4000/api/division/view_division',{headers:{"authToken":token}})
-      .then((res) => {
-        console.log(res.data);
-        setDivsn(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
+        .get('http://localhost:4000/api/division/view_division', { headers: { authToken: token } })
+        .then((res) => {
+          console.log(res.data);
+          setDivsn(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
-    FetchData()
-   
+    FetchData();
   }, []);
 
   const [value, setValue] = useState('64b63271e4c71dfecf988dd8'); // Initialize value with the first tab value
@@ -50,7 +48,7 @@ export default function LabTabs() {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
-    localStorage.setItem('batchtab',newValue)
+    localStorage.setItem('batchtab', newValue);
   };
   return (
     <Box sx={{ width: '100%', typography: 'body1' }}>
