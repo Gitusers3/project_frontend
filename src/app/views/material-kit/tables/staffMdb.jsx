@@ -33,22 +33,19 @@ const DatatablePage = (prop) => {
   const [display, setDisplay] = useState([]);
   console.log(prop);
   useEffect(() => {
-    async function FetchData(){
-      const token=await localStorage.getItem("accessToken")
-      URL.get('staff/view',{headers:{"authToken":token}})
-      .then((res) => {
-        console.log(res);
-        setDisplay(res.data);
-        console.log(display);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
-
-    } 
-    FetchData()
-   
+    async function fetchdata() {
+      const token = await localStorage.getItem('accessToken');
+      URL.get('staff/view', { headers: { authToken: token } })
+        .then((res) => {
+          console.log('re', res);
+          setDisplay(res.data);
+          console.log(display);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+    fetchdata();
   }, []);
   console.log(display);
   const [centredModal, setCentredModal] = useState(false);

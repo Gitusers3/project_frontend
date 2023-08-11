@@ -66,23 +66,25 @@ const SimpleForm = ({ Sid, count, setCentredModal }) => {
 
   const nav = useNavigate();
   useEffect(() => {
-    Axios.get(`http://localhost:4000/api/student/viewone/${Sid}`)
-      .then((res) => {
-        // console.log(res?.data?.s1?.student_name);
-        // console.log(res?.data?.s1?.division_id?.d_name);
-        let a = res.data.s1.division_id.d_name;
-        let divid = res.data.s1.division_id;
-        setOne(a);
-        setDivid(divid);
-        let b = res.data.s1.pending_fees;
-        setTotfees(b);
+    if (Sid) {
+      Axios.get(`http://localhost:4000/api/student/viewone/${Sid}`)
+        .then((res) => {
+          // console.log(res?.data?.s1?.student_name);
+          // console.log(res?.data?.s1?.division_id?.d_name);
+          let a = res.data.s1.division_id.d_name;
+          let divid = res.data.s1.division_id;
+          setOne(a);
+          setDivid(divid);
+          let b = res.data.s1.pending_fees;
+          setTotfees(b);
 
-        // alert(one);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [count]);
+          // alert(one);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [Sid, count]);
 
   useEffect(() => {
     ValidatorForm.addValidationRule('isPasswordMatch', (value) => {
