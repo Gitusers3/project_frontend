@@ -116,7 +116,7 @@ export default function CodelabBatches(propid) {
                   <TableCell align="center">{item.status}</TableCell>
                   <TableCell align="right">
 
-                    <div style={{display:"flex",marginLeft:"120px"}}>
+                    <div style={{display:"flex",marginLeft:"50px"}}>
                     <Link to={`viewStudents/${item._id}`}>
                         <IconButton>
                           <Tooltip arrow title="View Students">
@@ -150,5 +150,6 @@ export default function CodelabBatches(propid) {
      </Button>
    </Link>
     </Box>
-  </div>;
-}
+  </div>
+  )
+          }
