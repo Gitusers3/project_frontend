@@ -200,26 +200,23 @@ const Staffform = () => {
   const [employee_code, setEmployee_code] = useState('EMPDQ101');
 
   useEffect(() => {
-    async function fetchadata(){
-      const token=localStorage.getItem("accessToken")
+    async function fetchdata() {
+      const token = await localStorage.getItem('accessToken');
       url
-      .get('staff/view',{headers:{"authToken":token}})
-      .then((res) => {
-        console.log('staffs', res.data);
-        setStaffs(res.data);
-        const lastRecord = res.data[res.data.length - 1];
-        const lastEmpcode = lastRecord ? lastRecord.employee_code : 'EMPDQ';
-        const newEmpCode = generateNextEmpCode(lastEmpcode);
-        setEmployee_code(newEmpCode);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-      
-
+        .get('staff/view', { headers: { authToken: token } })
+        .then((res) => {
+          console.log('staffs', res.data);
+          setStaffs(res.data);
+          const lastRecord = res.data[res.data.length - 1];
+          const lastEmpcode = lastRecord ? lastRecord.employee_code : 'EMPDQ';
+          const newEmpCode = generateNextEmpCode(lastEmpcode);
+          setEmployee_code(newEmpCode);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
-    fetchadata()
-   
+    fetchdata();
   }, []); // Run the effect once, when the component mounts
 
   function generateNextEmpCode(lastEmpCode) {

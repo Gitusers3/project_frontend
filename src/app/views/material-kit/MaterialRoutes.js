@@ -2,6 +2,7 @@ import {
   lazy
 } from 'react';
 import Loadable from 'app/components/Loadable';
+import CodelabBatches from '../Batches/CodelabBatches';
 
 const Register = Loadable(lazy(() => import('../../views/student/register')));
 const StaffRegister = Loadable(lazy(() => import('../../views/staffs/Register')));
@@ -40,6 +41,7 @@ const CodeLab_Timetable = Loadable(lazy(() => import('./tables/TimeTable/Codelab
 const AddCodeTimeTable = Loadable(lazy(() => import('./tables/TimeTable/AddCodeTimetable')))
 const Qtech_Timetable = Loadable(lazy(() => import('./tables/TimeTable/Qtech_Timetable')))
 const AddQTimeTable = Loadable(lazy(() => import('./tables/TimeTable/AddQTimeTable')))
+const CodeLabStudents = Loadable(lazy(() => import('./tables/BatchTables/StudentsByBatches')))
 const materialRoutes = [{
     path: '/material/table',
     element: < AppTable / >
@@ -130,6 +132,10 @@ const materialRoutes = [{
   {
     path: '/material/form',
     element: < AppForm / >
+  },
+  {
+    path: '/batches/viewStudents/:id',
+    element: < CodeLabStudents / >
   },
   {
     path: '/staffs',

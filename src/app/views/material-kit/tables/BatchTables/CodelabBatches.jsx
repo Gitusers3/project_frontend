@@ -18,6 +18,8 @@ import Stack from '@mui/material/Stack';
 import { Link } from 'react-router-dom';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import CLbatchview from './CLbatchview';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import { Tooltip } from '@mui/material';
 const StyledTable = styled(Table)(({ theme }) => ({
   whiteSpace: 'pre',
   '& thead': {
@@ -65,7 +67,8 @@ export default function CodelabBatches(propid) {
       })
       .then((result) => {
         if (result.isConfirmed) {
-          url.delete(`batch/delete/${id}`)
+          url
+            .delete(`batch/delete/${id}`)
             .then((res) => {
               console.log(res);
               let newDisplay = batch.filter((item) => {
@@ -85,24 +88,25 @@ export default function CodelabBatches(propid) {
         }
       });
   };
-  return <div>
-     <Box width="100%" overflow="auto">
-      <StyledTable>
-        <TableHead>
-          <TableRow>
-            <TableCell align="left">Sl No</TableCell>
-            <TableCell align="center">Name</TableCell>
-            <TableCell align="center">Techie</TableCell>
-            <TableCell align="center">Status</TableCell>
-            <TableCell align="right">Action</TableCell>
-          </TableRow>
-        </TableHead>
+  return (
+    <div>
+      <Box width="100%" overflow="auto">
+        <StyledTable>
+          <TableHead>
+            <TableRow>
+              <TableCell align="left">Sl No</TableCell>
+              <TableCell align="center">Name</TableCell>
+              <TableCell align="center">Techie</TableCell>
+              <TableCell align="center">Status</TableCell>
+              <TableCell align="center">Action</TableCell>
+            </TableRow>
+          </TableHead>
 
-        <TableBody>
-          {batch
-            ?.filter((va) => va?.d_id?._id === propid.propid)
-            .map((item, index) => {
-              const techNames = item.tech_id.map((tech) => tech.staff_name).join(', ');
+          <TableBody>
+            {batch
+              ?.filter((va) => va?.d_id?._id === propid.propid)
+              .map((item, index) => {
+                const techNames = item.tech_id.map((tech) => tech.staff_name).join(', ');
 
               return (
                 <TableRow key={item._id}>
@@ -111,7 +115,15 @@ export default function CodelabBatches(propid) {
                   <TableCell align="center">{techNames}</TableCell>
                   <TableCell align="center">{item.status}</TableCell>
                   <TableCell align="right">
+
                     <div style={{display:"flex",marginLeft:"120px"}}>
+                    <Link to={`viewStudents/${item._id}`}>
+                        <IconButton>
+                          <Tooltip arrow title="View Students">
+                            <VisibilityIcon color="primary" />
+                          </Tooltip>
+                        </IconButton>
+                      </Link>
                     <CLbatchview batchid={item._id}/>
                   
                   <IconButton>

@@ -17,7 +17,8 @@ import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import { Link } from 'react-router-dom';
 import { ClassComponentText } from './ClassComponentText';
-
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import { Tooltip } from '@mui/material';
 const StyledTable = styled(Table)(({ theme }) => ({
   whiteSpace: 'pre',
   '& thead': {
@@ -95,7 +96,7 @@ const SimpleTable = (propid) => {
             <TableCell align="center">Name</TableCell>
             <TableCell align="center">Techie</TableCell>
             <TableCell align="center">Status</TableCell>
-            <TableCell align="right">Action</TableCell>
+            <TableCell align="center">Action</TableCell>
           </TableRow>
         </TableHead>
 
@@ -112,6 +113,13 @@ const SimpleTable = (propid) => {
                   <TableCell align="center">{techNames}</TableCell>
                   <TableCell align="center">{item.status}</TableCell>
                   <TableCell align="right">
+                    <Link to={`viewStudents/${item._id}`}>
+                      <IconButton>
+                        <Tooltip arrow title="View Students">
+                          <VisibilityIcon color="primary" />
+                        </Tooltip>
+                      </IconButton>
+                    </Link>
                     <IconButton>
                       <Icon onClick={() => DeleteBatch(item._id)} color="error">
                         delete
@@ -130,7 +138,7 @@ const SimpleTable = (propid) => {
       </Link>
       <Link to="time_table/cognitive">
         <Button fullWidth sx={{ marginTop: '10px' }} color="success" variant="contained">
-           TimeTable
+          TimeTable
         </Button>
       </Link>
     </Box>

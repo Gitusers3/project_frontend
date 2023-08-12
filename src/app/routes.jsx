@@ -21,6 +21,7 @@ import Ongoing from './views/report/ongoing/ongoing';
 import Completed from './views/report/completed/completed';
 import Discontinued from './views/report/discontinued/discontinued';
 import OngoingByCollege from './views/material-kit/tables/reports/ongoing/OngoingStudentsByCollege';
+import StudentsByBatch from './views/material-kit/tables/BatchTables/StudentsByBatches';
 // session pages
 const AppForm = Loadable(lazy(() => import('../app/views/material-kit/forms/AppForm')));
 
@@ -80,6 +81,7 @@ const routes = [
   { path: '/report/ongoing/viewByCollege/:id', element: <OngoingByCollege /> },
   { path: '/report/completed', element: <Completed /> },
   { path: '/report/discontinued', element: <Discontinued /> },
+  { path: '/batches/viewStudents/:id', element: <StudentsByBatch /> },
   { path: '/session/404', element: <NotFound /> },
   { path: '/session/signin', element: <JwtLogin /> },
   { path: '/session/signin', element: <JwtLogin /> },
