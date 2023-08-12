@@ -200,8 +200,10 @@ const Staffform = () => {
   const [employee_code, setEmployee_code] = useState('EMPDQ101');
 
   useEffect(() => {
-    url
-      .get('staff/view')
+    async function fetchadata(){
+      const token=localStorage.getItem("accessToken")
+      url
+      .get('staff/view',{headers:{"authToken":token}})
       .then((res) => {
         console.log('staffs', res.data);
         setStaffs(res.data);
@@ -213,6 +215,11 @@ const Staffform = () => {
       .catch((err) => {
         console.log(err);
       });
+      
+
+    }
+    fetchadata()
+   
   }, []); // Run the effect once, when the component mounts
 
   function generateNextEmpCode(lastEmpCode) {

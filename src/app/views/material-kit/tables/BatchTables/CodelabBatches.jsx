@@ -16,6 +16,8 @@ import Swal from 'sweetalert2';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import { Link } from 'react-router-dom';
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import CLbatchview from './CLbatchview';
 const StyledTable = styled(Table)(({ theme }) => ({
   whiteSpace: 'pre',
   '& thead': {
@@ -109,11 +111,16 @@ export default function CodelabBatches(propid) {
                   <TableCell align="center">{techNames}</TableCell>
                   <TableCell align="center">{item.status}</TableCell>
                   <TableCell align="right">
-                    <IconButton>
-                      <Icon onClick={() => DeleteBatch(item._id)} color="error">
-                        delete
-                      </Icon>
-                    </IconButton>
+                    <div style={{display:"flex",marginLeft:"120px"}}>
+                    <CLbatchview batchid={item._id}/>
+                  
+                  <IconButton>
+                    <Icon onClick={() => DeleteBatch(item._id)} color="error">
+                      delete
+                    </Icon>
+                  </IconButton>
+                    </div>
+                   
                   </TableCell>
                 </TableRow>
               );
