@@ -16,6 +16,8 @@ import Swal from 'sweetalert2';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import { Link } from 'react-router-dom';
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import CLbatchview from './CLbatchview';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { Tooltip } from '@mui/material';
 const StyledTable = styled(Table)(({ theme }) => ({
@@ -106,42 +108,48 @@ export default function CodelabBatches(propid) {
               .map((item, index) => {
                 const techNames = item.tech_id.map((tech) => tech.staff_name).join(', ');
 
-                return (
-                  <TableRow key={item._id}>
-                    <TableCell align="left">{index + 1}</TableCell>
-                    <TableCell align="center">{item.b_name}</TableCell>
-                    <TableCell align="center">{techNames}</TableCell>
-                    <TableCell align="center">{item.status}</TableCell>
-                    <TableCell align="center">
-                      <Link to={`viewStudents/${item._id}`}>
+              return (
+                <TableRow key={item._id}>
+                  <TableCell align="left">{index + 1}</TableCell>
+                  <TableCell align="center">{item.b_name}</TableCell>
+                  <TableCell align="center">{techNames}</TableCell>
+                  <TableCell align="center">{item.status}</TableCell>
+                  <TableCell align="right">
+
+                    <div style={{display:"flex",marginLeft:"50px"}}>
+                    <Link to={`viewStudents/${item._id}`}>
                         <IconButton>
                           <Tooltip arrow title="View Students">
                             <VisibilityIcon color="primary" />
                           </Tooltip>
                         </IconButton>
                       </Link>
-                      <IconButton>
-                        <Icon onClick={() => DeleteBatch(item._id)} color="error">
-                          delete
-                        </Icon>
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-          </TableBody>
-        </StyledTable>
-        <Link to="create">
-          <Button fullWidth sx={{ marginTop: '10px' }} variant="contained">
-            Add Batch
-          </Button>
-        </Link>
-        <Link to="time_table/codelab">
-          <Button fullWidth sx={{ marginTop: '10px' }} variant="contained" color="success">
-            TimeTable
-          </Button>
-        </Link>
-      </Box>
-    </div>
-  );
-}
+                    <CLbatchview batchid={item._id}/>
+                  
+                  <IconButton>
+                    <Icon onClick={() => DeleteBatch(item._id)} color="error">
+                      delete
+                    </Icon>
+                  </IconButton>
+                    </div>
+                   
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+        </TableBody>
+      </StyledTable>
+      <Link to="create">
+        <Button fullWidth sx={{ marginTop: '10px' }} variant="contained">
+          Add Batch
+        </Button>
+      </Link>
+      <Link to="time_table/codelab">
+     <Button fullWidth sx={{ marginTop: '10px' }} variant="contained" color="success">
+        TimeTable
+     </Button>
+   </Link>
+    </Box>
+  </div>
+  )
+          }
